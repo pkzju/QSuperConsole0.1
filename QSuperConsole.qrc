@@ -1,0 +1,49 @@
+<RCC>
+    <qresource prefix="/">
+        <file>skin/icons/dark/appbar.app.png</file>
+        <file>skin/icons/dark/appbar.app.remove.png</file>
+        <file>skin/icons/dark/appbar.close.png</file>
+        <file>skin/icons/dark/appbar.clothes.shirt.png</file>
+        <file>skin/icons/dark/appbar.delete.png</file>
+        <file>skin/icons/dark/appbar.fullscreen.box.png</file>
+        <file>skin/icons/dark/appbar.fullscreen.png</file>
+        <file>skin/icons/dark/appbar.home.png</file>
+        <file>skin/icons/dark/appbar.settings.png</file>
+        <file>skin/icons/dark/appbar.graph.line.png</file>
+        <file>skin/icons/dark/appbar.minus.png</file>
+        <file>skin/icons/dark/appbar.lock.png</file>
+        <file>skin/icons/dark/appbar.unlock.keyhole.png</file>
+        <file>skin/icons/dark/appbar.control.down.png</file>
+        <file>skin/icons/dark/appbar.monitor.to.png</file>
+        <file>skin/icons/dark/appbar.connect.png</file>
+        <file>skin/icons/light/appbar.connect.png</file>
+        <file>skin/icons/dark/appbar.transit.bus.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>skin/images/downsolidarrow.png</file>
+        <file>skin/images/QFramer.png</file>
+        <file>skin/images/rightsolidarrow.png</file>
+        <file>skin/images/bg.png</file>
+        <file>skin/images/ico.ico</file>
+        <file>skin/images/fly.png</file>
+        <file>skin/images/clear.png</file>
+        <file>skin/images/connect.png</file>
+        <file>skin/images/disconnect.png</file>
+        <file>skin/icons/led_off.png</file>
+        <file>skin/icons/led_on.png</file>
+        <file>skin/icons/led_warning.png</file>
+        <file>skin/images/checkb_check.png</file>
+        <file>skin/images/checkb-unche.png</file>
+        <file>skin/images/radiob-checked.png</file>
+        <file>skin/images/radiob-unchecked.png</file>
+        <file>skin/images/csm_seminars.png</file>
+    </qresource>
+    <qresource prefix="/qss">
+        <file>skin/qss/BB.qss</file>
+        <file>skin/qss/template.qss</file>
+        <file>skin/qss/GBG.qss</file>
+    </qresource>
+    <qresource prefix="/about">
+        <file>skin/html/about.html</file>
+    </qresource>
+</RCC>
