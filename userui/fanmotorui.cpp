@@ -11,10 +11,14 @@
 
 #include"fanmotor/qmotor.h"
 #include "userui/mplotui.h"
+#include "userui/homewindow.h"
+#include "dialogs/settingdialog.h"
+#include "mainwindow/mainwindow.h"
 
-FanMotorUi *FanMotorUi::s_Instance = nullptr;
 
+FanMotorUi *FanMotorUi::s_Instance = Q_NULLPTR;
 
+/*CAN part fuction*/
 void FanMotorUi::heartbeatError(CO_Data *d, unsigned char heartbeatID)
 {
     UNS8 __address = heartbeatID - 1;
@@ -75,11 +79,13 @@ UNS32 OnMotorParaUpdate(CO_Data* d, const indextable * unsused_indextable, UNS8 
     qDebug()<<d->nodeState<<"OnMotorParaUpdate"<<unsused_indextable->bSubCount<<unsused_bSubindex;
     return 0;
 }
+/*CAN part fuction*/
 
 
 FanMotorUi::FanMotorUi(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FanMotorUi)
+    ,modbusDevice(Q_NULLPTR)
     ,m_masterBoard{new s_BOARD{}}
     ,m_canThread{CanThread::getInstance()}
 {
@@ -136,10 +142,9 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
 
     m_canUi = CANUi::getS_Instance();
 
-    m_communication = Communication::Init;
-    m_modbusUi = ModbusUi::getInstance();
-    modbusDevice = m_modbusUi->getModbusDevice();
-    on_radioButton_modbus_clicked();
+    m_communication = CommunicationMode::Init;
+
+//    on_radioButton_modbus_clicked();
 
 
     m_realTimeServerAddress = ui->spinBox_currentaddress->value();
@@ -163,7 +168,7 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
     m_pollingTimer = new QTimer(this);
     connect(m_pollingTimer, SIGNAL(timeout()), this, SLOT(pollingTimerUpdate()));
 
-    if(m_communication == Communication::Modbus){
+    if(m_communication == CommunicationMode::Modbus){
 
     }
 
@@ -176,65 +181,24 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
 
 }
 
-void FanMotorUi::on_radioButton_modbus_clicked()
-{
-    if(m_communication != Communication::Modbus){
-
-        connect(ui->connectButton, SIGNAL(clicked()),
-                m_modbusUi, SLOT(on_connectButton_clicked()));
-        connect(ui->disconnectButton, SIGNAL(clicked()),
-                m_modbusUi, SLOT(on_connectButton_clicked()));
-        connect(modbusDevice, &QModbusClient::stateChanged,
-                this, &FanMotorUi::onModebusStateChanged);
-    }
-
-    m_communication = Communication::Modbus;
-
-}
-
-void FanMotorUi::on_radioButton_can_clicked()
-{
-    if(m_communication == Communication::Modbus){
-
-        disconnect(ui->connectButton, SIGNAL(clicked()),
-                   m_modbusUi, SLOT(on_connectButton_clicked()));
-        disconnect(ui->disconnectButton, SIGNAL(clicked()),
-                   m_modbusUi, SLOT(on_connectButton_clicked()));
-        disconnect(modbusDevice, &QModbusClient::stateChanged,
-                   this, &FanMotorUi::onModebusStateChanged);
-    }
-
-    m_communication = Communication::CANbus;
-}
-
-void FanMotorUi::on_radioButton_tcp_clicked()
-{
-    if(m_communication == Communication::Modbus){
-
-        disconnect(ui->connectButton, SIGNAL(clicked()),
-                   m_modbusUi, SLOT(on_connectButton_clicked()));
-        disconnect(ui->disconnectButton, SIGNAL(clicked()),
-                   m_modbusUi, SLOT(on_connectButton_clicked()));
-
-        disconnect(modbusDevice, &QModbusClient::stateChanged,
-                   this, &FanMotorUi::onModebusStateChanged);
-    }
-
-    m_communication = Communication::Tcp;
-}
-
 void FanMotorUi::on_connectButton_clicked()//open
 {
-    if(m_communication == Communication::CANbus){
+    //Tcp connect
+    if(ui->radioButton_tcp->isChecked()){
 
+        onStateChanged(1);
+        m_communication = CommunicationMode::Tcp;
+    }
+
+    //CAN connect
+    if(ui->radioButton_can->isChecked()){
         m_canUi->resetCAN();
 
         if(!canOpen(m_masterBoard, &master_Data)){
-            ui->textBrowser->append("open failed !");
+            ui->textBrowser->append(tr("CAN connect failed !"));
+            statusBar()->showMessage(tr("CAN connect failed !"), 3000);
             return;
         }
-
-        ui->textBrowser->append("open success !");
 
         connect(m_canThread, SIGNAL(message(QString)),
                 this, SLOT(messageShow(QString)));
@@ -266,33 +230,83 @@ void FanMotorUi::on_connectButton_clicked()//open
 
         m_canUi->setEnabled(false);//disable canui
 
-        bool connected = true;
-        ui->connectButton->setEnabled(!connected);
-        ui->disconnectButton->setEnabled(connected);
-
-        ui->startButton->setEnabled(connected);
-        ui->searchButton->setEnabled(!connected);
-        ui->pushButton_read->setEnabled(connected);
-        ui->pushButton_write->setEnabled(connected);
-        ui->pushButton_startMotor->setEnabled(connected);
-        ui->pushButton_stopMotor->setEnabled(connected);
-
-        ui->groupBox_comState->setEnabled(!connected);
-
+        onStateChanged(1);
     }
-    else if(m_communication == Communication::Tcp){
 
-    }
-    else{
+    //Modbus connect
+    if(ui->radioButton_modbus->isChecked()){
+        SerialPortSettings::Settings mSerialPortSettings;
+        //[1]Read serialport settings in "/SuperConsole.ini" (update in "SerialPortSettingsDialog" class)
+        QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+        settings.beginGroup("SerialPortSettingsDialog");
+        mSerialPortSettings.name = settings.value("SerialPortname", "").toString();
+        mSerialPortSettings.baudRate = static_cast<QSerialPort::BaudRate>(settings.value("SerialPortBaudRate", "9600").toInt());
+        mSerialPortSettings.dataBits = static_cast<QSerialPort::DataBits>(settings.value("SerialPortDataBits", "8").toInt());
+        mSerialPortSettings.parity = static_cast<QSerialPort::Parity>(settings.value("SerialPortParity", "0").toInt());
+        mSerialPortSettings.stopBits = static_cast<QSerialPort::StopBits>(settings.value("SerialPortStopBits", "1").toInt());
+        mSerialPortSettings.flowControl = static_cast<QSerialPort::FlowControl>(settings.value("SerialPortFlowControl", "0").toInt());
+        settings.endGroup();
 
+        //[2] Make sure modbus device was not created yet
+        if (modbusDevice) {
+            modbusDevice->disconnectDevice();
+            delete modbusDevice;
+            modbusDevice = Q_NULLPTR;
+        }
+
+        //[3] Create modbus RTU client device and monitor error,state
+        modbusDevice = new QModbusRtuSerialMaster(this);
+        connect(modbusDevice, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
+            statusBar()->showMessage(modbusDevice->errorString(), 3000);
+        });
+        if (!modbusDevice) {
+            statusBar()->showMessage(tr("Could not create Modbus client."), 3000);
+            return;
+        } else {
+            connect(modbusDevice, &QModbusClient::stateChanged,
+                    this, &FanMotorUi::onStateChanged);//Monitor modbus device state
+        }
+
+        statusBar()->clearMessage();//Clear status bar first, we will use it
+
+        //[4] Set serialport parameter and connect device
+        if (modbusDevice->state() != QModbusDevice::ConnectedState) {
+
+            modbusDevice->setConnectionParameter(QModbusDevice::SerialPortNameParameter,
+                                                 mSerialPortSettings.name);
+            modbusDevice->setConnectionParameter(QModbusDevice::SerialBaudRateParameter,
+                                                 mSerialPortSettings.baudRate);
+            modbusDevice->setConnectionParameter(QModbusDevice::SerialDataBitsParameter,
+                                                 mSerialPortSettings.dataBits);
+            modbusDevice->setConnectionParameter(QModbusDevice::SerialParityParameter,
+                                                 mSerialPortSettings.parity);
+            modbusDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter,
+                                                 mSerialPortSettings.stopBits);
+
+            modbusDevice->setTimeout(300);//Set response timeout 300ms
+            modbusDevice->setNumberOfRetries(2);//Set retry number 2
+
+
+            //Now try connect modbus device
+            if (!modbusDevice->connectDevice()) {//Connect failed
+                statusBar()->showMessage(tr("Modbus connect failed: ") + modbusDevice->errorString(), 3000);
+            } else {//Connect  successfully
+            }
+        }
     }
 
 }
 
 void FanMotorUi::on_disconnectButton_clicked()//close
 {
-    if(m_communication == Communication::CANbus){
+    //Tcp disconnect
+    if(m_communication == CommunicationMode::Tcp){
 
+    //    onStateChanged(0);
+    }
+
+    //CAN disconnect
+    if(m_communication == CommunicationMode::CANbus){
         if(m_CANopenStart){
             on_startButton_clicked();
         }
@@ -309,46 +323,88 @@ void FanMotorUi::on_disconnectButton_clicked()//close
         canClose(&master_Data);            //final close canport
 
         m_canUi->setEnabled(true);
+        onStateChanged(0);
 
-        bool connected = false;
+    }
+
+    //Modbus disconnect
+    if(m_communication == CommunicationMode::Modbus){
+        if(!modbusDevice)
+            return;
+        if(modbusDevice->state() == QModbusDevice::ConnectedState){
+            modbusDevice->disconnectDevice();
+        }
+    }
+
+}
+
+void FanMotorUi::onStateChanged(int state)//Monitor modbus device state
+{
+    //Modbus state change
+    if(ui->radioButton_modbus->isChecked()){
+        bool connected = (state != QModbusDevice::UnconnectedState);
         ui->connectButton->setEnabled(!connected);
         ui->disconnectButton->setEnabled(connected);
 
-        ui->startButton->setEnabled(connected);
-        ui->searchButton->setEnabled(connected);
-        ui->pushButton_read->setEnabled(connected);
-        ui->pushButton_write->setEnabled(connected);
-        ui->pushButton_startMotor->setEnabled(connected);
-        ui->pushButton_stopMotor->setEnabled(connected);
-
-        ui->groupBox_comState->setEnabled(!connected);
-
+        if(connected){
+            m_communication = CommunicationMode::Modbus;
+            statusBar()->showMessage(tr("Modbus connected !"), 3000);
+        }
+        else{
+            m_communication = CommunicationMode::Init;
+            statusBar()->showMessage(tr("Modbus disonnected !"), 3000);
+        }
     }
-    else if(m_communication == Communication::Tcp){
 
+    //CAN state change
+    if(ui->radioButton_can->isChecked()){
+        bool connected = (state != 0);
+        ui->connectButton->setEnabled(!connected);
+        ui->disconnectButton->setEnabled(connected);
+
+        if(connected){
+            m_communication = CommunicationMode::CANbus;
+            statusBar()->showMessage(tr("CAN connected !"), 3000);
+        }
+        else{
+            m_communication = CommunicationMode::Init;
+            statusBar()->showMessage(tr("CAN disonnected !"), 3000);
+        }
     }
-    else{
 
+    //Tcp state change
+    if(ui->radioButton_tcp->isChecked()){
+        bool connected = (state != 0);
+        ui->connectButton->setEnabled(!connected);
+        ui->disconnectButton->setEnabled(connected);
+
+        if(connected){
+            m_communication = CommunicationMode::Tcp;
+            statusBar()->showMessage(tr("CAN connected !"), 3000);
+        }
+        else{
+            m_communication = CommunicationMode::Init;
+            statusBar()->showMessage(tr("CAN disonnected !"), 3000);
+        }
     }
 }
+//void FanMotorUi::onStateChanged(int state)
+//{
+//    bool connected = (state != QModbusDevice::UnconnectedState);
 
-void FanMotorUi::onModebusStateChanged(int state)
-{
-    bool connected = (state != QModbusDevice::UnconnectedState);
+//    ui->connectButton->setEnabled(!connected);
+//    ui->disconnectButton->setEnabled(connected);
 
-    ui->connectButton->setEnabled(!connected);
-    ui->disconnectButton->setEnabled(connected);
+//    ui->startButton->setEnabled(connected);
+//    ui->searchButton->setEnabled(connected);
+//    ui->pushButton_read->setEnabled(connected);
+//    ui->pushButton_write->setEnabled(connected);
+//    ui->pushButton_startMotor->setEnabled(connected);
+//    ui->pushButton_stopMotor->setEnabled(connected);
 
-    ui->startButton->setEnabled(connected);
-    ui->searchButton->setEnabled(connected);
-    ui->pushButton_read->setEnabled(connected);
-    ui->pushButton_write->setEnabled(connected);
-    ui->pushButton_startMotor->setEnabled(connected);
-    ui->pushButton_stopMotor->setEnabled(connected);
+//    ui->groupBox_comState->setEnabled(!connected);
 
-    ui->groupBox_comState->setEnabled(!connected);
-
-}
+//}
 
 void FanMotorUi::messageShow(const QString &s)
 {
@@ -589,7 +645,7 @@ void FanMotorUi::on_searchButton_clicked()
 
 void FanMotorUi::on_startButton_clicked()
 {
-    if(m_communication == Communication::Modbus){
+    if(m_communication == CommunicationMode::Modbus){
         //Multi motor mode start
         if(!m_pollingTimer->isActive()){
 
@@ -622,7 +678,7 @@ void FanMotorUi::on_startButton_clicked()
             ui->spinBox_motorNum->setEnabled(true);
         }
     }
-    else if(m_communication == Communication::CANbus){
+    else if(m_communication == CommunicationMode::CANbus){
         if(!m_CANopenStart){
 
             //pdo config
@@ -843,4 +899,27 @@ FanMotorUi *FanMotorUi::getS_Instance()
     return s_Instance;
 }
 
+void FanMotorUi::onConnectStateChanged(int state)
+{
+//    homewindow *m_homewindow = homewindow::getInstance();
+//    m_communication = m_homewindow->getFanGroupInfo().m_com;
 
+//    bool connected = (state != 0);
+//    ui->startButton->setEnabled(connected);
+//    ui->searchButton->setEnabled(connected);
+//    ui->pushButton_read->setEnabled(connected);
+//    ui->pushButton_write->setEnabled(connected);
+//    ui->pushButton_startMotor->setEnabled(connected);
+//    ui->pushButton_stopMotor->setEnabled(connected);
+}
+
+QStatusBar* FanMotorUi::statusBar()//Get mainwindow's status bar
+{
+    return MainWindow::getInstance()->getStatusBar();
+}
+
+void FanMotorUi::on_settingsButton_clicked()
+{
+    SettingDialog* settingDialog = new SettingDialog;
+    settingDialog->exec();//exec: if we don't close dialog ,we can't operate other window
+}

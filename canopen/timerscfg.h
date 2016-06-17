@@ -36,15 +36,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifndef __TIMERSCFG_H__
 #define __TIMERSCFG_H__
 
+#ifdef _WIN32
 #include <windows.h>
 
 // Time unit : 1msec
 #define TIMEVAL DWORD
-#define TIMEVAL_MAX ~(TIMEVAL)0
+#define TASK_HANDLE HANDLE
+#endif
 
+#ifdef _linux
+#define TIMEVAL unsigned long
+#define TASK_HANDLE void *
+#endif
+
+#define TIMEVAL_MAX ~(TIMEVAL)0
 #define MS_TO_TIMEVAL(ms) ms
 #define US_TO_TIMEVAL(us) (us / 1000)
-
-#define TASK_HANDLE HANDLE
 
 #endif

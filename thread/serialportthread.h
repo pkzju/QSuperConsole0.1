@@ -12,10 +12,10 @@ public:
     SerialPortThread(QObject *parent = 0);
     ~SerialPortThread();
     static SerialPortThread* getInstance();
-    void mStart(SerialPortSettingsDialog::Settings __settings);
+    void mStart(SerialPortSettings::Settings __settings);
     void mStop();
     void run();
-    void mSet(SerialPortSettingsDialog::Settings __settings);
+    void mSet(SerialPortSettings::Settings __settings);
     void mSendData(QByteArray __data);
 
 signals:
@@ -27,7 +27,7 @@ private:
     bool m_isStopped;
     bool m_isSettingsChanged;
 
-    SerialPortSettingsDialog::Settings m_currentSettings;
+    SerialPortSettings::Settings m_currentSettings;
     QByteArray m_dataToSend;
 
 

@@ -23,6 +23,8 @@
 #include "settingdialog.h"
 #include <QVBoxLayout>
 #include <QTabWidget>
+
+
 SettingDialog::SettingDialog(QWidget *parent) :
     FBaseDialog(parent)
 {
@@ -31,9 +33,12 @@ SettingDialog::SettingDialog(QWidget *parent) :
 
 void SettingDialog::initUI()
 {
-    normalSize = QSize(680, 475);
+    normalSize = QSize(330, 310);
     getTitleBar()->getTitleLabel()->setText(tr("Settings"));
     QVBoxLayout* mainLayout = (QVBoxLayout*)layout();
+
+    SerialPortSettingsDialog *_serialport = new SerialPortSettingsDialog;
+
 
 
     QWidget* tab1 = new QWidget;
@@ -41,9 +46,13 @@ void SettingDialog::initUI()
     QWidget* tab3 = new QWidget;
 
     QTabWidget* tabwidget = new QTabWidget;
-    tabwidget->addTab(tab1, tr("Home"));
-    tabwidget->addTab(tab2, tr("Plot"));
-    tabwidget->addTab(tab3, tr("About"));
+
+
+    tabwidget->addTab(_serialport, tr("SerialPort"));
+    tabwidget->addTab(tab2, tr("CANPort"));
+    tabwidget->addTab(tab3, tr("TcpPort"));
     mainLayout->addSpacing(5);
     mainLayout->addWidget(tabwidget);
+
+    connect(_serialport, SIGNAL(emitApply()), this, SLOT(close()));
 }

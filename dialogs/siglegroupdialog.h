@@ -10,26 +10,29 @@
 ** 
 ****************************************************************************/
 
-#ifndef SETTINGDIALOG_H
-#define SETTINGDIALOG_H
-#include "QFramer/fbasedialog.h"
+#ifndef SIGLEGROUPDIALOG_H
+#define SIGLEGROUPDIALOG_H
 
-#include"userui/serialportsettingsdialog.h"
+#include "QFramer/fsubwindown.h"
 
-class SettingDialog : public FBaseDialog
+
+
+class sigleGroupDialog : public FSubWindown
 {
     Q_OBJECT
 public:
-    explicit SettingDialog(QWidget *parent = 0);
+    explicit sigleGroupDialog(QWidget *parent = 0);
+    ~sigleGroupDialog();
     void initUI();
     void initConnect();
-
+    static sigleGroupDialog *getS_Instance();
 signals:
 
 public slots:
 
 private:
+    static sigleGroupDialog *s_Instance;
 
 };
 
-#endif // SETTINGDIALOG_H
+#endif // SIGLEGROUPDIALOG_H

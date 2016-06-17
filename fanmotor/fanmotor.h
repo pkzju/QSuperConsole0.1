@@ -1,3 +1,15 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 pkzju
+**
+**
+** Version	: 0.1.1.0
+** Author	: pkzju
+** Website	: https://github.com/pkzju
+** Project	: https://github.com/pkzju/QSuperConsole
+** 
+****************************************************************************/
+
 #ifndef FANMOTOR_H
 #define FANMOTOR_H
 
@@ -9,7 +21,7 @@ typedef int qint32;                // 32 bit signed
 typedef unsigned int quint32;      // 32 bit unsigned
 
 
-enum FanMotorError {
+enum FanMotorError:char {
     m_noError = 0,
     m_overCur,
     m_overSpd,
@@ -18,7 +30,7 @@ enum FanMotorError {
     m_highVolt
 };
 
-enum FanMotorState{
+enum FanMotorState:char{
     m_unknown = 0,
     m_stop ,
     m_error,
@@ -26,7 +38,7 @@ enum FanMotorState{
 
 };
 
-enum FanCommunicationState{
+enum FanCommunicationState:char{
     m_unknownCS = 0,
     m_disconnect,
     m_connect,

@@ -2,8 +2,10 @@
  CAN driver interface.
 */
 
+#ifdef _WIN32
 #include <windows.h>
 #pragma comment(lib,"ControlCAN.lib")
+#endif
 
 #include "canfestival.h"
 #include "canopen/timer.h"
@@ -14,11 +16,16 @@
 
 CANPort canports[MAX_NB_CAN_PORTS] = {{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,},{0,}};
 
+#ifdef _WIN32
 HANDLE ghMutex;
+#endif
+
 
 /***************************************************************************/
 UNS8 usbCanReceive(void* inst, Message *m)
 {
+
+#ifdef _WIN32
     UNS8 ret;
     VCI_CAN_OBJ vco = {0};
     VCI_ERR_INFO errinfo;
@@ -48,10 +55,17 @@ UNS8 usbCanReceive(void* inst, Message *m)
 
     }
     return ret;
+#endif
+
+#ifdef _linux
+    return 0;
+#endif
 }
 
 UNS8 usbCanSend(void* inst, const Message *m)
 {
+
+#ifdef _WIN32
     UNS8 ret;
     VCI_CAN_OBJ pSend;
     pSend.ID = m->cob_id;
@@ -78,11 +92,19 @@ UNS8 usbCanSend(void* inst, const Message *m)
     else
         ret = 1;
 
-    return (UNS8)ret;
+    return (UNS8)ret; 
+#endif
+
+#ifdef _linux
+    return 0;
+#endif
+
 }
 
 CAN_HANDLE usbCanOpen(s_BOARD *board)
 {
+
+#ifdef _WIN32
     VCI_INIT_CONFIG init_config;
     init_config.AccCode = 0;
     init_config.AccMask = 0xffffffff;  //all pass
@@ -123,10 +145,17 @@ CAN_HANDLE usbCanOpen(s_BOARD *board)
                 return NULL;
         }
     }
+#endif
+
+#ifdef _linux
+    return NULL;
+#endif
 }
 
 int usbCanClose(s_BOARD *board)
 {
+
+#ifdef _WIN32
     int ret;
 
     ret = VCI_ResetCAN(VCI_USBCAN2, 0, 0);
@@ -135,14 +164,26 @@ int usbCanClose(s_BOARD *board)
         return VCI_CloseDevice(VCI_USBCAN2,0);
     else
         return ret;
+#endif
+
+#ifdef _linux
+    return NULL;
+#endif
 }
 
 UNS8 usbCanChangeBaudrate(void* fd, char* baud)
 {
+
+#ifdef _WIN32
     int ret;
     if(baud = ("125"))
         ret = VCI_SetReference(VCI_USBCAN2, 0, 0, 0, (PVOID)0x1C0011);
     return ret;
+#endif
+
+#ifdef _linux
+    return 0;
+#endif
 }
 
 
@@ -176,11 +217,13 @@ CAN_PORT canOpen(s_BOARD *board, CO_Data *d)
 	int i;
 	CAN_HANDLE fd0;
 
+#ifdef _WIN32
     if(!ghMutex)
         ghMutex = CreateMutex(
         NULL,              // default security attributes
         FALSE,             // initially not owned
         NULL);
+#endif
 
 	if(d->canHandle)
 	{

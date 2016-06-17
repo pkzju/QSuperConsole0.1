@@ -18,6 +18,7 @@
         <file>skin/icons/dark/appbar.connect.png</file>
         <file>skin/icons/light/appbar.connect.png</file>
         <file>skin/icons/dark/appbar.transit.bus.png</file>
+        <file>skin/icons/dark/appbar.group.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>skin/images/downsolidarrow.png</file>
@@ -37,6 +38,7 @@
         <file>skin/images/radiob-checked.png</file>
         <file>skin/images/radiob-unchecked.png</file>
         <file>skin/images/csm_seminars.png</file>
+        <file>skin/images/theSmartAir.jpg</file>
     </qresource>
     <qresource prefix="/qss">
         <file>skin/qss/BB.qss</file>

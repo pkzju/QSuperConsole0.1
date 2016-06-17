@@ -1,6 +1,9 @@
 ﻿#ifndef CONTROLCAN_H
 #define CONTROLCAN_H
 #include "applicfg.h"
+
+#ifdef _WIN32
+
 #include <Windows.h>
 #define VCI_USBCAN2		4
 
@@ -146,5 +149,8 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#endif
+
 
 #endif

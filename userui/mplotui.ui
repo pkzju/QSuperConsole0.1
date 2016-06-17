@@ -14,7 +14,10 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QTextBrowser{
+   <string notr="true">
+
+
+QTextBrowser{
 	color: green;
 }
 

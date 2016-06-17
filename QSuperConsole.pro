@@ -58,7 +58,9 @@ SOURCES += \
     thread/serialportthread.cpp \
     parser/protocal.cpp \
     fanmotor/qmotor.cpp \
-    qcustomplot/qcustomplot.cpp
+    qcustomplot/qcustomplot.cpp \
+    dialogs/logindialog.cpp \
+    dialogs/siglegroupdialog.cpp
 
 HEADERS  += \
     dialogs/aboutdialog.h \
@@ -77,7 +79,10 @@ HEADERS  += \
     parser/protocal.h \
     fanmotor/fanmotor.h \
     fanmotor/qmotor.h \
-    qcustomplot/qcustomplot.h
+    qcustomplot/qcustomplot.h \
+    dialogs/logindialog.h \
+    dialogs/siglegroupdialog.h \
+    fanmotor/fpublic.h
 
 RESOURCES += \
     QSuperConsole.qrc

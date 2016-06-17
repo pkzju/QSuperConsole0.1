@@ -2,15 +2,17 @@
 #define FANMOTORUI_H
 
 #include <QWidget>
-#include "modbusui.h"
 #include <QModbusDataUnit>
 #include "fanmotor/fanmotor.h"
 #include "canui.h"
+#include "fanmotor/fpublic.h"
+
 
 QT_BEGIN_NAMESPACE
 class QModbusClient;
 class QModbusReply;
 class QTimer;
+class QStatusBar;
 
 namespace Ui {
 class FanMotorUi;
@@ -21,6 +23,8 @@ class QcwIndicatorLamp;
 class QMotor;
 struct FanMotorController;
 
+
+
 class FanMotorUi : public QWidget
 {
     Q_OBJECT
@@ -30,12 +34,6 @@ public:
     ~FanMotorUi();
 
 public:
-    enum Communication:char{
-        Init,
-        Tcp,
-        Modbus,
-        CANbus
-    };
 
     enum PollingState:char{
         Stop,
@@ -48,6 +46,8 @@ public:
     void post_sync(CO_Data *d);
     void post_SlaveStateChange(CO_Data *d, unsigned char nodeId, e_nodeState newNodeState);
 
+    QStatusBar *statusBar();
+
 private slots:
 
     void messageShow(const QString &s);
@@ -56,7 +56,7 @@ private slots:
 
     void pollingTimerUpdate();
 
-    void onModebusStateChanged(int state);
+    void onStateChanged(int state);
 
     void on_pushButton_read_clicked();
 
@@ -80,12 +80,16 @@ private slots:
 
     void on_disconnectButton_clicked();
 
-    void on_radioButton_modbus_clicked();
+//    void on_radioButton_modbus_clicked();
 
-    void on_radioButton_can_clicked();
+//    void on_radioButton_can_clicked();
 
-    void on_radioButton_tcp_clicked();
+//    void on_radioButton_tcp_clicked();
 
+    void onConnectStateChanged(int state);
+
+
+    void on_settingsButton_clicked();
 
 private:
     QModbusDataUnit readRequest() const;
@@ -97,7 +101,6 @@ signals:
 
 private:
     Ui::FanMotorUi *ui;
-    ModbusUi *m_modbusUi;
     CANUi *m_canUi;
 
     QModbusClient* modbusDevice;
@@ -108,7 +111,7 @@ private:
     int m_startServerAddress;
     int m_motorNum;
     PollingState m_pollingState;
-    Communication m_communication;
+    CommunicationMode m_communication;
 
     bool m_CANopenStart;
 
@@ -116,6 +119,7 @@ private:
     CanThread *m_canThread;
 
     static FanMotorUi *s_Instance;
+
 
 };
 

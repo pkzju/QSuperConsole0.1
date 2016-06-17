@@ -35,7 +35,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifndef __APPLICFG_WIN32__
 #define __APPLICFG_WIN32__
 
+#ifdef _WIN32
 #include <windows.h>
+#endif
+
 #include <string.h>
 #include <stdio.h>
 

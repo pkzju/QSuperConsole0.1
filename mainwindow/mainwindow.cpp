@@ -64,12 +64,13 @@ void MainWindow::initUI()
     CloseOfStatusBar->setIconSize(QSize(25,40));
     OpenOfStatusBar->setAutoRaise(true);
 
-    getStatusBar()->addWidget(LampOfStatusBar);//at the left
-    getStatusBar()->addWidget(LabelOfStatusBar);
-    getStatusBar()->addWidget(RxLabelOfStatusBar);
-    getStatusBar()->addWidget(TxLabelOfStatusBar);
+
+//    getStatusBar()->addWidget(LabelOfStatusBar);//at the left
+//    getStatusBar()->addWidget(RxLabelOfStatusBar);
+//    getStatusBar()->addWidget(TxLabelOfStatusBar);
     getStatusBar()->addPermanentWidget(OpenOfStatusBar);//at the right
     getStatusBar()->addPermanentWidget(CloseOfStatusBar);
+    getStatusBar()->addPermanentWidget(LampOfStatusBar);
 
     connect(OpenOfStatusBar, SIGNAL(clicked()), this, SIGNAL(connectButtonsClicked()));
     connect(CloseOfStatusBar, SIGNAL(clicked()), this, SIGNAL(disconnectButtonsClicked()));

@@ -10,26 +10,24 @@
 ** 
 ****************************************************************************/
 
-#ifndef SETTINGDIALOG_H
-#define SETTINGDIALOG_H
+#ifndef LOGINDIALOG_H
+#define LOGINDIALOG_H
+
 #include "QFramer/fbasedialog.h"
 
-#include"userui/serialportsettingsdialog.h"
 
-class SettingDialog : public FBaseDialog
+class LoginDialog : public FBaseDialog
 {
     Q_OBJECT
 public:
-    explicit SettingDialog(QWidget *parent = 0);
+    explicit LoginDialog(QWidget *parent = 0);
+    ~LoginDialog();
     void initUI();
     void initConnect();
-
 signals:
 
 public slots:
 
-private:
-
 };
 
-#endif // SETTINGDIALOG_H
+#endif // LoginDialog_H

@@ -11,11 +11,25 @@ QTextBrowser{
 QMainWindow{
     background-image: url(none);
     background-repeat:repeat-xy;
+	background-color:rgb(232, 245, 252);
+
+}
+
+
+#needBorder{
+border: 0.5px solid rgb(14, 142, 231);
 }
 
 QWigdet{
     background-color: transparent;
 }
+
+QWigdet#FanMotorUi{background-color:rgb(232, 245, 252);}
+
+/*
+QWigdet#logoUi{
+border-image:url(:/images/skin/images/theSmartAir.jpg);
+}*/
 
 
 /* ******************QToolButton**************** */
@@ -404,8 +418,9 @@ QSizeGrip {
 /* ******************QStatusBar****************** */
 
 /* ******************QGroupBox****************** */
+
 QGroupBox {
-/*	border: 0.5px solid rgba(12, 112, 208, 255);*/
+	border: 0.5px solid rgba(12, 112, 208, 255);
     margin-top: 3px; 
 	padding-top: 5px;
         font-size: 14px;
@@ -554,7 +569,9 @@ QScrollArea
 {   
 	background-color:transparent;
 }
-
+QWidget#scrollAreaWidgetContents{
+	background-color:transparent;
+}
 
 /* ******************QScrollBar****************** */
 QScrollBar:vertical {
@@ -652,6 +669,7 @@ QFrame#FNavgationBar_right{
 
 /* ******************FDialog****************** */
 
+
 QDialog QFrame#TitleBar{
     background-color: transparent;
 }
@@ -662,13 +680,13 @@ QDialog QLabel#FTitleLabel{
 }
 
 QDialog QLabel#logoLabel{
-    color: white;
+    color: rgb(14, 142, 231);
     font-size: 18px;
     padding-left: 5px;
 }
 
 QDialog QLabel#content{
-    color: white;
+    color: rgb(14, 142, 231);
     font-size: 16px;
     padding-left: 5px;
 }
@@ -700,7 +718,7 @@ QDialog QToolButton:disabled{
     border: 1px;
 }
 
-QDialog QToolButton[popupMode="1"] { /* only for MenuButtonPopup */
+QDialog QToolButton[popupMode="1"] { 
     padding-right: 0px; /* make way for the popup button */
 }
 
@@ -716,7 +734,7 @@ QDialog QToolButton::menu-indicator {
     image: none;
 }
 
-QDialog QToolButton:open { /* when the button has its menu open */
+QDialog QToolButton:open {
     background-color: rgb(14, 142, 231);
 }
 
@@ -757,25 +775,93 @@ QDialog QTextEdit#info{
     border: none;
 }
 
-QDialog QTabWidget::pane { /* The tab widget frame */
-    border-top: 1px solid rgb(0, 0, 64);
+/*
+QDialog QTabWidget{
+border: 5px;
+
+}
+QDialog QTabWidget::pane { 
+    border-top: 1px solid rgb(60, 104, 137);
 }
 
 QDialog QTabBar::tab {
-    border-top: 1px solid black;
-    border-right: 1px solid black;
+    border-top: 1px solid rgb(60, 104, 137);
+    border-right: 1px solid rgb(60, 104, 137);
     height: 25px;
-    width: 120px;
+    width: 100px;
     color: white;
     font-size: 15px;
-    /*font-family: "Verdana";*/
-    background-color: qlineargradient(spread:pad, x1:-1, y1:0, x2:1 y2:0, stop:0 rgba(0, 211, 197, 255), stop:1 rgba(0, 82, 112, 255));
+
+    background-color: rgb(76, 218, 100);
 }
 
 QDialog QTabBar::tab:selected{
-    background-color: rgb(62, 165, 250);
+    background-color: rgb(50, 200, 80);
 }
 
 QDialog QTabBar::tab:hover {
-    background-color: rgb(77, 142, 231);
+    background-color: rgb(110, 230, 120);
+}*/
+
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 2px solid #C2C7CB;
 }
+
+QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
+                                stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+    border: 2px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    /*min-width: 8ex;*/
+	width: 100px;
+    padding: 2px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #fafafa, stop: 0.4 #f4f4f4,
+                                stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);
+}
+
+QTabBar::tab:selected {
+    border-color: #9B9B9B;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+/* make use of negative margins for overlapping tabs */
+QTabBar::tab:selected {
+    /* expand/overlap to the left and right by 4px */
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+
+
+
+

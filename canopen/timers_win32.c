@@ -21,9 +21,11 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#ifdef _WIN32
 #include <windows.h>
 #include <stdlib.h>
 #include <sys/timeb.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,6 +40,8 @@ extern "C" {
 };
 #endif
 
+
+#ifdef _WIN32
 DWORD timebuffer;
 
 /* Synchronization Object Implementation */
@@ -48,33 +52,41 @@ HANDLE timer = NULL;
 volatile int stop_timer=0;
 
 static TimerCallback_t init_callback;
-
+#endif
 
 void EnterMutex(void)
 {
+    #ifdef _WIN32
     EnterCriticalSection(&CanFestival_mutex);
+    #endif
 }
 
 void LeaveMutex(void)
 {
+    #ifdef _WIN32
     LeaveCriticalSection(&CanFestival_mutex);
+    #endif
 }
 
 // --------------- CAN Receive Thread Implementation ---------------
 
 void CreateReceiveTask(CAN_HANDLE fd0, TASK_HANDLE* Thread, void* ReceiveLoopPtr)
 {
+    #ifdef _WIN32
 	unsigned long thread_id = 0;
 	*Thread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ReceiveLoopPtr, fd0, 0, &thread_id);
+    #endif
 }
 
 void WaitReceiveTaskEnd(TASK_HANDLE *Thread)
 {
+    #ifdef _WIN32
 	if(WaitForSingleObject(*Thread, 1000) == WAIT_TIMEOUT)
 	{
 		TerminateThread(*Thread, -1);
 	}
 	CloseHandle(*Thread);
+    #endif
 }
 
 #if !defined(WIN32) || defined(__CYGWIN__)
@@ -84,7 +96,7 @@ DWORD TimerThreadLoop(LPVOID arg)
 #endif
 {
 
-
+#ifdef _WIN32
 	while(!stop_timer)
 	{
 		WaitForSingleObject(timer, INFINITE);
@@ -95,11 +107,13 @@ DWORD TimerThreadLoop(LPVOID arg)
 		TimeDispatch();
         LeaveMutex();
 	}
+#endif
 	return 0;
 }
 
 void TimerInit(void)
 {
+#ifdef _WIN32
 	LARGE_INTEGER liDueTime;
 	liDueTime.QuadPart = 0;
 
@@ -113,15 +127,19 @@ void TimerInit(void)
 
 	// Take first absolute time ref in milliseconds.
 	timebuffer = GetTickCount();
+#endif
 }
 
 void TimerCleanup(void)
 {
+    #ifdef _WIN32
 	DeleteCriticalSection(&CanFestival_mutex);
+    #endif
 }
 
 void StopTimerLoop(TimerCallback_t exitfunction)
 {
+#ifdef _WIN32
     if(timer_thread){
         EnterMutex();
         exitfunction(NULL,0);
@@ -137,10 +155,12 @@ void StopTimerLoop(TimerCallback_t exitfunction)
         CloseHandle(timer_thread);
         timer_thread = NULL;
     }
+#endif
 }
 
 void StartTimerLoop(TimerCallback_t _init_callback)
 {
+    #ifdef _WIN32
 	unsigned long timer_thread_id;
 	stop_timer = 0;
 	init_callback = _init_callback;
@@ -150,11 +170,13 @@ void StartTimerLoop(TimerCallback_t _init_callback)
 	LeaveMutex();
     if(!timer_thread)
         timer_thread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)TimerThreadLoop, NULL, 0, &timer_thread_id);
+#endif
 }
 
 /* Set the next alarm */
 void setTimer(TIMEVAL value)
 {
+    #ifdef _WIN32
 	if(value == TIMEVAL_MAX)
 		CancelWaitableTimer(timer);
 	else
@@ -170,12 +192,15 @@ void setTimer(TIMEVAL value)
 			printf("SetWaitableTimer failed (%d)\n", GetLastError());
 		}
 	}
+#endif
 }
 
 /* Get the elapsed time since the last occured alarm */
 TIMEVAL getElapsedTime(void)
 {
+    #ifdef _WIN32
   DWORD timetmp = GetTickCount();
   return (timetmp - timebuffer);
+#endif
 }
 

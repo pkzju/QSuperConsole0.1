@@ -28,7 +28,8 @@
 #include "userui/mplotui.h"
 #include "userui/modbusui.h"
 #include "QFramer/ftabwidget.h"
-#include "userui/fanmotorui.h"
+#include "userui/homewindow.h"
+
 
 CenterWindow::CenterWindow(QWidget *parent) :
     FCenterWindow(parent)
@@ -39,19 +40,19 @@ CenterWindow::CenterWindow(QWidget *parent) :
 
 void CenterWindow::initUI()
 {
+    setObjectName(tr("needBorder"));
     qssBuilder = new QssBuilder;
     CANUi *canUi = CANUi::getS_Instance();
     SerialPortUi *serialport = new SerialPortUi;
     MPlotUi *plotUi = MPlotUi::getInstance();
     ModbusUi *modbusui = ModbusUi::getInstance();
-    FanMotorUi *fanmotorui = FanMotorUi::getS_Instance();
+    homewindow *_home = homewindow::getInstance();
 
-    addWidget(QStringLiteral("Home"), "Home", fanmotorui);
-    addWidget(QStringLiteral("Scope"), "MathPlot", plotUi);
-    addWidget(QStringLiteral("Canbus"),"Communication", canUi);
-    addWidget(QStringLiteral("Modbus"),"Communication", modbusui);
-    addWidget(QStringLiteral("COMPort"),"serialportBtn",serialport);
-
+    addWidget(tr("Home"), "Home", _home);
+    addWidget(tr("Scope"), "MathPlot", plotUi);
+    addWidget(tr("Canbus"),"Communication", canUi);
+    addWidget(tr("Modbus"),"Communication", modbusui);
+    addWidget(tr("COMPort"),"serialportBtn",serialport);
 
     setAlignment(TopCenter);
 }

@@ -11,7 +11,8 @@ HEADERS += \
     $$PWD/fbasepushbutton.h \
     $$PWD/flywidget.h \
     $$PWD/fmovablewidget.h \
-    $$PWD/fshadowlabel.h
+    $$PWD/fshadowlabel.h \
+    $$PWD/fsubwindown.h
 
 SOURCES += \
     QFramer/fcenterwindow.cpp \
@@ -26,5 +27,6 @@ SOURCES += \
     $$PWD/fbasepushbutton.cpp \
     $$PWD/flywidget.cpp \
     $$PWD/fmovablewidget.cpp \
-    $$PWD/fshadowlabel.cpp
+    $$PWD/fshadowlabel.cpp \
+    $$PWD/fsubwindown.cpp
 

@@ -22,7 +22,7 @@
 
 #ifndef FBASEDIALOG_H
 #define FBASEDIALOG_H
-
+#include <QVBoxLayout>
 #include <QDialog>
 #include <QMouseEvent>
 #include <QShowEvent>
@@ -42,6 +42,7 @@ private:
     void mouseReleaseEvent(QMouseEvent *e);
 
     FTitleBar* titlebar;
+    QVBoxLayout* mLayout;
 
 protected:
     void showEvent(QShowEvent * event);
@@ -55,6 +56,7 @@ public:
     void initUI();
     void initConnect();
     FTitleBar* getTitleBar();
+    QLayout *layout();
 
 signals:
 

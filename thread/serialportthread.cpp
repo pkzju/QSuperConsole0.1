@@ -27,7 +27,7 @@ SerialPortThread* SerialPortThread::getInstance()
     return s_instance;
 }
 
-void SerialPortThread::mStart(SerialPortSettingsDialog::Settings __settings)
+void SerialPortThread::mStart(SerialPortSettings::Settings __settings)
 {
     m_serialPortMutex.lock();
     m_isStopped = false;
@@ -46,7 +46,7 @@ void SerialPortThread::mStop()
     m_serialPortMutex.unlock();
 }
 
-void SerialPortThread::mSet(SerialPortSettingsDialog::Settings __settings)
+void SerialPortThread::mSet(SerialPortSettings::Settings __settings)
 {
     m_serialPortMutex.lock();
     m_currentSettings = __settings;
@@ -73,11 +73,11 @@ void SerialPortThread::run()
 
     qDebug("thread running");
 
-    SerialPortSettingsDialog::Settings __mSettings;
+    SerialPortSettings::Settings __mSettings;
     bool __isSettingsChanged = false;
     QByteArray __dataReceived;
     QByteArray __dataToSend;
-    unsigned char rx_buffer[256];
+//    unsigned char rx_buffer[256];
     QSerialPort serial;
     while(!__isStopped)
     {
@@ -148,21 +148,21 @@ void SerialPortThread::run()
 
             emit message(__dataReceived.toHex());
 
-            for(int i = 0; i < __dataReceived.size(); i ++){
+//            for(int i = 0; i < __dataReceived.size(); i ++){
 
-                if(FrameUnpack(__dataReceived.at(i),rx_buffer)){
+//                if(FrameUnpack(__dataReceived.at(i),rx_buffer)){
 
-                    tHeader* pHeader = (tHeader*)rx_buffer;
-                    if( pHeader->cmd  == CMD_ID_SENSOR_INFO){
+//                    tHeader* pHeader = (tHeader*)rx_buffer;
+//                    if( pHeader->cmd  == CMD_ID_SENSOR_INFO){
 
-                 //       Cmd_Data *pData = (Cmd_Data *)&rx_buffer[sizeof(tHeader)];//
+//                 //       Cmd_Data *pData = (Cmd_Data *)&rx_buffer[sizeof(tHeader)];//
 
-                    }
-                    else{
+//                    }
+//                    else{
 
-                    }
-                }
-            }
+//                    }
+//                }
+//            }
         }//unpack code end
 
         /*=== processing data end           ===*/
@@ -174,6 +174,7 @@ void SerialPortThread::run()
 
     if(serial.isOpen()){
         serial.close();
+        emit message("close successfully !");
     }
 
     qDebug("thread exit");

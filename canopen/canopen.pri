@@ -40,7 +40,8 @@ SOURCES += \
     $$PWD/sync.c \
     $$PWD/timer.c \
     $$PWD/timers_win32.c \
-    $$PWD/master.c
+    $$PWD/master.c \
+    $$PWD/symbols.c
 
 
 DISTFILES +=

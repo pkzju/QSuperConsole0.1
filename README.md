@@ -43,3 +43,30 @@ In sync.c  function : UNS8 proceedSYNC(CO_Data* d)
 					         -> isSyncEvent? -> 比较 TPDO 的transmit_type_parameter设定值与当前值  当前值++
 								             ->  设定值==当前值? -> 发送对应TPDO, 
 							 -> 检查下一个TPDO
+							 
+							 
+qt代码中判断windows/linux/arm等系统
+
+可使用宏判断，例如：
+#include <QtGlobal>
+...
+#ifdef Q_OS_MAC
+// mac
+#endif
+ 
+#ifdef Q_OS_LINUX
+// linux
+#endif
+ 
+#ifdef Q_OS_WIN32
+// win
+#endif
+ 
+#ifdef __arm__
+// arm
+#endif
+
+9600 baudrate -> 1 char = 1.14ms 3.5char = 4ms
+
+
+exec与show: exec 关掉对话框才能操作其他窗口    show 不必关掉都可以操作

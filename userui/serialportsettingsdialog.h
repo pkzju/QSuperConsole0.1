@@ -22,10 +22,10 @@ class QIntValidator;
 
 QT_END_NAMESPACE
 
-class SerialPortSettingsDialog : public QWidget
+class SerialPortSettings
 {
-    Q_OBJECT
-
+public:
+    SerialPortSettings() {}
 public:
     struct Settings {
         QString name;
@@ -40,28 +40,34 @@ public:
         QSerialPort::FlowControl flowControl;
         QString stringFlowControl;
     };
+};
+
+
+class SerialPortSettingsDialog : public QWidget
+{
+    Q_OBJECT
+
+public:
 
     explicit SerialPortSettingsDialog(QWidget *parent = 0);
     ~SerialPortSettingsDialog();
 
     static SerialPortSettingsDialog* getInstance();
-    Settings settings() const;
-    void setSettings(SerialPortSettingsDialog::Settings s);
+    SerialPortSettings::Settings settings() const;
+    void setSettings(SerialPortSettings::Settings s);
 
 private slots:
-    void showPortInfo(int idx);
+
     void apply();
     void checkCustomBaudRatePolicy(int idx);
     void checkCustomDevicePathPolicy(int idx);
 
     void on_searchButton_clicked();
 
-    void on_Button_Close_clicked();
-
-    void on_Button_Open_clicked();
+    void on_Button_apply_clicked();
 
 signals:
-    void emitApply(int idx);
+    void emitApply();
 
 private:
     void fillPortsParameters();
@@ -70,10 +76,12 @@ private:
 
 private:
     Ui::SerialPortSettingsDialog *ui;
-    Settings currentSettings;
+
     static SerialPortSettingsDialog *instance;
     QIntValidator *intValidator;
-//    SerialPortThread *mySerialPortThread;
+
+    SerialPortSettings::Settings currentSettings;
+
 };
 
 #endif // SETTINGSDIALOG_H

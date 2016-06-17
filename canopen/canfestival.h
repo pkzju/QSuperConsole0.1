@@ -35,9 +35,9 @@ canpport{
 
 UNS8 usbCanReceive(void* inst, Message *m);
 UNS8 usbCanSend(void* inst, const Message *m);
-CAN_HANDLE usbCanOpen(s_BOARD *board);
-int usbCanClose(s_BOARD *board);
-UNS8 usbCanChangeBaudrate(void* fd, char* baud);
+//CAN_HANDLE usbCanOpen(s_BOARD *board);
+//int usbCanClose(s_BOARD *board);
+//UNS8 usbCanChangeBaudrate(void* fd, char* baud);
 
 UNS8 canSend(CAN_PORT port, Message *m);
 CAN_PORT canOpen(s_BOARD *board, CO_Data * d);

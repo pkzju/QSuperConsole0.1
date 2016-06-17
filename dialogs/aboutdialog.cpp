@@ -45,7 +45,7 @@ void AboutDialog::initUI()
 {
     normalSize = QSize(400, 300);
 
-    FShadowLabel *logoLabel = new FShadowLabel(tr("QFramer"));
+    FShadowLabel *logoLabel = new FShadowLabel(tr("QSuperConsole"));
     logoLabel->setObjectName(QString("logoLabel"));
 
     FShadowLabel *infoLabel = new FShadowLabel(tr("Faster Easier Stronger Prettier"));
@@ -54,11 +54,11 @@ void AboutDialog::initUI()
     FShadowLabel *lincenceLabel = new FShadowLabel(tr("lincence: LGPL v3"), this);
     lincenceLabel->setObjectName(QString("content"));
 
-    FShadowLabel *authorLabel = new FShadowLabel(tr("author:sbbbb"));
+    FShadowLabel *authorLabel = new FShadowLabel(tr("author:pkzju"));
     authorLabel->setObjectName(QString("content"));
 
 
-    FShadowLabel *versionLabel = new FShadowLabel(tr("version:0.2.5.0"));
+    FShadowLabel *versionLabel = new FShadowLabel(tr("version:0.1.0.0"));
     versionLabel->setObjectName(QString("content"));
 
 
