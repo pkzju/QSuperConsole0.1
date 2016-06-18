@@ -28,7 +28,7 @@ public:
 
     QModbusClient *getModbusDevice();
 
-    FanGroupInfo getFanGroupInfo();
+    QVector<FanGroupInfo *> *groups();
 
     static homewindow *getInstance();
 
@@ -52,13 +52,13 @@ private slots:
 private:
     Ui::homewindow *ui;
     QVector<QPushButton*> mGroup;
-
+    QVector<FanGroupInfo*> mGroups;
+    FanGroupInfo *mCurrentGroupInfo;
     CommunicationMode m_communication;
     SerialPortSettings::Settings mSerialPortSettings;
 
     QModbusClient* modbusDevice;
 
-    FanGroupInfo mCurrentGroupInfo;
 
 
     static homewindow* s_Instance;

@@ -18,6 +18,7 @@
 #include <QLCDNumber>
 #include "lamp/qcw_indicatorlamp.h"
 
+
 class QLabel;
 class QLCDNumber;
 
@@ -33,6 +34,7 @@ public:
     void update();
 
 public:
+    int m_address;
     FanMotorSettings  m_initSetttings;     //0x0040
     FanMotorController  m_motorController; //0x0060
     FanPIParameters  m_PIPara;             //0x0080
@@ -50,6 +52,10 @@ public:
 
     QcwIndicatorLamp  *m_runLamp;
     QcwIndicatorLamp  *m_commLamp;
+
+    QLabel  *m_message;
+
+
 };
 
 #endif // QMOTOR_H

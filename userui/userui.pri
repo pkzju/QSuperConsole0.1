@@ -7,7 +7,8 @@ FORMS += \
     $$PWD/modbusui.ui \
     $$PWD/fanmotorui.ui \
     $$PWD/qcanopen.ui \
-    $$PWD/loginframe.ui
+    $$PWD/loginframe.ui \
+    $$PWD/groupmonitorui.ui
 
 
 HEADERS += \
@@ -20,7 +21,8 @@ HEADERS += \
     $$PWD/writeregistermodel.h \
     $$PWD/fanmotorui.h \
     $$PWD/qcanopen.h \
-    $$PWD/loginframe.h
+    $$PWD/loginframe.h \
+    $$PWD/groupmonitorui.h
 
 
 SOURCES += \
@@ -33,5 +35,6 @@ SOURCES += \
     $$PWD/writeregistermodel.cpp \
     $$PWD/fanmotorui.cpp \
     $$PWD/qcanopen.cpp \
-    $$PWD/loginframe.cpp
+    $$PWD/loginframe.cpp \
+    $$PWD/groupmonitorui.cpp
 

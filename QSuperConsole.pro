@@ -60,7 +60,8 @@ SOURCES += \
     fanmotor/qmotor.cpp \
     qcustomplot/qcustomplot.cpp \
     dialogs/logindialog.cpp \
-    dialogs/siglegroupdialog.cpp
+    dialogs/siglegroupdialog.cpp \
+    dialogs/groupmonitordialog.cpp
 
 HEADERS  += \
     dialogs/aboutdialog.h \
@@ -82,7 +83,8 @@ HEADERS  += \
     qcustomplot/qcustomplot.h \
     dialogs/logindialog.h \
     dialogs/siglegroupdialog.h \
-    fanmotor/fpublic.h
+    fanmotor/fpublic.h \
+    dialogs/groupmonitordialog.h
 
 RESOURCES += \
     QSuperConsole.qrc

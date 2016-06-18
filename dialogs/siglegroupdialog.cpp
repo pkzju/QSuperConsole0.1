@@ -36,3 +36,16 @@ sigleGroupDialog *sigleGroupDialog::getS_Instance()
     }
     return s_Instance;
 }
+
+void sigleGroupDialog::show(FanGroupInfo *group)
+{
+    getTitleBar()->getTitleLabel()->setText(tr("Group%1").arg(group->m_groupID));
+    FanMotorUi::getS_Instance()->changeGroup(group);
+    if(FSubWindown::isHidden())
+        FSubWindown::show();
+    else{
+        FSubWindown::hide();
+        FSubWindown::show();
+    }
+
+}

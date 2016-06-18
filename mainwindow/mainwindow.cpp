@@ -52,9 +52,7 @@ void MainWindow::initUI()
 
     LampOfStatusBar =new QcwIndicatorLamp;
     LampOfStatusBar->setFixedSize(20,20);
-    LabelOfStatusBar = new QLabel(QStringLiteral("端口未打开 "));
-    RxLabelOfStatusBar = new QLabel(QStringLiteral("接收:00000"));
-    TxLabelOfStatusBar = new QLabel(QStringLiteral("发送:00000"));
+
     OpenOfStatusBar = new QToolButton;
     OpenOfStatusBar->setIcon(QIcon(":/images/skin/images/connect.png"));
     OpenOfStatusBar->setAutoRaise(true);
@@ -64,10 +62,6 @@ void MainWindow::initUI()
     CloseOfStatusBar->setIconSize(QSize(25,40));
     OpenOfStatusBar->setAutoRaise(true);
 
-
-//    getStatusBar()->addWidget(LabelOfStatusBar);//at the left
-//    getStatusBar()->addWidget(RxLabelOfStatusBar);
-//    getStatusBar()->addWidget(TxLabelOfStatusBar);
     getStatusBar()->addPermanentWidget(OpenOfStatusBar);//at the right
     getStatusBar()->addPermanentWidget(CloseOfStatusBar);
     getStatusBar()->addPermanentWidget(LampOfStatusBar);
@@ -76,6 +70,25 @@ void MainWindow::initUI()
     connect(CloseOfStatusBar, SIGNAL(clicked()), this, SIGNAL(disconnectButtonsClicked()));
 
 }
+void MainWindow::setStatusBarLamp(bool isOpen)
+{
+    if(isOpen)
+        LampOfStatusBar->setLampState(QcwIndicatorLamp::lamp_green);
+    else
+        LampOfStatusBar->setLampState(QcwIndicatorLamp::lamp_grey);
+
+}
+
+QToolButton *MainWindow::getOpenButton()
+{
+    return OpenOfStatusBar;
+}
+
+QToolButton *MainWindow::getCloseButton()
+{
+    return CloseOfStatusBar;
+}
+
 
 void MainWindow::initThread()
 {

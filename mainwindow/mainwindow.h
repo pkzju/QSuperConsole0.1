@@ -48,9 +48,7 @@ private:
     ThemeMenu* themeMenu;
     RightFloatWindow* rightfloatWindow;
     QcwIndicatorLamp *LampOfStatusBar;
-    QLabel *LabelOfStatusBar;
-    QLabel *RxLabelOfStatusBar;
-    QLabel *TxLabelOfStatusBar;
+
     QToolButton *OpenOfStatusBar;
     QToolButton *CloseOfStatusBar;
 
@@ -67,8 +65,8 @@ public:
     void setStatusBarMessage(QString s);
     void setRxNumber(qint64 num);
     void setTxNumber(qint64 num);
-
-
+    QToolButton *getOpenButton();
+    QToolButton *getCloseButton();
 signals:
 
 public slots:

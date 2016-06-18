@@ -17,8 +17,10 @@ QMotor::QMotor(int address):
     m_speedRefLCD{new QLCDNumber},
     m_speedFbkLCD{new QLCDNumber},
     m_runLamp{new QcwIndicatorLamp},
-    m_commLamp{new QcwIndicatorLamp}
+    m_commLamp{new QcwIndicatorLamp},
+    m_message{new QLabel(QString("^.^"))}
 {
+    m_address = address;
     m_initSetttings = {0};
     m_motorController ={0};
     m_PIPara = {0};

@@ -14,7 +14,7 @@
 #define SIGLEGROUPDIALOG_H
 
 #include "QFramer/fsubwindown.h"
-
+#include "fanmotor/fpublic.h"
 
 
 class sigleGroupDialog : public FSubWindown
@@ -29,6 +29,7 @@ public:
 signals:
 
 public slots:
+    void show(FanGroupInfo *group);
 
 private:
     static sigleGroupDialog *s_Instance;

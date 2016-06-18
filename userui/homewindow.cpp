@@ -9,6 +9,8 @@
 #include "userui/fanmotorui.h"
 #include "dialogs/siglegroupdialog.h"
 
+#include <QDebug>
+
 extern CO_Data master_Data;
 
 const int gGroupnum = 9; //Number of all groups
@@ -21,9 +23,6 @@ homewindow::homewindow(QWidget *parent) :
     ,modbusDevice(Q_NULLPTR)
 {
     ui->setupUi(this);
-
-    mCurrentGroupInfo.m_groupID = 1;
-
 
     {//Use a container to manage groups
         mGroup.append(ui->pushButton_group1);
@@ -57,6 +56,19 @@ homewindow::~homewindow()
 
 void homewindow::on_spinBox_groupNum_valueChanged(int arg1)//Add or reduce group
 {
+    while(mGroups.count() < arg1){
+        int _groupID = mGroups.count()+1;
+        int _fanMaxNumber = 16;
+        int _startAdd = (_groupID-1)*_fanMaxNumber + 1;
+        FanGroupInfo *group = new FanGroupInfo{_groupID, _startAdd, _fanMaxNumber};
+        group->m_monitorDialog = Q_NULLPTR;
+        mGroups.push_back(group);
+    }
+    while(mGroups.count() > arg1){
+        mGroups.pop_back();
+    }
+
+
     for(int i = arg1; i < gGroupnum; i++)//For reduce group
     {
         mGroup.at(i)->setEnabled(false);
@@ -72,10 +84,10 @@ void homewindow::button_group_clicked()//All group buttons clicked (use one slot
     QPushButton* btn = qobject_cast<QPushButton*>(sender());
     for(int i = 0; i < gGroupnum; i++){
         if(btn == mGroup.at(i)){
-            mCurrentGroupInfo.m_groupID = i + 1;
+            mCurrentGroupInfo = mGroups.at(i);
             sigleGroupDialog *mSigleGroupDialog = sigleGroupDialog::getS_Instance();
-            mSigleGroupDialog->getTitleBar()->getTitleLabel()->setText(tr("Group%1").arg(i+1));
-            mSigleGroupDialog->show();
+
+            mSigleGroupDialog->show(mCurrentGroupInfo);
             break;
         }
     }
@@ -260,13 +272,9 @@ QModbusClient* homewindow::getModbusDevice()
     return modbusDevice;
 }
 
-FanGroupInfo homewindow::getFanGroupInfo()
+QVector<FanGroupInfo *> *homewindow::groups()
 {
-    mCurrentGroupInfo.m_com = m_communication;
-    mCurrentGroupInfo.m_fanNumber = 12;
-
-    return mCurrentGroupInfo;
-
+    return &mGroups;
 }
 
 homewindow *homewindow::getInstance()

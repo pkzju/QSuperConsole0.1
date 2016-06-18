@@ -17,6 +17,7 @@ CanFestival源码手册：canopen/manual_en.pdf
 	CANOPEN_NODE_DATA_INITIALIZER宏定义在data.h中
 	
 记录：	
+{//record
 Transition from Initialisation to Pre_operational is automatic as defined in DS301.
 App don't have to call SetState(d, Pre_operational) 
 
@@ -43,8 +44,9 @@ In sync.c  function : UNS8 proceedSYNC(CO_Data* d)
 					         -> isSyncEvent? -> 比较 TPDO 的transmit_type_parameter设定值与当前值  当前值++
 								             ->  设定值==当前值? -> 发送对应TPDO, 
 							 -> 检查下一个TPDO
+}							 
 							 
-							 
+{//record
 qt代码中判断windows/linux/arm等系统
 
 可使用宏判断，例如：
@@ -65,8 +67,19 @@ qt代码中判断windows/linux/arm等系统
 #ifdef __arm__
 // arm
 #endif
+}
 
-9600 baudrate -> 1 char = 1.14ms 3.5char = 4ms
+//record
+{9600 baudrate -> 1 char = 1.14ms 3.5char = 4ms}
 
+//compare
+{exec与show: exec 关掉对话框才能操作其他窗口    show 不必关掉都可以操作}
 
-exec与show: exec 关掉对话框才能操作其他窗口    show 不必关掉都可以操作
+{//warning
+If cell widget A is replaced with cell widget B, cell widget A will be deleted. 
+For example, in the code snippet below, the QLineEdit object will be deleted.
+
+  setCellWidget(index, new QLineEdit);
+  ...
+  setCellWidget(index, new QTextEdit);
+}

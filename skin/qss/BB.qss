@@ -552,7 +552,7 @@ QHeaderView::section {
     background-color: rgb(62, 165, 250);
     border: none;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     min-height: 25px;
     padding-left: 4px;
     border-left: 1px solid white;
