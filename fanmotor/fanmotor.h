@@ -31,7 +31,7 @@ enum FanMotorError:char {
 };
 
 enum FanMotorState:char{
-    m_unknown = 0,
+    m_init = 0,
     m_stop ,
     m_error,
     m_run
@@ -51,7 +51,7 @@ const quint16 g_mSettingsRegisterAddress = 0x0040;
 const quint16 g_mSettingsRegisterCount = 13;
 
 const quint16 g_mControllerRegisterAddress = 0x0060;
-const quint16 g_mRatedRegisterCount = 2;
+const quint16 g_mRatedRegisterCount = 3;
 
 const quint16 g_mRealTimeRegisterAddress = 0x0062;
 const quint16 g_mRealTimeRegisterCount = 5;
@@ -125,13 +125,13 @@ struct FanMotorController{
     quint16 m_ratedPower;     //      address:0x0060
     quint16 m_ratedSpeed;     //
 
-    quint16 m_targetpower;    //    address:0x0062
-    quint16 m_nowpower;       //    address:0x0063
-    qint16 m_speedRef;        //                     0x0064
-    qint16 m_speedFbk;
-
-    enum FanMotorState m_runState;	  // Motor run state
+    enum FanMotorState m_runState;	  // Motor run state address:0x0062
     enum FanMotorError m_runError;	  // Motor run Error
+
+    quint16 m_targetpower;    //    address:0x0063
+    quint16 m_nowpower;       //    address:0x0064
+    qint16 m_speedRef;        //                     0x0065
+    qint16 m_speedFbk;
 
     qint16 m_idRef;
     qint16 m_idFbk;

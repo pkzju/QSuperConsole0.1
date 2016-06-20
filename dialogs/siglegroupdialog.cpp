@@ -20,7 +20,7 @@ sigleGroupDialog::~sigleGroupDialog()
 
 void sigleGroupDialog::initUI()
 {
-    normalSize = QSize(1200, 800);
+    normalSize = QSize(830, 530);
     getTitleBar()->getTitleLabel()->setText(tr("Group"));
     QVBoxLayout* mainLayout = (QVBoxLayout*)layout();
 

@@ -58,11 +58,9 @@ private slots:
 
     void messageShow(const QString &s);
     void messageHandle(const QCanBusFrame &frame);
-    void pollingTimerUpdate();
     void readReady();
-    void on_startButton_clicked();
-    void on_searchButton_clicked();
-    void on_spinBox_currentaddress_valueChanged(int arg1);
+
+
     void on_pushButton_startMotor_clicked();
     void on_pushButton_stopMotor_clicked();
 
@@ -82,9 +80,17 @@ private slots:
     void monitorTimer_update();
     void monitorReadReady();
 
+    void on_clearButton_clicked();
+
+    void on_initializeButton_clicked();
+    void readInitFGAReady();
+
+    void on_initializeGButton_clicked();
+
+    void on_initializeAButton_clicked();
+
 private:
-    QModbusDataUnit writeRequest() const;
-    void sendOnePolling(int address);
+
 
 signals:
     void updatePlotUi(FanMotorController motorctr);

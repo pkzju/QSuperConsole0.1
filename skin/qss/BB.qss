@@ -418,7 +418,7 @@ QSizeGrip {
 /* ******************QStatusBar****************** */
 
 /* ******************QGroupBox****************** */
-
+/*
 QGroupBox {
 	border: 0.5px solid rgba(12, 112, 208, 255);
     margin-top: 3px; 
@@ -432,7 +432,7 @@ QGroupBox::title {
     font-size: 14px;
     font-weight:  bold;
     color:rgb(60, 104, 137);
-}
+}*/
 /* ******************QGroupBox****************** */
 
 /* ******************QMenu****************** */
