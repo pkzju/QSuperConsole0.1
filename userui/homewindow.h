@@ -9,7 +9,6 @@
 #include "fanmotor/fpublic.h"
 
 class QPushButton;
-class QModbusClient;
 class QStatusBar;
 
 namespace Ui {
@@ -26,28 +25,17 @@ public:
 
     QStatusBar *statusBar();
 
-    QModbusClient *getModbusDevice();
-
     QVector<FanGroupInfo *> *groups();
 
     static homewindow *getInstance();
 
-signals:
-    void connectStateChanged(int state);//1:connect 0:disconnect
-
 
 private slots:
-    void onStateChanged(int state);
 
     void on_spinBox_groupNum_valueChanged(int arg1);
 
     void button_group_clicked();
 
-    void on_connectButton_clicked();
-
-    void on_disconnectButton_clicked();
-
-    void on_settingsButton_clicked();
 
 private:
     Ui::homewindow *ui;
@@ -56,9 +44,6 @@ private:
     FanGroupInfo *mCurrentGroupInfo;
     CommunicationMode m_communication;
     SerialPortSettings::Settings mSerialPortSettings;
-
-    QModbusClient* modbusDevice;
-
 
 
     static homewindow* s_Instance;

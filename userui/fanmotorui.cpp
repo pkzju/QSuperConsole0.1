@@ -157,6 +157,13 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
 
     m_startServerAddress = 1;
 
+    connect(ui->pushButton_startMotor, SIGNAL(clicked(bool)), this, SLOT(onRunStateButtonClicked()));
+    connect(ui->pushButton_startMotor_A, SIGNAL(clicked(bool)), this, SLOT(onRunStateButtonClicked()));
+    connect(ui->pushButton_startMotor_G, SIGNAL(clicked(bool)), this, SLOT(onRunStateButtonClicked()));
+    connect(ui->pushButton_stopMotor, SIGNAL(clicked(bool)), this, SLOT(onRunStateButtonClicked()));
+    connect(ui->pushButton_stopMotor_A, SIGNAL(clicked(bool)), this, SLOT(onRunStateButtonClicked()));
+    connect(ui->pushButton_stopMotor_G, SIGNAL(clicked(bool)), this, SLOT(onRunStateButtonClicked()));
+
     MPlotUi*__mPlotUi = MPlotUi::getInstance();
     connect(this, &FanMotorUi::updatePlotUi, __mPlotUi, &MPlotUi::realtimeDataSlot);
 
@@ -522,16 +529,6 @@ void FanMotorUi::readReady()
 
 /*Modbus comunication fuction*/
 
-
-void FanMotorUi::on_pushButton_startMotor_clicked()
-{
-
-}
-
-void FanMotorUi::on_pushButton_stopMotor_clicked()
-{
-
-}
 
 void FanMotorUi::on_spinBox_motorNum_valueChanged(int arg1)//Change current group motor number
 {
@@ -1137,6 +1134,12 @@ void FanMotorUi::on_initializeButton_clicked()
             ui->textBrowser->append(tr("Read error: ") + modbusDevice->errorString());
         }
     }
+
+    if(!m_currentGroup->m_monitorDialog){
+            m_currentGroup->m_monitorDialog = new GroupMonitorDialog(&m_currentGroup->m_motors);
+    }
+    if(m_currentGroup->m_monitorDialog->isHidden())
+        m_currentGroup->m_monitorDialog->show(m_currentGroup->m_groupID, m_motors);
 }
 
 void FanMotorUi::on_initializeGButton_clicked()
@@ -1161,6 +1164,12 @@ void FanMotorUi::on_initializeGButton_clicked()
             ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusDevice->errorString());
         }
     }
+
+    if(!m_currentGroup->m_monitorDialog){
+            m_currentGroup->m_monitorDialog = new GroupMonitorDialog(&m_currentGroup->m_motors);
+    }
+    if(m_currentGroup->m_monitorDialog->isHidden())
+        m_currentGroup->m_monitorDialog->show(m_currentGroup->m_groupID, m_motors);
 }
 
 void FanMotorUi::on_initializeAButton_clicked()
@@ -1194,6 +1203,12 @@ void FanMotorUi::on_initializeAButton_clicked()
 
         }
     }
+
+    if(!m_currentGroup->m_monitorDialog){
+            m_currentGroup->m_monitorDialog = new GroupMonitorDialog(&m_currentGroup->m_motors);
+    }
+    if(m_currentGroup->m_monitorDialog->isHidden())
+        m_currentGroup->m_monitorDialog->show(m_currentGroup->m_groupID, m_motors);
 }
 
 void FanMotorUi::readInitFGAReady()//Read fan Init parameter Ready
@@ -1263,5 +1278,152 @@ void FanMotorUi::readInitFGAReady()//Read fan Init parameter Ready
     motor->update();//Update motor ui
 
     reply->deleteLater();
+}
+
+void FanMotorUi::onRunStateButtonClicked()
+{
+    QPushButton* btn = qobject_cast<QPushButton*>(sender());
+    if(btn == ui->pushButton_startMotor || btn == ui->pushButton_stopMotor){
+
+        if(m_communication == CommunicationMode::Modbus){
+            if (!modbusDevice)
+                return;
+
+            //[1] Init data
+            int _address = ui->spinBox_InitAdress->value();//Server address
+            int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//Position at container
+            if(btn == ui->pushButton_startMotor)
+                m_motors->at(_pos)->m_motorController.m_runState = FanMotorState::m_run;
+            else
+                m_motors->at(_pos)->m_motorController.m_runState = FanMotorState::m_stop;
+            quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_motorController;
+            buff += 2;
+
+            //[2] Pack data to a QModbusDataUnit
+            const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
+            int startAddress = g_mRealTimeRegisterAddress;
+            int numberOfEntries = g_mRealTimeRegisterStateCount;
+            QModbusDataUnit writeUnit = QModbusDataUnit(table, startAddress, numberOfEntries);
+            for (uint i = 0; i < writeUnit.valueCount(); i++) {
+
+                writeUnit.setValue(i, *buff++);
+            }
+            qDebug() <<writeUnit.valueCount();
+
+            //[3] Send write request to node(adress:)
+            if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+                if (!reply->isFinished()) {
+                    connect(reply, &QModbusReply::finished, this, [this, reply]() {
+                        if (reply->error() == QModbusDevice::ProtocolError) {
+                            ui->textBrowser->append(tr("Write response error: %1 (Mobus exception: 0x%2)")
+                                                    .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16)
+                                                    );
+                        } else if (reply->error() != QModbusDevice::NoError) {
+                            ui->textBrowser->append(tr("Write response error: %1 (code: 0x%2)").
+                                                    arg(reply->errorString()).arg(reply->error(), -1, 16));
+                        }
+                        reply->deleteLater();
+                    });
+                } else {// Broadcast replies return immediately
+                    reply->deleteLater();
+                }
+            } else {
+                ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+            }
+        }
+
+    }
+    else if(btn == ui->pushButton_startMotor_G || btn == ui->pushButton_stopMotor_G){
+
+        if(m_communication == CommunicationMode::Modbus){
+            if (!modbusDevice)
+                return;
+
+            //[1] Init data
+            int _startAddress = ui->spinBox_InitAdress->minimum();//Server address
+            int _lastAddress = ui->spinBox_InitAdress->maximum();
+            int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//Position at container
+            if(btn == ui->pushButton_startMotor_G)
+                m_motors->at(_pos)->m_motorController.m_runState = FanMotorState::m_run;
+            else
+                m_motors->at(_pos)->m_motorController.m_runState = FanMotorState::m_stop;
+            quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_motorController;
+            buff += 2;
+
+            //[2] Pack data to a QModbusDataUnit
+            const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
+            int startAddress = g_mRealTimeRegisterAddress;
+            int numberOfEntries = g_mRealTimeRegisterStateCount;
+            QModbusDataUnit writeUnit = QModbusDataUnit(table, startAddress, numberOfEntries);
+            for (uint i = 0; i < writeUnit.valueCount(); i++) {
+
+                writeUnit.setValue(i, *buff++);
+            }
+            qDebug() <<writeUnit.valueCount();
+
+            //[3] Send write request to node(adress:i) at current group
+            for(int i = _startAddress; i <= _lastAddress; i++){
+
+                if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, i)) {
+                    if (!reply->isFinished()) {
+                        connect(reply, &QModbusReply::finished, this, [this, reply]() {
+                            if (reply->error() == QModbusDevice::ProtocolError) {
+                                ui->textBrowser->append(tr("Write response error: %1 (Mobus exception: 0x%2)")
+                                                        .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16)
+                                                        );
+                            } else if (reply->error() != QModbusDevice::NoError) {
+                                ui->textBrowser->append(tr("Write response error: %1 (code: 0x%2)").
+                                                        arg(reply->errorString()).arg(reply->error(), -1, 16));
+                            }
+                            reply->deleteLater();
+                        });
+                    } else {// Broadcast replies return immediately
+                        reply->deleteLater();
+                    }
+                } else {
+                    ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+                }
+            }
+        }
+
+    }
+    else if(btn == ui->pushButton_startMotor_A || btn == ui->pushButton_stopMotor_A){
+        if(m_communication == CommunicationMode::Modbus){
+            if (!modbusDevice)
+                return;
+
+            //[1] Init data
+            int _address = 0;//Broadcast address
+            int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//Position at container
+            if(btn == ui->pushButton_startMotor_A)
+                m_motors->at(_pos)->m_motorController.m_runState = FanMotorState::m_run;
+            else
+                m_motors->at(_pos)->m_motorController.m_runState = FanMotorState::m_stop;
+            quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_motorController;
+            buff += 2;
+
+            //[2] Pack data to a QModbusDataUnit
+            const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
+            int startAddress = g_mRealTimeRegisterAddress;
+            int numberOfEntries = g_mRealTimeRegisterStateCount;
+            QModbusDataUnit writeUnit = QModbusDataUnit(table, startAddress, numberOfEntries);
+            for (uint i = 0; i < writeUnit.valueCount(); i++) {
+
+                writeUnit.setValue(i, *buff++);
+            }
+            qDebug() <<writeUnit.valueCount();
+
+            //[3] Send write request to node(adress:0) : Broadcast
+            if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+                if (!reply->isFinished()) {
+                } else {// Broadcast replies return immediately
+                    reply->deleteLater();
+                }
+            } else {
+                ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+            }
+        }
+
+    }
 }
 

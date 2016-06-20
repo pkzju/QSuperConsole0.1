@@ -54,6 +54,7 @@ const quint16 g_mControllerRegisterAddress = 0x0060;
 const quint16 g_mRatedRegisterCount = 3;
 
 const quint16 g_mRealTimeRegisterAddress = 0x0062;
+const quint16 g_mRealTimeRegisterStateCount = 1;
 const quint16 g_mRealTimeRegisterCount = 5;
 const quint16 g_mRealTimeRegisterMoreCount = 9;
 

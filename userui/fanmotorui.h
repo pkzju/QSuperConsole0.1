@@ -60,10 +60,6 @@ private slots:
     void messageHandle(const QCanBusFrame &frame);
     void readReady();
 
-
-    void on_pushButton_startMotor_clicked();
-    void on_pushButton_stopMotor_clicked();
-
     void on_connectButton_clicked();
     void on_disconnectButton_clicked();
     void onStateChanged(int state);
@@ -83,11 +79,11 @@ private slots:
     void on_clearButton_clicked();
 
     void on_initializeButton_clicked();
+    void on_initializeGButton_clicked();
+    void on_initializeAButton_clicked();
     void readInitFGAReady();
 
-    void on_initializeGButton_clicked();
-
-    void on_initializeAButton_clicked();
+    void onRunStateButtonClicked();
 
 private:
 

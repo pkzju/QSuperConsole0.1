@@ -1142,7 +1142,7 @@ QPushButton:disabled{
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QPushButton" name="pushButton_startMotor_2">
+          <widget class="QPushButton" name="pushButton_startMotor_G">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -1160,25 +1160,6 @@ QPushButton:disabled{
            </property>
            <property name="text">
             <string>  Start group  </string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QPushButton" name="pushButton_stopMotor_3">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>  Stop all  </string>
            </property>
           </widget>
          </item>
@@ -1202,7 +1183,7 @@ QPushButton:disabled{
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QPushButton" name="pushButton_stopMotor_2">
+          <widget class="QPushButton" name="pushButton_stopMotor_G">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -1220,8 +1201,8 @@ QPushButton:disabled{
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="pushButton_startMotor_3">
+         <item row="1" column="2">
+          <widget class="QPushButton" name="pushButton_startMotor_A">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -1239,6 +1220,25 @@ QPushButton:disabled{
            </property>
            <property name="text">
             <string>  Start all  </string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QPushButton" name="pushButton_stopMotor_A">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>  Stop all  </string>
            </property>
           </widget>
          </item>
