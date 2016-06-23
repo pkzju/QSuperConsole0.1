@@ -28,6 +28,7 @@ public:
     ~CANUi();
 
     static CANUi *getS_Instance();
+    static void deleteInstance();
 
     void CANopenStart();
     void CANopenStop();

@@ -3,7 +3,7 @@
 
 #include "qcustomplot/qcustomplot.h"
 
-MPlotUi *MPlotUi::instance = nullptr;
+MPlotUi *MPlotUi::instance = Q_NULLPTR;
 
 MPlotUi::MPlotUi(QWidget *parent) :
     QWidget(parent),
@@ -17,6 +17,8 @@ MPlotUi::MPlotUi(QWidget *parent) :
 
 MPlotUi::~MPlotUi()
 {
+    qDebug("MPlotUi exit");
+    instance = Q_NULLPTR;
     delete ui;
 }
 
@@ -27,6 +29,12 @@ MPlotUi *MPlotUi::getInstance()
         instance = new MPlotUi();
     }
     return instance;
+}
+
+void MPlotUi::deleteInstance()
+{
+    if(instance)
+        instance->deleteLater();
 }
 
 void MPlotUi::setupRealtimeDataDemo(QCustomPlot *customPlot)

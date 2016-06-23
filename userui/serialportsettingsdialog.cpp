@@ -19,7 +19,7 @@ QT_USE_NAMESPACE
 
 static const char blankString[] = QT_TRANSLATE_NOOP("SerialPortSettingsDialog", "N/A");
 
-SerialPortSettingsDialog *SerialPortSettingsDialog::instance = nullptr;
+SerialPortSettingsDialog *SerialPortSettingsDialog::instance = Q_NULLPTR;
 
 SerialPortSettingsDialog::SerialPortSettingsDialog(QWidget *parent) :
     QWidget(parent),
@@ -69,7 +69,7 @@ SerialPortSettingsDialog::SerialPortSettingsDialog(QWidget *parent) :
 
 SerialPortSettingsDialog::~SerialPortSettingsDialog()
 {
-
+    instance = Q_NULLPTR;
     delete ui;
 }
 

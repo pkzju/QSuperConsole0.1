@@ -16,7 +16,6 @@
 #include "QFramer/fsubwindown.h"
 #include "fanmotor/fpublic.h"
 
-
 class sigleGroupDialog : public FSubWindown
 {
     Q_OBJECT
@@ -26,6 +25,7 @@ public:
     void initUI();
     void initConnect();
     static sigleGroupDialog *getS_Instance();
+    static void deleteInstance();
 signals:
 
 public slots:
@@ -33,6 +33,7 @@ public slots:
 
 private:
     static sigleGroupDialog *s_Instance;
+
 
 };
 

@@ -1,14 +1,6 @@
 #include "fanmotor/qmotor.h"
 
-#include <QLabel>
-#include <QLCDNumber>
-#include "lamp/qcw_indicatorlamp.h"
-
-QMotor::QMotor(int address):
-//    m_initSetttings{new FanMotorSettings{0}},
-//    m_motorController{new FanMotorController{0}},
-//    m_PIPara{new FanPIParameters{0}},
-//    m_communicationState{new FanCommunicationState{FanCommunicationState::m_disconnect}},
+QMotor::QMotor(int address) :
     m_motorAddressLabel{new QLabel(QString("%1").arg(address))},
     m_ratedPowerLCD{new QLCDNumber},
     m_targetPowerLCD{new QLCDNumber},
@@ -18,22 +10,15 @@ QMotor::QMotor(int address):
     m_speedFbkLCD{new QLCDNumber},
     m_runLamp{new QcwIndicatorLamp},
     m_commLamp{new QcwIndicatorLamp},
-    m_message{new QLabel(QString("^.^"))}
+    m_message{new QLabel(QString("unknown"))}
 {
     m_address = address;
     m_initSetttings = {0};
     m_motorController ={0};
     m_PIPara = {0};
-    m_communicationState = FanCommunicationState::m_disconnect;
 }
-
 QMotor::~QMotor()
 {
-//    delete m_initSetttings;
-//    delete m_motorController;
-//    delete m_PIPara;
-//    delete m_communicationState;
-
     delete m_motorAddressLabel;
 
     delete m_ratedPowerLCD;
@@ -47,7 +32,6 @@ QMotor::~QMotor()
     delete m_runLamp;
     delete m_commLamp;
 }
-
 void QMotor::update()
 {
     m_ratedPowerLCD->display(m_motorController.m_ratedPower);
@@ -69,13 +53,18 @@ void QMotor::update()
         m_runLamp->setLampState(QcwIndicatorLamp::lamp_grey);
     }
 
-    if(m_communicationState == FanCommunicationState::m_connect)
+    if(m_communicationState == FanCommunicationState::m_connect){
         m_commLamp->setLampState(QcwIndicatorLamp::lamp_green);
-    else if(m_communicationState == FanCommunicationState::m_disconnect)
+    }
+    else if(m_communicationState == FanCommunicationState::m_disconnect){
+        isMonitor = false;
         m_commLamp->setLampState(QcwIndicatorLamp::lamp_red);
-    else if(m_communicationState == FanCommunicationState::m_comError)
+    }
+    else if(m_communicationState == FanCommunicationState::m_comError){
         m_commLamp->setLampState(QcwIndicatorLamp::lamp_yellow);
-    else
+    }
+    else{
         m_commLamp->setLampState(QcwIndicatorLamp::lamp_grey);
+    }
 
 }

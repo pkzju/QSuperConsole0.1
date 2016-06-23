@@ -28,6 +28,7 @@ public:
     QVector<FanGroupInfo *> *groups();
 
     static homewindow *getInstance();
+    static void deleteInstance();
 
 
 private slots:
@@ -42,6 +43,7 @@ private:
     QVector<QPushButton*> mGroup;
     QVector<FanGroupInfo*> mGroups;
     FanGroupInfo *mCurrentGroupInfo;
+
     CommunicationMode m_communication;
     SerialPortSettings::Settings mSerialPortSettings;
 

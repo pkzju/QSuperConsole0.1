@@ -12,6 +12,7 @@ public:
     SerialPortThread(QObject *parent = 0);
     ~SerialPortThread();
     static SerialPortThread* getInstance();
+    static void deleteInstance();
     void mStart(SerialPortSettings::Settings __settings);
     void mStop();
     void run();

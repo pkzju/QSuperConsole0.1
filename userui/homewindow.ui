@@ -181,1137 +181,6 @@ QRadioButton{
      </property>
     </spacer>
    </item>
-   <item row="2" column="1" rowspan="2" colspan="2">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="minimumSize">
-      <size>
-       <width>581</width>
-       <height>371</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Group</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_20">
-      <item row="0" column="0">
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Group1</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="pushButton_group1">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_2" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="title">
-         <string>Group2</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QPushButton" name="pushButton_group2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_3" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_4" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QGroupBox" name="groupBox_4">
-        <property name="title">
-         <string>Group3</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_5">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QPushButton" name="pushButton_group3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_5" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_6" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QGroupBox" name="groupBox_5">
-        <property name="title">
-         <string>Group4</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_7">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QPushButton" name="pushButton_group4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_8">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_7" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_8" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QGroupBox" name="groupBox_6">
-        <property name="title">
-         <string>Group5</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_9">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QPushButton" name="pushButton_group5">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_10">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_9" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_10" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QGroupBox" name="groupBox_7">
-        <property name="title">
-         <string>Group6</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_11">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <widget class="QPushButton" name="pushButton_group6">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_12">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_11" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_12" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QGroupBox" name="groupBox_8">
-        <property name="title">
-         <string>Group7</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <widget class="QPushButton" name="pushButton_group7">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_14">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_13" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_14">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_14" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QGroupBox" name="groupBox_9">
-        <property name="title">
-         <string>Group8</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_15">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <widget class="QPushButton" name="pushButton_group8">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_16">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_15">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_15" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_16" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QGroupBox" name="groupBox_10">
-        <property name="title">
-         <string>Group9</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_17">
-         <item row="0" column="0">
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="QPushButton" name="pushButton_group9">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>75</width>
-               <height>62</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{
-    background-image: url(:/skin/icons/dark/appbar.group.png);
- 
-    background-repeat:no-repeat;
-    background-position: center bottom;
-    background-color: transparent;
-	border-style: none !important;
-	border: none !important;
-	border-radius: 5px;
-    color: white;
-    text-align: center bottom;
-    padding-bottom: 2px;
-	font-size:18px;
-	font-weight: bold;
-
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-}
-
-QPushButton:hover{
-    background-color:rgb(57, 159, 251);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:checked{
-    background-color: rgb(0, 125, 213);
-    color: white;
-    border: 0px solid rgba(14, 142, 231, 255);
-}
-
-QPushButton:flat{
-    border: none;
-}
-QPushButton:pressed{
-    background-color: rgb(0, 125, 213);
-}
-
-QPushButton:disabled{
-    background-color: gray;
-}
-
-/*
-QPushButton{
-    background-color: rgb(14, 142, 231);
-	border-style: outset;
-    border-width: 2px;
-	border-radius: 6px;
-    color: white;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-QPushButton:hover{
-    background-color: rgb(57, 159, 251);
-}
-
-
-
-*/</string>
-             </property>
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_19">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_18">
-               <property name="text">
-                <string>运行</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_17" native="true"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_19">
-               <property name="text">
-                <string>通信</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QcwIndicatorLamp" name="widget_18" native="true"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="3" column="3">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
@@ -1338,16 +207,884 @@ QPushButton:hover{
      </property>
     </spacer>
    </item>
+   <item row="2" column="1" rowspan="2" colspan="2">
+    <widget class="QFrame" name="frame">
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>400</height>
+      </size>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_20">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Group1</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group1</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Group2</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group2</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="title">
+         <string>Group3</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group3</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="title">
+         <string>Group4</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group4</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QGroupBox" name="groupBox_6">
+        <property name="title">
+         <string>Group5</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group5</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QGroupBox" name="groupBox_7">
+        <property name="title">
+         <string>Group6</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group6">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group6</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="groupBox_8">
+        <property name="title">
+         <string>Group7</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_8">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group7">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group7</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QGroupBox" name="groupBox_9">
+        <property name="title">
+         <string>Group8</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_9">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group8">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group8</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QGroupBox" name="groupBox_10">
+        <property name="title">
+         <string>Group9</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_group9">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>62</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.group.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:18px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/</string>
+           </property>
+           <property name="text">
+            <string>Group9</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QcwIndicatorLamp</class>
-   <extends>QWidget</extends>
-   <header location="global">lamp/qcw_indicatorlamp.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

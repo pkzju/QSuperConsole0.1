@@ -18,18 +18,19 @@ enum ModbusConnection {
     Tcp
 };
 
-ModbusUi* ModbusUi::instance = 0;
+ModbusUi* ModbusUi::instance = Q_NULLPTR;
 
 ModbusUi::ModbusUi(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModbusUi),
     lastRequest(Q_NULLPTR),
-    modbusDevice(Q_NULLPTR)
+    modbusDevice(Q_NULLPTR),
+    writeModel(new WriteRegisterModel(this)),
+    intValidator(new QIntValidator(0, 4000000, this))
 {
     ui->setupUi(this);
 
     //~~Init serialport settings~~
-    intValidator = new QIntValidator(0, 4000000, this);
     ui->baudCombo->setInsertPolicy(QComboBox::NoInsert);
     fillPortsParameters();
     fillPortsInfo();
@@ -39,7 +40,6 @@ ModbusUi::ModbusUi(QWidget *parent) :
             this, SLOT(checkCustomDevicePathPolicy(int)));
 
     //~~Init write table~~
-    writeModel = new WriteRegisterModel(this);
     writeModel->setStartAddress(ui->writeAddress->value());
     writeModel->setNumberOfValues(ui->writeSize->currentText());
     ROW_COUNT = writeModel->rowCount();
@@ -199,9 +199,11 @@ void ModbusUi::on_connectButton_clicked()
 
 ModbusUi::~ModbusUi()
 {
+    qDebug("ModbusUi exit");
     if (modbusDevice)
         modbusDevice->disconnectDevice();
-    delete modbusDevice;
+
+    instance = Q_NULLPTR;
     delete ui;
 }
 
@@ -212,6 +214,12 @@ ModbusUi *ModbusUi::getInstance()
         instance = new ModbusUi();
     }
     return instance;
+}
+
+void ModbusUi::deleteInstance()
+{
+    if(instance)
+        instance->deleteLater();
 }
 
 QModbusClient* ModbusUi::getModbusDevice()

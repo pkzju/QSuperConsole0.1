@@ -70,6 +70,7 @@ public:
 
 public:
     explicit FCenterWindow(QWidget *parent = 0);
+    ~FCenterWindow();
     void initData();
     void initUI();
     void initConnect();

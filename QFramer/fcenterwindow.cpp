@@ -40,6 +40,11 @@ FCenterWindow::FCenterWindow(QWidget *parent)
     initConnect();
 }
 
+FCenterWindow::~FCenterWindow()
+{
+    qDebug("FCenterWindow exit");
+}
+
 void FCenterWindow::initData()
 {
     preindex = 0;

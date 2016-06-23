@@ -12,12 +12,14 @@
 extern CO_Data master_Data;
 
 const int gGroupnum = 9; //Number of all groups
+const int gMotorMaxnum = 15;
 
 homewindow *homewindow::s_Instance = Q_NULLPTR;
 
 homewindow::homewindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::homewindow)
+  ,mCurrentGroupInfo{Q_NULLPTR}
 {
     ui->setupUi(this);
 
@@ -39,15 +41,13 @@ homewindow::homewindow(QWidget *parent) :
         connect(mGroup.at(i), SIGNAL(clicked(bool)), this, SLOT(button_group_clicked()));
     }
 
-
-//    FanMotorUi *fanmotorui = FanMotorUi::getS_Instance();
-//    connect(this, SIGNAL(connectStateChanged(int)), fanmotorui, SLOT(onConnectStateChanged(int)));
-
-
 }
 
 homewindow::~homewindow()
 {
+    qDebug("homewindow exit");
+    sigleGroupDialog::deleteInstance();
+    s_Instance = Q_NULLPTR;
     delete ui;
 }
 
@@ -55,7 +55,7 @@ void homewindow::on_spinBox_groupNum_valueChanged(int arg1)//Add or reduce group
 {
     while(mGroups.count() < arg1){
         int _groupID = mGroups.count()+1;
-        int _fanMaxNumber = 16;
+        int _fanMaxNumber = gMotorMaxnum;
         int _startAdd = (_groupID-1)*_fanMaxNumber + 1;
         FanGroupInfo *group = new FanGroupInfo{_groupID, _startAdd, _fanMaxNumber};
         group->m_monitorDialog = Q_NULLPTR;
@@ -82,9 +82,7 @@ void homewindow::button_group_clicked()//All group buttons clicked (use one slot
     for(int i = 0; i < gGroupnum; i++){
         if(btn == mGroup.at(i)){
             mCurrentGroupInfo = mGroups.at(i);
-            sigleGroupDialog *mSigleGroupDialog = sigleGroupDialog::getS_Instance();
-
-            mSigleGroupDialog->show(mCurrentGroupInfo);
+            sigleGroupDialog::getS_Instance()->show(mCurrentGroupInfo);
             break;
         }
     }
@@ -110,5 +108,11 @@ homewindow *homewindow::getInstance()
         s_Instance = new homewindow;
     }
     return s_Instance;
+}
+
+void homewindow::deleteInstance()
+{
+    if(s_Instance)
+        s_Instance->deleteLater();
 }
 

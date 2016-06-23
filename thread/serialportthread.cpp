@@ -3,7 +3,7 @@
 #include "parser/protocal.h"
 #include <QtSerialPort/QSerialPort>
 
-SerialPortThread *SerialPortThread::s_instance = NULL;
+SerialPortThread *SerialPortThread::s_instance = Q_NULLPTR;
 
 SerialPortThread::SerialPortThread(QObject *parent)
     : QThread(parent)
@@ -14,6 +14,7 @@ SerialPortThread::SerialPortThread(QObject *parent)
 
 SerialPortThread::~SerialPortThread()
 {
+    s_instance = Q_NULLPTR;
     wait();
 }
 
@@ -25,6 +26,12 @@ SerialPortThread* SerialPortThread::getInstance()
         s_instance = new SerialPortThread();
     }
     return s_instance;
+}
+
+void SerialPortThread::deleteInstance()
+{
+    if(s_instance)
+        s_instance->deleteLater();
 }
 
 void SerialPortThread::mStart(SerialPortSettings::Settings __settings)

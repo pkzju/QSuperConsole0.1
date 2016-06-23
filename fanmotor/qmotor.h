@@ -13,22 +13,17 @@
 #ifndef QMOTOR_H
 #define QMOTOR_H
 
+#include <QObject>
 #include "fanmotor/fanmotor.h"
 #include <QLabel>
 #include <QLCDNumber>
 #include "lamp/qcw_indicatorlamp.h"
 
-
-class QLabel;
-class QLCDNumber;
-
-class QcwIndicatorLamp;
-
-
 class QMotor
 {
+
 public:
-    QMotor(int address);
+    explicit QMotor(int address);
     ~QMotor();
 
     void update();
@@ -41,6 +36,7 @@ public:
     FanCommunicationState  m_communicationState;
 
     QLabel  *m_motorAddressLabel;
+
 
     QLCDNumber  *m_ratedPowerLCD;
     QLCDNumber  *m_targetPowerLCD;
@@ -55,6 +51,7 @@ public:
 
     QLabel  *m_message;
 
+    bool isMonitor = false;
 
 };
 

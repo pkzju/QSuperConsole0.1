@@ -25,6 +25,8 @@ public:
     explicit ModbusUi(QWidget *parent = 0);
     ~ModbusUi();
     static ModbusUi *getInstance();
+    static void deleteInstance();
+
     QModbusClient *getModbusDevice();
 
 private slots:
@@ -59,10 +61,10 @@ private:
     QModbusReply* lastRequest;
     QModbusClient* modbusDevice;
     WriteRegisterModel *writeModel;
-    quint8 ROW_COUNT;//number of registers
-
     QIntValidator *intValidator;
     static ModbusUi* instance;
+
+    quint8 ROW_COUNT;//number of registers
 };
 
 #endif // MODBUSUI_H

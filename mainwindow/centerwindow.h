@@ -16,6 +16,7 @@
 #include "QFramer/fcenterwindow.h"
 #include "functionpages/qssbuilder.h"
 
+
 #include <QVBoxLayout>
 
 
@@ -25,10 +26,10 @@ class CenterWindow : public FCenterWindow
 
 private:
 
-    QssBuilder* qssBuilder;
 
 public:
     explicit CenterWindow(QWidget *parent = 0);
+    ~CenterWindow();
     void initUI();
     void initConnect();
 

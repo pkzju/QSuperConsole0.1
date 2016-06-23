@@ -11,6 +11,7 @@ SerialPortUi::SerialPortUi(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SerialPortUi)
 {
+    qDebug("SerialPortUi init");
     ui->setupUi(this);
     initData();
     initUI();
@@ -71,6 +72,9 @@ void SerialPortUi::messageShow(const QString &s)
 }
 SerialPortUi::~SerialPortUi()
 {
+    qDebug("SerialPortUi exit");
+    if(mySerialPortThread)
+        mySerialPortThread->deleteLater();
     delete ui;
 }
 
@@ -82,14 +86,14 @@ void SerialPortUi::on_searchButton_clicked()
 
 void SerialPortUi::on_Button_Close_clicked()
 {
-    SerialPortThread *mySerialPortThread = SerialPortThread::getInstance();
+    mySerialPortThread = SerialPortThread::getInstance();
     mySerialPortThread->mStop();
 }
 
 void SerialPortUi::on_Button_Open_clicked()
 {
     updateSettings();
-    SerialPortThread *mySerialPortThread = SerialPortThread::getInstance();
+    mySerialPortThread = SerialPortThread::getInstance();
     mySerialPortThread->mStart(currentSettings);
 
 }

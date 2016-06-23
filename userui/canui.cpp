@@ -11,9 +11,6 @@ extern CO_Data master_Data;
 CANUi *CANUi::s_Instance = nullptr;
 
 
-
-
-
 void NMTThread::run()
 {
     QString result;
@@ -184,8 +181,11 @@ void CANUi::initConnect()
 
 CANUi::~CANUi()
 {
+    qDebug("CANUi exit");
     if(ui->pushButton_Close->isEnabled())
         on_pushButton_Close_clicked();
+
+    CanThread::deleteInstance();
 
     delete ui;
 }
@@ -197,6 +197,12 @@ CANUi *CANUi::getS_Instance()
         s_Instance = new CANUi;
     }
     return s_Instance;
+}
+
+void CANUi::deleteInstance()
+{
+    if(s_Instance)
+        s_Instance->deleteLater();
 }
 
 

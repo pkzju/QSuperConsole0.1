@@ -58,6 +58,7 @@ signals:
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
     static MainWindow* getInstance();
     RightFloatWindow* getRightFloatWindow();
     SettingMenu* getSettingMenu();

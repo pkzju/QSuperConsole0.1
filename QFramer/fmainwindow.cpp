@@ -38,7 +38,7 @@ FMainWindow::FMainWindow(QWidget *parent)
       trayicon (new QSystemTrayIcon
                 (QIcon(QString(":/images/skin/images/ico.ico")), this))
 {
-    qDebug("mainwindow init");
+    qDebug("fmainwindow init");
     initData();
     initUI();
     initConnect();
@@ -314,6 +314,6 @@ void FMainWindow::onSystemTrayIconClicked(QSystemTrayIcon::ActivationReason reas
 
 FMainWindow::~FMainWindow()
 {
-    qDebug("mainwindow exit\n");
+    qDebug("fmainwindow exit");
 
 }

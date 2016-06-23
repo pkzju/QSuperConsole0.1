@@ -14,19 +14,34 @@
 #include "functionpages/rightfloatwindow.h"
 #include <qdebug.h>
 
+//#include "userui/canui.h"
+//#include "userui/fanmotorui.h"
+//#include "userui/homewindow.h"
+//#include "userui/mplotui.h"
+//#include "userui/siglemotorframe.h"
+//#include "thread/canthread.h"
+//#include "thread/serialportthread.h"
 
-MainWindow* MainWindow::instance = nullptr;
+
+MainWindow* MainWindow::instance = Q_NULLPTR;
 
 MainWindow::MainWindow(QWidget *parent) :
     FMainWindow(parent),
     centerWindow(new CenterWindow), settingMenu (new SettingMenu),
     themeMenu(new ThemeMenu), rightfloatWindow(new RightFloatWindow)
 {
+    qDebug("mainwindow init");
     initData();
     initUI();
     initThread();
     initConnect();
 
+}
+
+MainWindow::~MainWindow()
+{
+    qDebug("mainwindow exit");
+    instance = Q_NULLPTR;
 }
 
 void MainWindow::initData()

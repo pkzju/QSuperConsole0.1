@@ -19,6 +19,7 @@ public:
     CanThread(QObject *parent = 0);
     ~CanThread();
     static CanThread* getInstance();
+    static void deleteInstance();
     void mStart(bool isCANopen);
     void mStop();
     void run();

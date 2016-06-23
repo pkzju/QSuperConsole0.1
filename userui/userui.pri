@@ -8,7 +8,8 @@ FORMS += \
     $$PWD/fanmotorui.ui \
     $$PWD/qcanopen.ui \
     $$PWD/loginframe.ui \
-    $$PWD/groupmonitorui.ui
+    $$PWD/groupmonitorui.ui \
+    $$PWD/siglemotorframe.ui
 
 
 HEADERS += \
@@ -22,7 +23,8 @@ HEADERS += \
     $$PWD/fanmotorui.h \
     $$PWD/qcanopen.h \
     $$PWD/loginframe.h \
-    $$PWD/groupmonitorui.h
+    $$PWD/groupmonitorui.h \
+    $$PWD/siglemotorframe.h
 
 
 SOURCES += \
@@ -36,5 +38,6 @@ SOURCES += \
     $$PWD/fanmotorui.cpp \
     $$PWD/qcanopen.cpp \
     $$PWD/loginframe.cpp \
-    $$PWD/groupmonitorui.cpp
+    $$PWD/groupmonitorui.cpp \
+    $$PWD/siglemotorframe.cpp
 

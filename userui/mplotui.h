@@ -19,6 +19,7 @@ public:
     explicit MPlotUi(QWidget *parent = 0);
     ~MPlotUi();
     static MPlotUi *getInstance();
+    static void deleteInstance();
 
 public slots:
     void realtimeDataSlot(FanMotorController motorctr);

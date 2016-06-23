@@ -19,6 +19,8 @@
         <file>skin/icons/light/appbar.connect.png</file>
         <file>skin/icons/dark/appbar.transit.bus.png</file>
         <file>skin/icons/dark/appbar.group.png</file>
+        <file>skin/icons/dark/appbar.radioactive.png</file>
+        <file>skin/icons/light/appbar.radioactive.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>skin/images/downsolidarrow.png</file>

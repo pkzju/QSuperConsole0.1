@@ -59,26 +59,26 @@ const quint16 g_mRealTimeRegisterCount = 5;
 const quint16 g_mRealTimeRegisterMoreCount = 9;
 
 const quint16 g_mPIParaRegisterAddress = 0x0080;
-const quint16 g_mPIParaRegisterMoreCount = 3;
+const quint16 g_mPIParaRegisterMoreCount = 6;
 /********************
  *
  *******************/
 #pragma pack(push)
 #pragma pack(1)
 struct FanMotorSettings{
-    quint16 m_dryHighPower:16;    //2 byte  address:0x0040
+    quint16 m_dryHighPower:16;    //2 byte  address:0x0040 true value : *0.01
     quint16 m_dryHighSpeed:16;    //4 byte
-    quint16 m_wetHighPower:16;    //6 byte
+    quint16 m_wetHighPower:16;    //6 byte    true value : *0.01
     quint16 m_wetHighSpeed:16;    //8 byte
 
-    quint16 m_dryMiddlePower:16;  //10 byte
+    quint16 m_dryMiddlePower:16;  //10 byte   true value : *0.01
     quint16 m_dryMiddleSpeed:16;  //12 byte
-    quint16 m_wetMiddlePower:16;  //14 byte
+    quint16 m_wetMiddlePower:16;  //14 byte   true value : *0.01
     quint16 m_wetMiddleSpeed:16;  //16 byte
 
-    quint16 m_dryLowPower:16;     //18 byte
+    quint16 m_dryLowPower:16;     //18 byte   true value : *0.01
     quint16 m_dryLowSpeed:16;     //20 byte
-    quint16 m_wetLowPower:16;     //22 byte
+    quint16 m_wetLowPower:16;     //22 byte   true value : *0.01
     quint16 m_wetLowSpeed:16;     //24 byte  0x004b
 
     quint16 m_motorType:4;
@@ -95,12 +95,12 @@ struct FanMotorSettings{
 #pragma pack(push)
 #pragma pack(1)
 struct FanPIParameters{
-    quint16  m_speedKp;    // x 1000
-    quint16  m_speedKi;    // x 1000
-    quint16  m_idKp;       // x 1000
-    quint16  m_idKi;       // x 1000
-    quint16  m_iqKp;       // x 1000
-    quint16  m_iqKi;       // x 1000
+    quint16  m_speedKp;    // * 1000  true value : *0.001
+    quint16  m_speedKi;    // * 1000
+    quint16  m_idKp;       // * 1000
+    quint16  m_idKi;       // * 1000
+    quint16  m_iqKp;       // * 1000
+    quint16  m_iqKi;       // * 1000
 };
 #pragma pack(pop)
 

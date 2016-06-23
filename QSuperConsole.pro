@@ -61,7 +61,8 @@ SOURCES += \
     qcustomplot/qcustomplot.cpp \
     dialogs/logindialog.cpp \
     dialogs/siglegroupdialog.cpp \
-    dialogs/groupmonitordialog.cpp
+    dialogs/groupmonitordialog.cpp \
+    dialogs/siglemotordialog.cpp
 
 HEADERS  += \
     dialogs/aboutdialog.h \
@@ -84,7 +85,8 @@ HEADERS  += \
     dialogs/logindialog.h \
     dialogs/siglegroupdialog.h \
     fanmotor/fpublic.h \
-    dialogs/groupmonitordialog.h
+    dialogs/groupmonitordialog.h \
+    dialogs/siglemotordialog.h
 
 RESOURCES += \
     QSuperConsole.qrc

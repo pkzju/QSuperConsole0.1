@@ -3,7 +3,7 @@
 
 //Q_DECLARE_METATYPE(QCanBusFrame)
 
-CanThread *CanThread::s_instance = 0;
+CanThread *CanThread::s_instance = Q_NULLPTR;
 
 CanThread::CanThread(QObject *parent)
     : QThread(parent)
@@ -13,6 +13,7 @@ CanThread::CanThread(QObject *parent)
 
 CanThread::~CanThread()
 {
+    s_instance = Q_NULLPTR;
     wait();
 }
 
@@ -24,6 +25,12 @@ CanThread* CanThread::getInstance()
         s_instance = new CanThread();
     }
     return s_instance;
+}
+
+void CanThread::deleteInstance()
+{
+    if(s_instance)
+        s_instance->deleteLater();
 }
 
 void CanThread::mStart(bool isCANopen)

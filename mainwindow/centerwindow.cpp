@@ -23,36 +23,50 @@
 #include "centerwindow.h"
 #include <QHBoxLayout>
 #include <qgridlayout.h>
+#include "QFramer/ftabwidget.h"
+
 #include "userui/canui.h"
-#include "userui/serialportui.h"
 #include "userui/mplotui.h"
 #include "userui/modbusui.h"
-#include "QFramer/ftabwidget.h"
 #include "userui/homewindow.h"
+
+#include "userui/serialportui.h"
 
 
 CenterWindow::CenterWindow(QWidget *parent) :
     FCenterWindow(parent)
 {
+    qDebug("CenterWindow init");
     initUI();
     initConnect();
+}
+
+CenterWindow::~CenterWindow()
+{
+    CANUi::deleteInstance();
+    MPlotUi::deleteInstance();
+    ModbusUi::deleteInstance();
+    homewindow::deleteInstance();
+
+    qDebug("CenterWindow exit");
 }
 
 void CenterWindow::initUI()
 {
     setObjectName(tr("needBorder"));
-    qssBuilder = new QssBuilder;
-    CANUi *canUi = CANUi::getS_Instance();
-    SerialPortUi *serialport = new SerialPortUi;
-    MPlotUi *plotUi = MPlotUi::getInstance();
-    ModbusUi *modbusui = ModbusUi::getInstance();
-    homewindow *_home = homewindow::getInstance();
 
-    addWidget(tr("Home"), "Home", _home);
-    addWidget(tr("Scope"), "MathPlot", plotUi);
-    addWidget(tr("Canbus"),"Communication", canUi);
-    addWidget(tr("Modbus"),"Communication", modbusui);
-    addWidget(tr("COMPort"),"serialportBtn",serialport);
+    CANUi *m_canUi{CANUi::getS_Instance()};
+    MPlotUi *m_plotUi{MPlotUi::getInstance()};
+    ModbusUi *m_modbusui{ModbusUi::getInstance()};
+    homewindow *m_home{homewindow::getInstance()};
+
+    SerialPortUi *serialport{new SerialPortUi};
+
+    addWidget(tr("Home"), "Home", m_home);
+    addWidget(tr("Scope"), "MathPlot", m_plotUi);
+    addWidget(tr("Canbus"),"Communication", m_canUi);
+    addWidget(tr("Modbus"),"Communication", m_modbusui);
+    addWidget(tr("COMPort"),"serialportBtn", serialport);
 
     setAlignment(TopCenter);
 }
