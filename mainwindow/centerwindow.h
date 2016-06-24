@@ -14,8 +14,6 @@
 #define CENTERWINDOW_H
 
 #include "QFramer/fcenterwindow.h"
-#include "functionpages/qssbuilder.h"
-
 
 #include <QVBoxLayout>
 

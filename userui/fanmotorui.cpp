@@ -6,9 +6,10 @@
 #include <QStandardItemModel>
 #include <QTimer>
 #include <QTableWidget>
-#include<qdebug.h>
-#include "lamp/qcw_indicatorlamp.h"
 
+#include <QDebug.h>
+
+#include "lamp/qcw_indicatorlamp.h"
 #include"fanmotor/qmotor.h"
 #include "userui/mplotui.h"
 #include "userui/homewindow.h"

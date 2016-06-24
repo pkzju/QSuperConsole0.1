@@ -200,7 +200,7 @@ UNS8 canSend(CAN_PORT port, Message *m)
 
 
 /***************************************************************************/
-DWORD canReceiveLoop(CAN_PORT port)
+int canReceiveLoop(CAN_PORT port)
 {
 	Message m;
 	while(((CANPort*)port)->used)

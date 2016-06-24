@@ -10,18 +10,10 @@
 #include "mainwindow.h"
 #include "centerwindow.h"
 #include "QFramer/futil.h"
+#include "settingmenu.h"
 #include "thememenu.h"
 #include "functionpages/rightfloatwindow.h"
-#include <qdebug.h>
-
-//#include "userui/canui.h"
-//#include "userui/fanmotorui.h"
-//#include "userui/homewindow.h"
-//#include "userui/mplotui.h"
-//#include "userui/siglemotorframe.h"
-//#include "thread/canthread.h"
-//#include "thread/serialportthread.h"
-
+#include "lamp/qcw_indicatorlamp.h"
 
 MainWindow* MainWindow::instance = Q_NULLPTR;
 

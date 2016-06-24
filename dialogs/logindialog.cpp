@@ -1,5 +1,5 @@
 
-#include "LoginDialog.h"
+#include "logindialog.h"
 
 #include <QVBoxLayout>
 

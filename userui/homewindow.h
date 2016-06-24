@@ -4,8 +4,8 @@
 #include <QCanBusFrame>
 #include <QModbusDataUnit>
 #include <QtCore>
-#include "dialogs/settingdialog.h"
 
+#include "dialogs/settingdialog.h"
 #include "fanmotor/fpublic.h"
 
 class QPushButton;

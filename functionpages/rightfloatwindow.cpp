@@ -12,7 +12,7 @@
 #include "rightfloatwindow.h"
 #include "mainwindow/mainwindow.h"
 #include <QGraphicsDropShadowEffect>
-
+#include "mainwindow/settingmenu.h"
 
 RightFloatWindow::RightFloatWindow(QWidget *parent) :
     FMovableWidget(parent)

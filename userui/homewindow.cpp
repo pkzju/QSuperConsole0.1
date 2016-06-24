@@ -2,7 +2,6 @@
 #include "ui_homewindow.h"
 
 #include <QPushButton>
-#include <QtCore>
 #include "mainwindow/mainwindow.h"
 #include "userui/fanmotorui.h"
 #include "dialogs/siglegroupdialog.h"

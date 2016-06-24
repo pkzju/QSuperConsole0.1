@@ -52,7 +52,6 @@ SOURCES += \
     mainwindow/settingmenucontroller.cpp \
     mainwindow/thememenu.cpp \
     main.cpp \
-    functionpages/qssbuilder.cpp \
     lamp/qcw_indicatorlamp.cpp \
     thread/canthread.cpp \
     thread/serialportthread.cpp \
@@ -74,7 +73,6 @@ HEADERS  += \
     mainwindow/settingmenu.h \
     mainwindow/settingmenucontroller.h \
     mainwindow/thememenu.h \
-    functionpages/qssbuilder.h \
     lamp/qcw_indicatorlamp.h \
     thread/canthread.h \
     thread/serialportthread.h \

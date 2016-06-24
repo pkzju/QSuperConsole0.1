@@ -1,6 +1,8 @@
 #include "groupmonitorui.h"
 #include "ui_groupmonitorui.h"
 
+#include <QTableWidget>
+
 GroupMonitorUi::GroupMonitorUi(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::GroupMonitorUi)

@@ -15,13 +15,15 @@
 
 #include "QFramer/fmainwindow.h"
 #include "centerwindow.h"
-#include "settingmenu.h"
-#include "functionpages/rightfloatwindow.h"
-#include "thememenu.h"
+class SettingMenu;
+class ThemeMenu;
+class RightFloatWindow;
+class QcwIndicatorLamp;
+
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QHideEvent>
-#include "lamp/qcw_indicatorlamp.h"
+
 
 
 
