@@ -29,7 +29,7 @@
 #include <QEasingCurve>
 #include <QLabel>
 #include <QTime>
-#include <qdebug>
+#include <QDebug>
 
 FCenterWindow::FCenterWindow(QWidget *parent)
     :QFrame(parent)

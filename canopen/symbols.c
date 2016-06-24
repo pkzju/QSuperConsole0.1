@@ -1,5 +1,5 @@
 #ifdef linux
-
+/*
 #include <linux/module.h>
 #include "data.h"
 #include "can_driver.h"
@@ -135,5 +135,5 @@ EXPORT_SYMBOL (StartTimerLoop);
 EXPORT_SYMBOL (StopTimerLoop);
 EXPORT_SYMBOL (CreateReceiveTask);
 EXPORT_SYMBOL (WaitReceiveTaskEnd);
-
+*/
 #endif

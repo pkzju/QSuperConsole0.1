@@ -7,7 +7,7 @@
 #include <QTimer>
 #include <QTableWidget>
 
-#include <QDebug.h>
+#include <QDebug>
 
 #include "lamp/qcw_indicatorlamp.h"
 #include"fanmotor/qmotor.h"

@@ -23,7 +23,7 @@
 #include "ftitlebar.h"
 #include "ftoolbutton.h"
 #include <QHBoxLayout>
-#include <qtoolbutton>
+#include <QToolButton>
 
 FTitleBar* FTitleBar::instance = NULL;
 

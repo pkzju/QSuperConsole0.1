@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 #include "writeregistermodel.h"
-#include <QDebug.h>
+#include  <QDebug>
 
 #define ROW_COUNT 30
 #define COLUMN_COUNT 3
