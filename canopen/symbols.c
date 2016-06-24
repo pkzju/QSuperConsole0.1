@@ -1,4 +1,4 @@
-#ifdef _linux
+#ifdef linux
 
 #include <linux/module.h>
 #include "data.h"

@@ -57,7 +57,7 @@ UNS8 usbCanReceive(void* inst, Message *m)
     return ret;
 #endif
 
-#ifdef _linux
+#ifdef linux
     return 0;
 #endif
 }
@@ -95,7 +95,7 @@ UNS8 usbCanSend(void* inst, const Message *m)
     return (UNS8)ret; 
 #endif
 
-#ifdef _linux
+#ifdef linux
     return 0;
 #endif
 
@@ -147,7 +147,7 @@ CAN_HANDLE usbCanOpen(s_BOARD *board)
     }
 #endif
 
-#ifdef _linux
+#ifdef linux
     return NULL;
 #endif
 }
@@ -166,7 +166,7 @@ int usbCanClose(s_BOARD *board)
         return ret;
 #endif
 
-#ifdef _linux
+#ifdef linux
     return NULL;
 #endif
 }
@@ -181,7 +181,7 @@ UNS8 usbCanChangeBaudrate(void* fd, char* baud)
     return ret;
 #endif
 
-#ifdef _linux
+#ifdef linux
     return 0;
 #endif
 }

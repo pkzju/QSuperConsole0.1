@@ -75,7 +75,7 @@ void MainWindow::initUI()
     CloseOfStatusBar = new QToolButton;
     CloseOfStatusBar->setIcon(QIcon(":/images/skin/images/disconnect.png"));
     CloseOfStatusBar->setIconSize(QSize(25,40));
-    OpenOfStatusBar->setAutoRaise(true);
+    CloseOfStatusBar->setAutoRaise(true);
 
     getStatusBar()->addPermanentWidget(OpenOfStatusBar);//at the right
     getStatusBar()->addPermanentWidget(CloseOfStatusBar);
