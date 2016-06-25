@@ -2,6 +2,7 @@
 #include "tcpclientframe.h"
 #include "ui_tcpclientframe.h"
 
+#include <QtCore>
 
 #include <QHostAddress>
 
@@ -12,10 +13,21 @@ TcpClientFrame::TcpClientFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    onTcpSockedStateChange(0);
+    //! Read settings from file: "/SuperConsole.ini"
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    settings.beginGroup("TcpPortSettings");
+    m_hostAddress = settings.value("HostAddress", "127.0.0.1").toString();
+    m_port = settings.value("Port", "6474").toUInt();
+    settings.endGroup();
+
+    ui->lineEdit_ip->setText(m_hostAddress);
+    ui->lineEdit_port->setText(QString::number(m_port));
+
+    onTcpSockedStateChange(QAbstractSocket::UnconnectedState);
 
     connect(m_tcpClientSocked, SIGNAL(readyRead()), this, SLOT(readSocked()));
-    connect(m_tcpClientSocked, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(onTcpSockedStateChange(int)));
+    connect(m_tcpClientSocked, SIGNAL(stateChanged(QAbstractSocket::SocketState)), \
+            this, SLOT(onTcpSockedStateChange(QAbstractSocket::SocketState)));
     connect(m_tcpClientSocked, SIGNAL(error(QAbstractSocket::SocketError)),
             this, SLOT(dispalyError(QAbstractSocket::SocketError)));
 
@@ -23,6 +35,14 @@ TcpClientFrame::TcpClientFrame(QWidget *parent) :
 
 TcpClientFrame::~TcpClientFrame()
 {
+    //! Save settings to file: "/SuperConsole.ini"
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    qDebug(qPrintable(QDir::currentPath() + "/SuperConsole.ini"));
+    settings.beginGroup("TcpPortSettings");
+    settings.setValue("HostAddress", m_hostAddress);
+    settings.setValue("Port", m_port);
+    settings.endGroup();
+
     delete ui;
 }
 
@@ -33,11 +53,13 @@ void TcpClientFrame::on_pushButton_connect_clicked()
 {
     m_tcpClientSocked->abort();//!< Aborts the current connection and resets the socket
 
-    QHostAddress _hostAddress{ui->lineEdit_ip->text()};
-    quint16 _port = ui->lineEdit_port->text().toInt();
+    m_hostAddress = ui->lineEdit_ip->text();
+    m_port = ui->lineEdit_port->text().toUShort();
+
+    QHostAddress _hostAddress{m_hostAddress};
 
     //! Attempts to make a connection to hostName on the given port
-    m_tcpClientSocked->connectToHost(_hostAddress, _port);
+    m_tcpClientSocked->connectToHost(_hostAddress, m_port);
 
 }
 
@@ -77,9 +99,9 @@ void TcpClientFrame::readSocked()
  * \brief TcpClientFrame::onTcpSockedStateChange
  * \param state 0:unconnected
  */
-void TcpClientFrame::onTcpSockedStateChange(int state)
+void TcpClientFrame::onTcpSockedStateChange(QAbstractSocket::SocketState state)
 {
-    bool connected = (state != 0);
+    bool connected = (state != QAbstractSocket::UnconnectedState);
     ui->pushButton_connect->setEnabled(!connected);
     ui->pushButton_disconnect->setEnabled(connected);
 }
@@ -122,14 +144,25 @@ void TcpClientFrame::dispalyError(QAbstractSocket::SocketError socketError)
         ui->textBrowser->append(tr("RemoteHostClosedError"));
         break;
     case QAbstractSocket::HostNotFoundError:
-        ui->textBrowser->append(tr("HostNotFoundError"));
+        ui->textBrowser->append(tr("The host was not found. Please check the "
+                                    "host name and port settings."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
-        ui->textBrowser->append(tr("ConnectionRefusedError"));
+        ui->textBrowser->append(tr("The connection was refused by the peer. "
+                                    "Make sure the fortune server is running, "
+                                    "and check that the host name and port "
+                                    "settings are correct."));
         break;
     default:
-        ui->textBrowser->append(tr("Fail: %1.").arg(m_tcpClientSocked->errorString()));
+        ui->textBrowser->append(tr("The following error occurred: %1.")
+                                 .arg(m_tcpClientSocked->errorString()));
     }
 }
 
-
+/*!
+ * \brief TcpClientFrame::on_pushButton_clear_clicked
+ */
+void TcpClientFrame::on_pushButton_clear_clicked()
+{
+    ui->textBrowser->clear();
+}

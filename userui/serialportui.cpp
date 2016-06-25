@@ -1,12 +1,20 @@
-#include "serialportui.h"
+﻿#include "serialportui.h"
 #include "ui_serialportui.h"
 
 #include <QtSerialPort/QSerialPortInfo>
 #include <QIntValidator>
 #include <QLineEdit>
+#include <QtCore>
 
+/*!
+ * \brief blankString
+ */
 static const char blankString[] = QT_TRANSLATE_NOOP("SerialPortUi", "N/A");
 
+/*!
+ * \brief SerialPortUi::SerialPortUi
+ * \param parent
+ */
 SerialPortUi::SerialPortUi(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SerialPortUi)
@@ -18,12 +26,19 @@ SerialPortUi::SerialPortUi(QWidget *parent) :
     initThread();
     initConnect();
 }
+
+/*!
+ * \brief SerialPortUi::initData
+ */
 void SerialPortUi::initData()
 {
     mySerialPortThread = SerialPortThread::getInstance();
 
 }
 
+/*!
+ * \brief SerialPortUi::initUI
+ */
 void SerialPortUi::initUI()
 {
     intValidator = new QIntValidator(0, 4000000, this);
@@ -40,21 +55,58 @@ void SerialPortUi::initUI()
     fillPortsParameters();
     fillPortsInfo();
 
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    settings.beginGroup("SerialPortUi");
+    currentSettings.name = settings.value("SerialPortname", "").toString();
+    currentSettings.baudRate = static_cast<QSerialPort::BaudRate>(settings.value("SerialPortBaudRate", QSerialPort::Baud9600).toInt());
+    currentSettings.dataBits = static_cast<QSerialPort::DataBits>(settings.value("SerialPortDataBits", QSerialPort::Data8).toInt());
+    currentSettings.parity = static_cast<QSerialPort::Parity>(settings.value("SerialPortParity", QSerialPort::NoParity).toInt());
+    currentSettings.stopBits = static_cast<QSerialPort::StopBits>(settings.value("SerialPortStopBits", QSerialPort::OneStop).toInt());
+    currentSettings.flowControl = static_cast<QSerialPort::FlowControl>(settings.value("SerialPortFlowControl", QSerialPort::NoFlowControl).toInt());
+
+    currentSettings.stringBaudRate = settings.value("SerialPortBaudRateString", "9600").toString();
+    currentSettings.stringDataBits = settings.value("SerialPortDataBitsString", "8").toString();
+    currentSettings.stringParity = settings.value("SerialPortParityString", "None").toString();
+    currentSettings.stringStopBits = settings.value("SerialPortStopBitsString", "1").toString();
+    currentSettings.stringFlowControl = settings.value("SerialPortFlowControlString", "None").toString();
+    settings.endGroup();
+
+    ui->serialPortInfoListBox->setCurrentText(currentSettings.name);
+    ui->baudRateBox->setCurrentText(currentSettings.stringBaudRate);
+    ui->dataBitsBox->setCurrentText(currentSettings.stringDataBits);
+    ui->parityBox->setCurrentText(currentSettings.stringParity);
+    ui->stopBitsBox->setCurrentText(currentSettings.stringStopBits);
+    ui->flowControlBox->setCurrentText(currentSettings.stringFlowControl);
+
+    updateSettings();
+
     updateSettings();
 
     ui->Button_Close->setEnabled(false);
     ui->pushButton_Send->setEnabled(false);
 }
 
+/*!
+ * \brief SerialPortUi::initThread
+ */
 void SerialPortUi::initThread()
 {
 
 }
 
+/*!
+ * \brief SerialPortUi::initConnect
+ */
 void SerialPortUi::initConnect()
 {
     connect(mySerialPortThread, SIGNAL(message(QString)),this, SLOT(messageShow(QString)));
+    connect(mySerialPortThread, SIGNAL(message(QByteArray)),this, SLOT(messageShow(QByteArray)));
 }
+
+/*!
+ * \brief SerialPortUi::messageShow
+ * \param s
+ */
 void SerialPortUi::messageShow(const QString &s)
 {
 
@@ -70,26 +122,74 @@ void SerialPortUi::messageShow(const QString &s)
         ui->pushButton_Send->setEnabled(false);
     }
 }
+
+void SerialPortUi::messageShow(const QByteArray &data)
+{
+    QString s;
+    if(ui->radioButton_HEXREC->isChecked()){
+        s.append("0x");
+        for(int i = 0; i < data.size(); i++){
+            s.append(tr("%1 ").arg(QString::number(data.at(i), 16)));
+        }
+    }
+    else{
+        s.append(data);
+    }
+
+    ui->textBrowser->append(s);
+
+}
+
+/*!
+ * \brief SerialPortUi::~SerialPortUi
+ */
 SerialPortUi::~SerialPortUi()
 {
     qDebug("SerialPortUi exit");
     if(mySerialPortThread)
         mySerialPortThread->deleteLater();
+
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    qDebug(qPrintable(QDir::currentPath() + "/SuperConsole.ini"));
+    settings.beginGroup("SerialPortUi");
+    settings.setValue("SerialPortname", this->settings().name);
+    settings.setValue("SerialPortBaudRate", this->settings().baudRate);
+    settings.setValue("SerialPortDataBits", this->settings().dataBits);
+    settings.setValue("SerialPortParity", this->settings().parity);
+    settings.setValue("SerialPortStopBits", this->settings().stopBits);
+    settings.setValue("SerialPortFlowControl", this->settings().flowControl);
+
+    settings.setValue("SerialPortBaudRateString", this->settings().stringBaudRate);
+    settings.setValue("SerialPortDataBitsString", this->settings().stringDataBits);
+    settings.setValue("SerialPortParityString", this->settings().stringParity);
+    settings.setValue("SerialPortStopBitsString", this->settings().stringStopBits);
+    settings.setValue("SerialPortFlowControlString", this->settings().stringFlowControl);
+    settings.endGroup();
+
     delete ui;
 }
 
+/*!
+ * \brief SerialPortUi::on_searchButton_clicked
+ */
 void SerialPortUi::on_searchButton_clicked()
 {
     fillPortsInfo();
     ui->serialPortInfoListBox->showPopup();
 }
 
+/*!
+ * \brief SerialPortUi::on_Button_Close_clicked
+ */
 void SerialPortUi::on_Button_Close_clicked()
 {
     mySerialPortThread = SerialPortThread::getInstance();
     mySerialPortThread->mStop();
 }
 
+/*!
+ * \brief SerialPortUi::on_Button_Open_clicked
+ */
 void SerialPortUi::on_Button_Open_clicked()
 {
     updateSettings();
@@ -98,11 +198,19 @@ void SerialPortUi::on_Button_Open_clicked()
 
 }
 
+/*!
+ * \brief SerialPortUi::settings
+ * \return
+ */
 SerialPortSettings::Settings SerialPortUi::settings() const
 {
     return currentSettings;
 }
 
+/*!
+ * \brief SerialPortUi::setSettings
+ * \param s
+ */
 void SerialPortUi::setSettings(SerialPortSettings::Settings s)
 {
     currentSettings = s;
@@ -115,6 +223,9 @@ void SerialPortUi::setSettings(SerialPortSettings::Settings s)
 
 }
 
+/*!
+ * \brief SerialPortUi::fillPortsParameters
+ */
 void SerialPortUi::fillPortsParameters()
 {
     ui->baudRateBox->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
@@ -147,6 +258,9 @@ void SerialPortUi::fillPortsParameters()
     ui->flowControlBox->addItem(tr("XON/XOFF"), QSerialPort::SoftwareControl);
 }
 
+/*!
+ * \brief SerialPortUi::fillPortsInfo
+ */
 void SerialPortUi::fillPortsInfo()
 {
     ui->serialPortInfoListBox->clear();
@@ -172,6 +286,9 @@ void SerialPortUi::fillPortsInfo()
     ui->serialPortInfoListBox->addItem(tr("Custom"));
 }
 
+/*!
+ * \brief SerialPortUi::updateSettings
+ */
 void SerialPortUi::updateSettings()
 {
     currentSettings.name = ui->serialPortInfoListBox->currentText();
@@ -202,6 +319,10 @@ void SerialPortUi::updateSettings()
 
 }
 
+/*!
+ * \brief SerialPortUi::showPortInfo
+ * \param idx
+ */
 void SerialPortUi::showPortInfo(int idx)
 {
     if (idx == -1)
@@ -216,6 +337,10 @@ void SerialPortUi::showPortInfo(int idx)
     ui->pidLabel->setText(tr("Product Identifier: %1").arg(list.count() > 6 ? list.at(6) : tr(blankString)));
 }
 
+/*!
+ * \brief SerialPortUi::checkCustomBaudRatePolicy
+ * \param idx
+ */
 void SerialPortUi::checkCustomBaudRatePolicy(int idx)
 {
     bool isCustomBaudRate = !ui->baudRateBox->itemData(idx).isValid();
@@ -227,10 +352,68 @@ void SerialPortUi::checkCustomBaudRatePolicy(int idx)
     }
 }
 
+/*!
+ * \brief SerialPortUi::checkCustomDevicePathPolicy
+ * \param idx
+ */
 void SerialPortUi::checkCustomDevicePathPolicy(int idx)
 {
     bool isCustomPath = !ui->serialPortInfoListBox->itemData(idx).isValid();
     ui->serialPortInfoListBox->setEditable(isCustomPath);
     if (isCustomPath)
         ui->serialPortInfoListBox->clearEditText();
+}
+
+/*!
+ * \brief SerialPortUi::on_pushButton_Clear_clicked
+ */
+void SerialPortUi::on_pushButton_Clear_clicked()
+{
+    ui->textEdit_Send->clear();
+}
+
+/*!
+ * \brief SerialPortUi::on_pushButton_ClearRec_clicked
+ */
+void SerialPortUi::on_pushButton_ClearRec_clicked()
+{
+    ui->textBrowser->clear();
+}
+
+void SerialPortUi::on_pushButton_Send_clicked()
+{
+    if(!mySerialPortThread || !mySerialPortThread->isRunning())
+        return;
+
+    QByteArray _data;
+    if(ui->radioButton_HEX->isChecked()){
+        QString str;
+        bool ok;
+        int _hex;
+        QStringList _hexlist;
+        str = ui->textEdit_Send->toPlainText();
+
+        //! Splits the string into substrings wherever " " occurs
+        _hexlist = str.split(" ", QString::SkipEmptyParts);
+        QStringList::const_iterator constIterator;
+        for (constIterator = _hexlist.constBegin(); constIterator != _hexlist.constEnd();
+             ++constIterator){
+            _hex = (*constIterator).toInt(&ok, 16);
+
+            if(!ok || _hex > 255 || _hex < 0){
+                ui->textBrowser->append(tr("Input data have wrong format !"));
+                return;
+            }
+            _data.append(_hex);
+            qDebug()<< *constIterator << _hex;
+        }
+    }else{
+        _data = ui->textEdit_Send->toPlainText().toUtf8();
+
+    }
+
+
+    mySerialPortThread->mSendData(_data);
+    messageShow(_data);
+
 }

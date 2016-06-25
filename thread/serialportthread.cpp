@@ -1,4 +1,4 @@
-#include "serialportthread.h"
+﻿#include "serialportthread.h"
 #include "qdebug.h"
 #include "parser/protocal.h"
 #include <QtSerialPort/QSerialPort>
@@ -109,19 +109,19 @@ void SerialPortThread::run()
             serial.setParity(__mSettings.parity);
             serial.setStopBits(__mSettings.stopBits);
             serial.setFlowControl(__mSettings.flowControl);
-            emit message("settings changed !");
+            emit message(QString("settings changed !"));
         }//settings changed
 
         if(!serial.isOpen()){
 
             if(serial.open(QIODevice::ReadWrite)){
-                emit message("open successfully !");
+                emit message(QString("open successfully !"));
             }
             else{
                 m_serialPortMutex.lock();
                 m_isStopped = true;
                 m_serialPortMutex.unlock();
-                emit message("open failed !");
+                emit message(QString("open failed !"));
                 break;
             }
         }//if not open , while loop break
@@ -153,7 +153,7 @@ void SerialPortThread::run()
         //unpack the data received
         if(__dataReceived.size() > 0){
 
-            emit message(__dataReceived.toHex());
+            emit message(__dataReceived);
 
 //            for(int i = 0; i < __dataReceived.size(); i ++){
 
@@ -181,7 +181,7 @@ void SerialPortThread::run()
 
     if(serial.isOpen()){
         serial.close();
-        emit message("close successfully !");
+        emit message(QString("close successfully !"));
     }
 
     qDebug("thread exit");

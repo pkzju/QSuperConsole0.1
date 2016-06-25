@@ -253,7 +253,7 @@ QPushButton#Home{
     color: white;
     text-align: center bottom;
     padding-bottom: 2px;
-	font-size:18px;
+	font-size:16px;
 	font-weight: bold;
 }
 
@@ -285,7 +285,7 @@ QPushButton#MathPlot{
     color: white;
     text-align: center bottom;
     padding-bottom: 2px;
-	font-size:18px;
+	font-size:16px;
 	font-weight: bold;
 }
 
@@ -316,7 +316,7 @@ QPushButton#Communication{
     color: white;
     text-align: center bottom;
     padding-bottom: 2px;
-	font-size:18px;
+	font-size:16px;
 	font-weight: bold;
 }
 
@@ -347,7 +347,7 @@ QPushButton#canBtn{
     color: white;
     text-align: center bottom;
     padding-bottom: 2px;
-	font-size:18px;
+	font-size:16px;
 	font-weight: bold;
 }
 
@@ -374,7 +374,7 @@ QPushButton#serialportBtn{
     color: white;
     text-align: center bottom;
     padding-bottom: 2px;
-	font-size:18px;
+	font-size:16px;
 	font-weight: bold;
 }
 

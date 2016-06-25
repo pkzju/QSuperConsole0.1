@@ -1,4 +1,4 @@
-#ifndef HOMEWINDOW_H
+﻿#ifndef HOMEWINDOW_H
 #define HOMEWINDOW_H
 
 #include <QCanBusFrame>
@@ -6,6 +6,7 @@
 #include <QtCore>
 
 #include "dialogs/settingdialog.h"
+#include"userui/serialportsettingsdialog.h"
 #include "fanmotor/fpublic.h"
 
 class QPushButton;

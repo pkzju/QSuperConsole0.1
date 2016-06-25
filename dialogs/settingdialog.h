@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 pkzju
 **
@@ -14,7 +14,7 @@
 #define SETTINGDIALOG_H
 #include "QFramer/fbasedialog.h"
 
-#include"userui/serialportsettingsdialog.h"
+
 
 class SettingDialog : public FBaseDialog
 {
@@ -22,7 +22,6 @@ class SettingDialog : public FBaseDialog
 public:
     explicit SettingDialog(QWidget *parent = 0);
     void initUI();
-    void initConnect();
 
 signals:
 

@@ -1,5 +1,6 @@
 ﻿#include "tcpserverframe.h"
 #include "ui_tcpserverframe.h"
+#include <QtCore>
 
 TcpServerFrame::TcpServerFrame(QWidget *parent) :
     QFrame(parent),
@@ -9,11 +10,27 @@ TcpServerFrame::TcpServerFrame(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //! Read settings from file: "/SuperConsole.ini"
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    settings.beginGroup("TcpPortSettings");
+    m_port = settings.value("Port", "6474").toUInt();
+    settings.endGroup();
+
+    ui->lineEdit_port->setText(QString::number(m_port));
+
+    ui->pushButton_close->setEnabled(false);
     connect(m_tcpServer, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 }
 
 TcpServerFrame::~TcpServerFrame()
 {
+    //! Save settings to file: "/SuperConsole.ini"
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    qDebug(qPrintable(QDir::currentPath() + "/SuperConsole.ini"));
+    settings.beginGroup("TcpPortSettings");
+    settings.setValue("Port", m_port);
+    settings.endGroup();
+
     delete ui;
 }
 
@@ -22,8 +39,8 @@ TcpServerFrame::~TcpServerFrame()
  */
 void TcpServerFrame::on_pushButton_start_clicked()
 {
-    quint16 _port = 6474;
-    if(!m_tcpServer->listen(QHostAddress::Any, _port)){
+    m_port = ui->lineEdit_port->text().toUShort();
+    if(!m_tcpServer->listen(QHostAddress::Any, m_port)){
         return;
     }
     ui->pushButton_start->setEnabled(false);
@@ -104,4 +121,12 @@ void TcpServerFrame::on_pushButton_send_clicked()
     //! Write data to the socket cache and send
     m_currentTcpServerSocket->write(block);
 
+}
+
+/*!
+ * \brief TcpServerFrame::on_pushButton_send_2_clicked
+ */
+void TcpServerFrame::on_pushButton_send_2_clicked()
+{
+    ui->textBrowser->clear();
 }

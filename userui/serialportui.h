@@ -1,4 +1,4 @@
-#ifndef SERIALPORTUI_H
+﻿#ifndef SERIALPORTUI_H
 #define SERIALPORTUI_H
 
 #include <QDialog>
@@ -35,16 +35,18 @@ public:
 private slots:
 
     void messageShow(const QString &s);
-
+    void messageShow(const QByteArray &data);
     void showPortInfo(int idx);
     void checkCustomBaudRatePolicy(int idx);
     void checkCustomDevicePathPolicy(int idx);
 
     void on_searchButton_clicked();
-
     void on_Button_Close_clicked();
-
     void on_Button_Open_clicked();
+    void on_pushButton_Clear_clicked();
+    void on_pushButton_ClearRec_clicked();
+
+    void on_pushButton_Send_clicked();
 
 private:
     Ui::SerialPortUi *ui;

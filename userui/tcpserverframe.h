@@ -28,10 +28,14 @@ private slots:
     void readSocked();
     void on_pushButton_send_clicked();
 
+    void on_pushButton_send_2_clicked();
+
 private:
     Ui::TcpServerFrame *ui;
     QTcpServer *m_tcpServer;
     QTcpSocket *m_currentTcpServerSocket;
+
+    quint16 m_port;
 };
 
 #endif // TCPSERVERFRAME_H

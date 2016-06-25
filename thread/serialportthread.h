@@ -1,4 +1,4 @@
-#ifndef SERIALPORTTHREAD_H
+﻿#ifndef SERIALPORTTHREAD_H
 #define SERIALPORTTHREAD_H
 #include <QThread>
 #include <QMutex>
@@ -21,6 +21,7 @@ public:
 
 signals:
     void message(const QString &s);
+    void message(const QByteArray &data);
 
 private:
     static SerialPortThread* s_instance;

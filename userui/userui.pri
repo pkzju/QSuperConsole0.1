@@ -8,9 +8,9 @@ FORMS += \
     $$PWD/fanmotorui.ui \
     $$PWD/loginframe.ui \
     $$PWD/groupmonitorui.ui \
-    $$PWD/networkframe.ui \
     $$PWD/tcpclientframe.ui \
-    $$PWD/tcpserverframe.ui
+    $$PWD/tcpserverframe.ui \
+    $$PWD/tcpportsettings.ui
 
 
 HEADERS += \
@@ -26,7 +26,8 @@ HEADERS += \
     $$PWD/groupmonitorui.h \
     $$PWD/siglemotorframe.h \
     $$PWD/tcpclientframe.h \
-    $$PWD/tcpserverframe.h
+    $$PWD/tcpserverframe.h \
+    $$PWD/tcpportsettings.h
 
 
 SOURCES += \
@@ -42,5 +43,6 @@ SOURCES += \
     $$PWD/groupmonitorui.cpp \
     $$PWD/siglemotorframe.cpp \
     $$PWD/tcpclientframe.cpp \
-    $$PWD/tcpserverframe.cpp
+    $$PWD/tcpserverframe.cpp \
+    $$PWD/tcpportsettings.cpp
 

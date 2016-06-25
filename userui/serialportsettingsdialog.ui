@@ -55,23 +55,7 @@ QCheckBox{
 QRadioButton{
 	font-size: 14px;
 	alignment:center}
-/* ******************QGroupBox****************** */
-QGroupBox {
-	border: 0.5px solid rgba(12, 112, 208, 255);
-    margin-top: 5px;  /*leave space at the top for the title */
-	padding-top: 8px;
-	font-size: 14px;
-}
 
-QGroupBox::title {
-    subcontrol-origin: margin;
-	/* position at the top center */
-    subcontrol-position: top left; 
-    /*padding: 5px 5px;*/
-    font-size: 14px;
-    font-weight:  bold;
-    color:rgb(60, 104, 137);
-}
 </string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
