@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::TcpServerFrame *ui;
     QTcpServer *m_tcpServer;
-    QTcpSocket *m_tcpServerSocket;
+    QTcpSocket *m_currentTcpServerSocket;
 };
 
 #endif // TCPSERVERFRAME_H

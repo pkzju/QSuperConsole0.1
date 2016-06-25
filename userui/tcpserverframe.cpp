@@ -5,7 +5,7 @@ TcpServerFrame::TcpServerFrame(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::TcpServerFrame)
   ,m_tcpServer{new QTcpServer(this)}
-  ,m_tcpServerSocket{Q_NULLPTR}
+  ,m_currentTcpServerSocket{Q_NULLPTR}
 {
     ui->setupUi(this);
 
@@ -48,13 +48,10 @@ void TcpServerFrame::on_pushButton_close_clicked()
  */
 void TcpServerFrame::onNewConnection()
 {
-
-    if(m_tcpServerSocket)
-        m_tcpServerSocket->deleteLater();
-
-    m_tcpServerSocket = m_tcpServer->nextPendingConnection();
-    connect(m_tcpServerSocket, SIGNAL(disconnected()), m_tcpServerSocket, SLOT(deleteLater()));
-    connect(m_tcpServerSocket, SIGNAL(readyRead()),this, SLOT(readSocked()));
+    QTcpSocket * _tcpServerSocket = m_tcpServer->nextPendingConnection();
+    m_currentTcpServerSocket = _tcpServerSocket;
+    connect(_tcpServerSocket, SIGNAL(disconnected()),  _tcpServerSocket, SLOT(deleteLater()));
+    connect(_tcpServerSocket, SIGNAL(readyRead()), this, SLOT(readSocked()));
 }
 
 /*!
@@ -88,7 +85,7 @@ void TcpServerFrame::readSocked()
  */
 void TcpServerFrame::on_pushButton_send_clicked()
 {
-    if(!m_tcpServerSocket || m_tcpServerSocket->state() != QAbstractSocket::ConnectedState)
+    if(!m_currentTcpServerSocket || m_currentTcpServerSocket->state() != QAbstractSocket::ConnectedState)
         return;
 
     QByteArray block;
@@ -105,6 +102,6 @@ void TcpServerFrame::on_pushButton_send_clicked()
     out << (quint16) (block.size()-sizeof(quint16));
 
     //! Write data to the socket cache and send
-    m_tcpServerSocket->write(block);
+    m_currentTcpServerSocket->write(block);
 
 }
