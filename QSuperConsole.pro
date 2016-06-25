@@ -6,7 +6,7 @@
 
 QT += core gui printsupport
 greaterThan(QT_MAJOR_VERSION, 4) {
-    QT += widgets serialport serialbus
+    QT += widgets serialport serialbus network
 } else {
     include($$QTSERIALPORT_PROJECT_ROOT/src/serialport/qt4support/serialport.prf)
 }

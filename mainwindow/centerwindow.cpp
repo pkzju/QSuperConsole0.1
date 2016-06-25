@@ -31,6 +31,8 @@
 #include "userui/homewindow.h"
 
 #include "userui/serialportui.h"
+#include "userui/tcpclientframe.h"
+#include "userui/tcpserverframe.h"
 
 
 CenterWindow::CenterWindow(QWidget *parent) :
@@ -61,7 +63,11 @@ void CenterWindow::initUI()
     homewindow *m_home{homewindow::getInstance()};
 
     SerialPortUi *serialport{new SerialPortUi};
+    TcpClientFrame *_TcpClientFrame = new TcpClientFrame(this);
+    TcpServerFrame *_TcpServerFrame = new TcpServerFrame(this);
 
+    addWidget(tr("TcpClient"),"serialportBtn", _TcpClientFrame);
+    addWidget(tr("TcpServer"),"serialportBtn", _TcpServerFrame);
     addWidget(tr("Home"), "Home", m_home);
     addWidget(tr("Scope"), "MathPlot", m_plotUi);
     addWidget(tr("Canbus"),"Communication", m_canUi);
