@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 **
 **
@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     // TODO uncomment this line before release
     // right now we always need it
-//    QLoggingCategory::setFilterRules(QStringLiteral("qt.modbus* = true"));
+    QLoggingCategory::setFilterRules(QStringLiteral("qt.modbus* = true"));
 
     QApplication app(argc, argv);
     QApplication::setOrganizationName("ZJU");

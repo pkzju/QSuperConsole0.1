@@ -20,6 +20,8 @@ TcpServerFrame::TcpServerFrame(QWidget *parent) :
 
     ui->pushButton_close->setEnabled(false);
     connect(m_tcpServer, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+
+    ui->textBrowser->document ()->setMaximumBlockCount (50);
 }
 
 TcpServerFrame::~TcpServerFrame()

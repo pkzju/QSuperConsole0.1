@@ -57,22 +57,22 @@ void CenterWindow::initUI()
 {
     setObjectName(tr("needBorder"));
 
-    CANUi *m_canUi{CANUi::getS_Instance()};
-    MPlotUi *m_plotUi{MPlotUi::getInstance()};
-    ModbusUi *m_modbusui{ModbusUi::getInstance()};
+//    CANUi *m_canUi{CANUi::getS_Instance()};
+//    MPlotUi *m_plotUi{MPlotUi::getInstance()};
+//    ModbusUi *m_modbusui{ModbusUi::getInstance()};
     homewindow *m_home{homewindow::getInstance()};
 
-    SerialPortUi *serialport{new SerialPortUi};
-    TcpClientFrame *_TcpClientFrame = new TcpClientFrame(this);
-    TcpServerFrame *_TcpServerFrame = new TcpServerFrame(this);
+//    SerialPortUi *serialport{new SerialPortUi};
+//    TcpClientFrame *_TcpClientFrame = new TcpClientFrame(this);
+//    TcpServerFrame *_TcpServerFrame = new TcpServerFrame(this);
 
-    addWidget(tr("TcpClient"),"serialportBtn", _TcpClientFrame);
-    addWidget(tr("TcpServer"),"serialportBtn", _TcpServerFrame);
+//    addWidget(tr("TcpClient"),"serialportBtn", _TcpClientFrame);
+//    addWidget(tr("TcpServer"),"serialportBtn", _TcpServerFrame);
     addWidget(tr("Home"), "Home", m_home);
-    addWidget(tr("Scope"), "MathPlot", m_plotUi);
-    addWidget(tr("Canbus"),"Communication", m_canUi);
-    addWidget(tr("Modbus"),"Communication", m_modbusui);
-    addWidget(tr("COMPort"),"serialportBtn", serialport);
+//    addWidget(tr("Scope"), "MathPlot", m_plotUi);
+//    addWidget(tr("Canbus"),"Communication", m_canUi);
+//    addWidget(tr("Modbus"),"Communication", m_modbusui);
+//    addWidget(tr("COMPort"),"serialportBtn", serialport);
 
     setAlignment(TopCenter);
 }

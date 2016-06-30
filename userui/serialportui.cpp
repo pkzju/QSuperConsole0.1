@@ -84,6 +84,8 @@ void SerialPortUi::initUI()
 
     ui->Button_Close->setEnabled(false);
     ui->pushButton_Send->setEnabled(false);
+
+    ui->textBrowser->document ()->setMaximumBlockCount (50);
 }
 
 /*!

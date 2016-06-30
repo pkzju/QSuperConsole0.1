@@ -1,4 +1,4 @@
-#include "siglemotorframe.h"
+﻿#include "siglemotorframe.h"
 #include "ui_siglemotorframe.h"
 #include "fanmotorui.h"
 #include <QTableWidget>

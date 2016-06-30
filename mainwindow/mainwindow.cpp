@@ -15,6 +15,8 @@
 #include "functionpages/rightfloatwindow.h"
 #include "lamp/qcw_indicatorlamp.h"
 
+#include "dialogs/siglegroupdialog.h"
+
 MainWindow* MainWindow::instance = Q_NULLPTR;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -32,8 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    qDebug("mainwindow exit");
+    //! Delete static sigleGroupDialog (include static fanmotorui)
+    sigleGroupDialog::deleteInstance();
+
     instance = Q_NULLPTR;
+    qDebug("mainwindow exit");
 }
 
 void MainWindow::initData()
@@ -42,16 +47,16 @@ void MainWindow::initData()
 
 void MainWindow::initUI()
 {
-    // set centerWindow
+    //! set centerWindow
     setCentralWidget(centerWindow);
     centerWindow->getNavgationBar()->setCurrentIndex(0);
 
-    // set setting Menu
+    //! set setting Menu
     getTitleBar()->getSettingButton()->setMenu(settingMenu);
     getQSystemTrayIcon()->setContextMenu(settingMenu);
     getFlyWidget()->setMenu(settingMenu);
 
-    // set theme Menu
+    //! set theme Menu
     getTitleBar()->getSkinButton()->setMenu(themeMenu);
 
     QGridLayout *gdLayout = new QGridLayout();
@@ -107,8 +112,6 @@ void MainWindow::initConnect()
     connect(this, SIGNAL(Hidden()), rightfloatWindow, SLOT(hide()));
 
 }
-
-
 
 MainWindow* MainWindow::getInstance()
 {

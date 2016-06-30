@@ -1,4 +1,4 @@
-#include "canui.h"
+﻿#include "canui.h"
 #include "ui_canui.h"
 
 #include <QTime>
@@ -166,6 +166,8 @@ void CANUi::initUI()
     ui->comboBox_datatype->addItem("uint8", uint8);
     ui->comboBox_datatype->addItem("uint16", uint16);
     ui->comboBox_datatype->addItem("uint32", uint32);
+
+    ui->textBrowser->document ()->setMaximumBlockCount (50);
 
 }
 

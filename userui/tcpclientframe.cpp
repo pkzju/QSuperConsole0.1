@@ -31,6 +31,8 @@ TcpClientFrame::TcpClientFrame(QWidget *parent) :
     connect(m_tcpClientSocked, SIGNAL(error(QAbstractSocket::SocketError)),
             this, SLOT(dispalyError(QAbstractSocket::SocketError)));
 
+    ui->textBrowser->document ()->setMaximumBlockCount (50);
+
 }
 
 TcpClientFrame::~TcpClientFrame()

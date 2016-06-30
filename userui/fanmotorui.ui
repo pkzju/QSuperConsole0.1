@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>856</width>
-    <height>711</height>
+    <width>874</width>
+    <height>710</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1533,7 +1533,7 @@ QPushButton:hover{
               </sizepolicy>
              </property>
              <property name="text">
-              <string>ModBus</string>
+              <string>ModBus RTU</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -1549,7 +1549,7 @@ QPushButton:hover{
               </sizepolicy>
              </property>
              <property name="text">
-              <string>TCP/IP</string>
+              <string>Modbus TCP</string>
              </property>
              <property name="checked">
               <bool>false</bool>

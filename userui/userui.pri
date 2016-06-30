@@ -10,7 +10,8 @@ FORMS += \
     $$PWD/groupmonitorui.ui \
     $$PWD/tcpclientframe.ui \
     $$PWD/tcpserverframe.ui \
-    $$PWD/tcpportsettings.ui
+    $$PWD/tcpportsettings.ui \
+    $$PWD/siglemotorframe.ui
 
 
 HEADERS += \
@@ -45,4 +46,6 @@ SOURCES += \
     $$PWD/tcpclientframe.cpp \
     $$PWD/tcpserverframe.cpp \
     $$PWD/tcpportsettings.cpp
+
+DISTFILES +=
 

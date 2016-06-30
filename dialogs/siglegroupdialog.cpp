@@ -1,4 +1,4 @@
-#include "siglegroupdialog.h"
+﻿#include "siglegroupdialog.h"
 
 #include <QVBoxLayout>
 #include "userui/fanmotorui.h"
@@ -15,14 +15,14 @@ sigleGroupDialog::sigleGroupDialog(QWidget *parent):
 
 sigleGroupDialog::~sigleGroupDialog()
 {
-    qDebug("sigleGroupDialog exit");
     FanMotorUi::deleteInstance();
     s_Instance = Q_NULLPTR;
+    qDebug("sigleGroupDialog exit");
 }
 
 void sigleGroupDialog::initUI()
 {
-    normalSize = QSize(850, 730);
+    normalSize = QSize(875, 730);
     setSizeGripEnabled(true);
     getTitleBar()->getTitleLabel()->setText(tr("Group"));
     QVBoxLayout* mainLayout = (QVBoxLayout*)layout();

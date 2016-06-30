@@ -1,4 +1,4 @@
-#include "groupmonitordialog.h"
+﻿#include "groupmonitordialog.h"
 #include "userui/groupmonitorui.h"
 
 #include "fanmotor/qmotor.h"
@@ -32,7 +32,7 @@ GroupMonitorDialog::~GroupMonitorDialog()
 
 void GroupMonitorDialog::initUI()
 {
-    normalSize = QSize(660, 360);
+    normalSize = QSize(660, 510);
     getTitleBar()->getTitleLabel()->setText(tr("Group"));
     QVBoxLayout* mainLayout = (QVBoxLayout*)layout();
 

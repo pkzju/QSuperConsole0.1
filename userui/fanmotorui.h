@@ -1,9 +1,10 @@
-#ifndef FANMOTORUI_H
+﻿#ifndef FANMOTORUI_H
 #define FANMOTORUI_H
 
 #include <QWidget>
 #include <QModbusDataUnit>
 #include <QCanBusFrame>
+#include <QModbusTcpServer>
 
 #include "fanmotor/fanmotor.h"
 #include "canopen/canfestival.h"
@@ -27,7 +28,14 @@ class QcwIndicatorLamp;
 class QMotor;
 struct FanMotorController;
 
+class HModbusTcpServer : public QModbusTcpServer{
+    Q_OBJECT
 
+public:
+    explicit HModbusTcpServer(QObject *parent = nullptr);
+    QModbusResponse processRequest(const QModbusPdu &request) Q_DECL_OVERRIDE;
+
+};
 
 class FanMotorUi : public QWidget
 {
@@ -53,8 +61,7 @@ public:
 
     QStatusBar *statusBar();
     void changeGroup(FanGroupInfo *group);
-
-
+    QModbusResponse processRequest(const QModbusPdu &request);
 
 private slots:
 
@@ -87,33 +94,41 @@ private slots:
     void readInitFGAReady();
 
     void onRunStateButtonClicked();
-    void onMotorStartButtonClicked();//for sigle motor ui
-    void onMotorStopButtonClicked();//for sigle motor ui
+    void onMotorStartButtonClicked();//!< For sigle motor ui
+    void onMotorStopButtonClicked();//!< For sigle motor ui
     void onFanButtonclicked();
     void onSigleMotorInitSetClicked(QTableWidget *table, quint16 data);
     void onSetPI();
     void onReadPI();
     void readPIReady();
-private:
 
-
+    void onTcpServerStateChanged(int state);
 signals:
     void updatePlotUi(FanMotorController motorctr);
     void updateSigleMotor(int arg1);
     void updateSigleMotorState(bool state);
 
 private:
+    QModbusResponse processReadHoldingRegistersRequest(const QModbusRequest &rqst);
+    QModbusResponse readBytes(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
+    QModbusResponse processWriteMultipleRegistersRequest(const QModbusRequest &request);
+    QModbusResponse processWriteSingleRegisterRequest(const QModbusRequest &rqst);
+    QModbusResponse writeSingle(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
+
+private:
     static FanMotorUi *s_Instance;
 
     Ui::FanMotorUi *ui;
     QVector<FanGroupInfo *> *m_groups;
-    QModbusClient *modbusDevice;
+    QModbusClient *modbusDevice;//!< Modbus RTU device
     QVector<QMotor *> *m_motors;
     QTimer *m_pollingTimer;
     s_BOARD *m_masterBoard;
     CanThread *m_canThread;
     FanGroupInfo *m_currentGroup;
-    QTimer *m_monitorTimer;
+    QModbusClient* modbusTcpDevice;//!< Modbus tcp client device
+    HModbusTcpServer *modbusTcpServer;//!< Modbus tcp server device
+
 
 
     int m_realTimeServerAddress;
@@ -127,11 +142,6 @@ private:
     int m_monitorTimeroutCount = 0;
     QVector<QPushButton*> m_motorButtons;
     bool isSigleMotorMonitor = false;
-
-
-
-
-
 };
 
 #endif // FANMOTORUI_H

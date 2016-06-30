@@ -1,4 +1,4 @@
-#include "modbusui.h"
+﻿#include "modbusui.h"
 #include "ui_modbusui.h"
 #include "userui/writeregistermodel.h"
 #include <QModbusTcpClient>
