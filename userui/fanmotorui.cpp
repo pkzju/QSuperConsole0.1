@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QTableWidget>
 #include <QHostAddress>
+#include <QNetworkInterface>
 
 #include <QDebug>
 
@@ -600,11 +601,28 @@ void FanMotorUi::onStateChanged(int state)
             QString _hostAddressString = settings.value("HostAddress", "127.0.0.1").toString();
             quint16 _port = settings.value("Port", "6474").toUInt();
             settings.endGroup();
+
+//            QString ipAddress;
+//            QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
+//            //! use the first non-localhost IPv4 address
+//            for (int i = 0; i < ipAddressesList.size(); ++i) {
+//                if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
+//                    ipAddressesList.at(i).toIPv4Address() && ipAddressesList.at(i).isInSubnet(_hostAddressString, 24)) {
+//                    ipAddress = ipAddressesList.at(i).toString();
+//                    qDebug()<<ipAddress;
+//                    break;
+//                }
+//            }
+//            //! if we did not find one, use IPv4 localhost
+//            if (ipAddress.isEmpty())
+//                ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
+
+
             //! modbus server connect
             if (modbusTcpServer->state() != QModbusDevice::ConnectedState) {
                 _port++;
-                modbusTcpServer->setConnectionParameter(QModbusDevice::NetworkPortParameter, _port);
-                modbusTcpServer->setConnectionParameter(QModbusDevice::NetworkAddressParameter, _hostAddressString);
+                modbusTcpServer->setConnectionParameter(QModbusDevice::NetworkPortParameter, 6475);
+                modbusTcpServer->setConnectionParameter(QModbusDevice::NetworkAddressParameter,  "172.27.35.1");
 
                 //! Now try connect modbus server device
                 if (!modbusTcpServer->connectDevice()) {//!< Connect failed

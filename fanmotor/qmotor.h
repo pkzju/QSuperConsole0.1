@@ -27,7 +27,7 @@ enum FmotorCommand:unsigned short{
 
 const quint16 g_motorCommandAddress = 0x002b;
 const quint16 g_commonCommandCount = 1;
-const quint16 g_readCommandAddress = 2;
+const quint16 g_readCommandAddress = 3;
 struct FCommandRegister{
     FmotorCommand  m_command;    // 0x002b
     quint16  m_registerAdd;     // 0x002c
