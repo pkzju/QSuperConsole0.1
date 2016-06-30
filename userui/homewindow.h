@@ -60,7 +60,7 @@ private slots:
     void handleDeviceError(QModbusDevice::Error newError);
 
     void clientToConnect();
-
+public slots:
     void writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
 
 signals:
