@@ -1,4 +1,4 @@
-#ifndef FPUBLIC_H
+﻿#ifndef FPUBLIC_H
 #define FPUBLIC_H
 
 #include "qmotor.h"
@@ -19,7 +19,6 @@ public:
     quint16 m_fanMaxNumber;
     QVector<QMotor *> m_motors;
 
-    bool isMonitor;
     GroupMonitorDialog *m_monitorDialog;
 
 };

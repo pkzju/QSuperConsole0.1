@@ -40,11 +40,17 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="autoScroll">
+      <bool>true</bool>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <property name="textElideMode">
       <enum>Qt::ElideRight</enum>
      </property>
      <property name="rowCount">
-      <number>32</number>
+      <number>16</number>
      </property>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>80</number>
@@ -69,22 +75,6 @@
        <string>1</string>
       </property>
      </row>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
      <row/>
      <row/>
      <row/>

@@ -5,6 +5,7 @@
 #include <QModbusDataUnit>
 #include <QtCore>
 #include <QModbusTcpServer>
+#include <QModbusTcpClient>
 
 #include "dialogs/settingdialog.h"
 #include"userui/serialportsettingsdialog.h"
@@ -58,12 +59,24 @@ private slots:
     void onStateChanged(int state);
     void handleDeviceError(QModbusDevice::Error newError);
 
+    void clientToConnect();
+
+    void writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
+
+signals:
+    //! Let modbus master send read request to slave
+    void readMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
+    //! Let modbus master send write request to slave
+    void writeMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
+
+
 private:
     Ui::homewindow *ui;
     QVector<QPushButton*> mGroup;
     QVector<FanGroupInfo*> mGroups;
     FanGroupInfo *mCurrentGroupInfo;
     FModbusTcpServer *modbusDevice;
+    QModbusClient* modbusTcpClient;
 
     CommunicationMode m_communication;
     SerialPortSettings::Settings mSerialPortSettings;

@@ -197,7 +197,7 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FanMotorUi)
   , m_groups(Q_NULLPTR)
-  , modbusDevice(Q_NULLPTR)
+  , modbusRtuDevice(Q_NULLPTR)
   , m_motors(Q_NULLPTR)
   , m_masterBoard{new s_BOARD{}}
   , m_canThread{CanThread::getInstance()}
@@ -307,6 +307,8 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
 
     ui->textBrowser->document ()->setMaximumBlockCount (50);//!< Set textBrowser max block count
 
+
+
 }
 
 /*!
@@ -362,6 +364,9 @@ void FanMotorUi::on_connectButton_clicked()
             if (!modbusTcpDevice->connectDevice()) {//!< Connect failed
                 statusBar()->showMessage(tr("Modbus connect failed: ") + modbusTcpDevice->errorString(), 3000);
             } else {//!< Connect  successfully
+                homewindow * _homewindow = homewindow::getInstance();
+                connect(_homewindow, &homewindow::readMotorRegister, this, &FanMotorUi::readFromMotor);
+                connect(_homewindow, &homewindow::writeMotorRegister, this, &FanMotorUi::writeToMotor);
             }
         }
     }
@@ -426,48 +431,48 @@ void FanMotorUi::on_connectButton_clicked()
         settings.endGroup();
 
         //![2] Make sure modbus device was not created yet
-        if (modbusDevice) {
-            modbusDevice->disconnectDevice();
-            modbusDevice->deleteLater();
-            modbusDevice = Q_NULLPTR;
+        if (modbusRtuDevice) {
+            modbusRtuDevice->disconnectDevice();
+            modbusRtuDevice->deleteLater();
+            modbusRtuDevice = Q_NULLPTR;
         }
 
         //![3] Create modbus RTU client device and monitor error,state
-        modbusDevice = new QModbusRtuSerialMaster(this);
-        connect(modbusDevice, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
-            statusBar()->showMessage(modbusDevice->errorString(), 3000);
+        modbusRtuDevice = new QModbusRtuSerialMaster(this);
+        connect(modbusRtuDevice, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
+            statusBar()->showMessage(modbusRtuDevice->errorString(), 3000);
         });
-        if (!modbusDevice) {
+        if (!modbusRtuDevice) {
             statusBar()->showMessage(tr("Could not create Modbus client."), 3000);
             return;
         } else {
-            connect(modbusDevice, &QModbusClient::stateChanged,
+            connect(modbusRtuDevice, &QModbusClient::stateChanged,
                     this, &FanMotorUi::onStateChanged);//!< Monitor modbus device state
         }
 
         statusBar()->clearMessage();//!< Clear status bar first, we will use it
 
         //![4] Set serialport parameter and connect device
-        if (modbusDevice->state() != QModbusDevice::ConnectedState) {
+        if (modbusRtuDevice->state() != QModbusDevice::ConnectedState) {
 
-            modbusDevice->setConnectionParameter(QModbusDevice::SerialPortNameParameter,
+            modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialPortNameParameter,
                                                  mSerialPortSettings.name);
-            modbusDevice->setConnectionParameter(QModbusDevice::SerialBaudRateParameter,
+            modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialBaudRateParameter,
                                                  mSerialPortSettings.baudRate);
-            modbusDevice->setConnectionParameter(QModbusDevice::SerialDataBitsParameter,
+            modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialDataBitsParameter,
                                                  mSerialPortSettings.dataBits);
-            modbusDevice->setConnectionParameter(QModbusDevice::SerialParityParameter,
+            modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialParityParameter,
                                                  mSerialPortSettings.parity);
-            modbusDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter,
+            modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter,
                                                  mSerialPortSettings.stopBits);
 
-            modbusDevice->setTimeout(100);//!< Set response timeout 100ms
-            modbusDevice->setNumberOfRetries(2);//!< Set retry number 2
+            modbusRtuDevice->setTimeout(100);//!< Set response timeout 100ms
+            modbusRtuDevice->setNumberOfRetries(2);//!< Set retry number 2
 
 
             //! Now try connect modbus device
-            if (!modbusDevice->connectDevice()) {//!< Connect failed
-                statusBar()->showMessage(tr("Modbus connect failed: ") + modbusDevice->errorString(), 3000);
+            if (!modbusRtuDevice->connectDevice()) {//!< Connect failed
+                statusBar()->showMessage(tr("Modbus connect failed: ") + modbusRtuDevice->errorString(), 3000);
             } else {//!< Connect  successfully
             }
         }
@@ -516,17 +521,15 @@ void FanMotorUi::on_disconnectButton_clicked()//! close
 
     //! Modbus RTU disconnect
     if(m_communication == CommunicationMode::Modbus){
-        if(!modbusDevice)
+        if(!modbusRtuDevice)
             return;
-        if(modbusDevice->state() == QModbusDevice::ConnectedState){
-            modbusDevice->disconnectDevice();
+        if(modbusRtuDevice->state() == QModbusDevice::ConnectedState){
+            modbusRtuDevice->disconnectDevice();
         }
     }
 
     if(ui->checkBox_monitorASW->isChecked())
         ui->checkBox_monitorASW->setChecked(false);
-    if(ui->checkBox_monitorGSW->isChecked())
-        ui->checkBox_monitorGSW->setChecked(false);
 
 }
 
@@ -538,7 +541,7 @@ void FanMotorUi::onStateChanged(int state)
 {
     bool connected = (state != 0);
 
-    //! Modbus state change
+    //! Modbus RTU state change
     if(ui->radioButton_modbus->isChecked()){
         connected = (state == QModbusDevice::ConnectedState);
         if(connected){
@@ -630,7 +633,6 @@ void FanMotorUi::onStateChanged(int state)
     ui->disconnectButton->setEnabled(connected);
     ui->groupBox_comState->setEnabled(!connected);
 
-    ui->checkBox_monitorGSW->setEnabled(connected);
     ui->checkBox_monitorASW->setEnabled(connected);
     ui->pushButton_InitRead->setEnabled(connected);
     ui->pushButton_InitSetA->setEnabled(connected);
@@ -655,6 +657,9 @@ void FanMotorUi::onTcpServerStateChanged(int state)
 {
     if(state == QModbusDevice::ConnectedState){
         ui->textBrowser->append(tr("Modbus Tcp server connected !"));
+
+        FCommandRegister fcr{FmotorCommand::m_connectToServer , 0, 0};
+        sendCommand(fcr);
     }
     else if(state == QModbusDevice::ConnectingState){
         ui->textBrowser->append(tr("Modbus Tcp server connecting ... !"));
@@ -665,6 +670,111 @@ void FanMotorUi::onTcpServerStateChanged(int state)
     else{
         ui->textBrowser->append(tr("Modbus Tcp server closing ... !"));
     }
+}
+
+/*!
+ * \brief FanMotorUi::readFromMotor  local modbus RTU master send read request to slave
+ * \param motorAdd
+ * \param registerAdd
+ * \param count
+ */
+void FanMotorUi::readFromMotor(quint16 motorAdd, quint16 registerAdd, quint16 count)
+{
+    if(m_communication == CommunicationMode::Modbus){
+        if (!modbusRtuDevice)
+            return;
+
+        int startAddress = registerAdd; //!< register address
+        int numberOfEntries = count; //!< 16bit register number
+        qDebug() <<"Read number Of entries:"<<numberOfEntries;
+        QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
+
+        if (auto *reply = modbusRtuDevice->sendReadRequest(_modbusDataUnit, motorAdd)) {
+            if (!reply->isFinished()){
+                if(registerAdd == g_mSettingsRegisterAddress)
+                    connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitReady);
+                else if(registerAdd == g_mRealTimeRegisterAddress)
+                    connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
+                else if(registerAdd == g_mControllerRegisterAddress)
+                    connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitFGAReady);
+                else if(registerAdd == g_mPIParaRegisterAddress)
+                    connect(reply, &QModbusReply::finished, this, &FanMotorUi::readPIReady);
+            }
+            else
+                delete reply; //!< broadcast replies return immediately
+        } else {
+            ui->textBrowser->append(tr("Read error: ") + modbusRtuDevice->errorString());
+        }
+    }
+
+}
+
+/*!
+ * \brief FanMotorUi::writeToMotor  local modbus RTU master send write request to slave
+ * \param motorAdd
+ * \param registerAdd
+ * \param count
+ */
+void FanMotorUi::writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 count)
+{
+    if(m_communication == CommunicationMode::Modbus){
+        if (!modbusRtuDevice)
+            return;
+
+        //![1] Init data
+        int _address = motorAdd;
+
+        QMotor *motor;
+        foreach(FanGroupInfo *_group, *m_groups){//!< Get corresponding motor
+            //! Judge belong to which group
+            if(motorAdd >= _group->m_startAddress && \
+                    motorAdd < _group->m_startAddress + _group->m_motors.count())
+            {
+                foreach(QMotor *_motor, _group->m_motors){
+                    if(_motor->m_address == motorAdd){
+                        motor = _motor;
+                        break;
+                    }
+                }
+            }
+        }
+        if(!motor){
+            return;
+        }
+        quint16 *buff = (quint16 *)&motor->m_initSetttings;
+
+        //![2] Pack data to a QModbusDataUnit
+        const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
+        int startAddress = registerAdd;
+        int numberOfEntries = count;
+        QModbusDataUnit writeUnit = QModbusDataUnit(table, startAddress, numberOfEntries);
+        for (uint i = 0; i < writeUnit.valueCount(); i++) {
+
+            writeUnit.setValue(i, *buff++);
+        }
+
+        //![3] Send write request to node(adress:)
+        if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, _address)) {
+            if (!reply->isFinished()) {
+                connect(reply, &QModbusReply::finished, this, [this, reply]() {
+                    if (reply->error() == QModbusDevice::ProtocolError) {
+                        ui->textBrowser->append(tr("Write response error: %1 (Mobus exception: 0x%2)")
+                                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16)
+                                                );
+                    } else if (reply->error() != QModbusDevice::NoError) {
+                        ui->textBrowser->append(tr("Write response error: %1 (code: 0x%2)").
+                                                arg(reply->errorString()).arg(reply->error(), -1, 16));
+                    }
+                    reply->deleteLater();
+                });
+            } else {//!< Broadcast replies return immediately
+                reply->deleteLater();
+            }
+        } else {
+            ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
+        }
+    }
+
 }
 
 /*!
@@ -705,7 +815,7 @@ void FanMotorUi::on_spinBox_motorNum_valueChanged(int arg1)
  */
 void FanMotorUi::on_settingsButton_clicked()
 {
-    SettingDialog* settingDialog = new SettingDialog(this);
+    SettingDialog* settingDialog = new SettingDialog();
     settingDialog->exec();//!< exec: if we don't close dialog ,we can't operate other window
 }
 
@@ -737,12 +847,12 @@ void FanMotorUi::deleteInstance()
 FanMotorUi::~FanMotorUi()
 {
     //! If modbus rtu have created , disconnect it and delete
-    if(modbusDevice){
-        disconnect(modbusDevice, &QModbusClient::stateChanged,
+    if(modbusRtuDevice){
+        disconnect(modbusRtuDevice, &QModbusClient::stateChanged,
                 this, &FanMotorUi::onStateChanged);
-        if(modbusDevice->state() != QModbusDevice::UnconnectedState)
-            modbusDevice->disconnectDevice();
-        modbusDevice->deleteLater();
+        if(modbusRtuDevice->state() != QModbusDevice::UnconnectedState)
+            modbusRtuDevice->disconnectDevice();
+        modbusRtuDevice->deleteLater();
     }
 
     //! If modbus tcp have created , disconnect it and delete
@@ -803,11 +913,10 @@ void FanMotorUi::changeGroup(FanGroupInfo *group)
     ui->spinBox_InitAdress->setMinimum(_startAddress); //!< SpinBox_InitAdress for first fan in current group
     ui->spinBox_InitAdress->setMaximum(_startAddress + _fanNumber - 1); //!< Last address in current group
 
-    ui->checkBox_monitorGSW->setChecked(m_currentGroup->isMonitor); //!< Is monitor
 
 }
 
-//! Init parameter set and read fuction part start *********************************
+/* Init parameter set and read fuction part start *********************************/
 
 /*!
  * \brief Set one fan Init parameter  slot fuction
@@ -815,15 +924,14 @@ void FanMotorUi::changeGroup(FanGroupInfo *group)
 void FanMotorUi::on_pushButton_InitSetF_clicked()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         //![1] Init data
         QAbstractItemModel *__model = ui->table_settings->model();
         int _address = ui->spinBox_InitAdress->value();//Server address
-        int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//Position at container
-        quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
-
+        QMotor motor(0);
+        quint16 *buff = (quint16 *)&motor.m_initSetttings;
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
             for(unsigned char j = 1; j<5; j++){
@@ -838,7 +946,7 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
         *buff = (_fanType << 12) + (_fanPressure << 10) + (_fanreGulation << 8) + (_fanControlMode << 7);
 
         //![3] Pack data to a QModbusDataUnit
-        buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        buff = (quint16 *)&motor.m_initSetttings;
         const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
         int startAddress = g_mSettingsRegisterAddress;
         int numberOfEntries = g_mSettingsRegisterCount;
@@ -850,7 +958,7 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
         qDebug() <<writeUnit.valueCount();
 
         //![4] Send write request to node(adress:)
-        if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+        if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, _address)) {
             if (!reply->isFinished()) {
                 connect(reply, &QModbusReply::finished, this, [this, reply]() {
                     if (reply->error() == QModbusDevice::ProtocolError) {
@@ -867,7 +975,7 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
                 reply->deleteLater();
             }
         } else {
-            ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+            ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
         }
     }
 
@@ -878,8 +986,8 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
         //![1] Init data
         QAbstractItemModel *__model = ui->table_settings->model();
         int _address = ui->spinBox_InitAdress->value();//!< Motor address
-        int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//!< Position at container
-        quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        QMotor motor(0);
+        quint16 *buff = (quint16 *)&motor.m_initSetttings;
 
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
@@ -895,7 +1003,7 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
         *buff = (_fanType << 12) + (_fanPressure << 10) + (_fanreGulation << 8) + (_fanControlMode << 7);
 
         //![3] Pack data to a QModbusDataUnit
-        buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        buff = (quint16 *)&motor.m_initSetttings;
         const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
 
         //! 0:15 register address , 16:31 motor address
@@ -939,15 +1047,15 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
 void FanMotorUi::on_pushButton_InitSetG_clicked()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         //![1] Init data
         QAbstractItemModel *__model = ui->table_settings->model();
         int _startAddress = ui->spinBox_InitAdress->minimum();//!< Server address
         int _lastAddress = ui->spinBox_InitAdress->maximum();
-        int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//!< Position at container
-        quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        QMotor motor(0);
+        quint16 *buff = (quint16 *)&motor.m_initSetttings;
 
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
@@ -964,7 +1072,7 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
 
 
         //![3] Pack data to a QModbusDataUnit
-        buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        buff = (quint16 *)&motor.m_initSetttings;
         const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
         int startAddress = g_mSettingsRegisterAddress;
         int numberOfEntries = g_mSettingsRegisterCount;
@@ -978,7 +1086,7 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
         //![4] Send write request to node(adress:i) at current group
         for(int i = _startAddress; i <= _lastAddress; i++){
 
-            if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, i)) {
+            if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, i)) {
                 if (!reply->isFinished()) {
                     connect(reply, &QModbusReply::finished, this, [this, reply]() {
                         if (reply->error() == QModbusDevice::ProtocolError) {
@@ -995,7 +1103,7 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
                     reply->deleteLater();
                 }
             } else {
-                ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+                ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
             }
         }
     }
@@ -1008,8 +1116,8 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
         QAbstractItemModel *__model = ui->table_settings->model();
         int _startAddress = ui->spinBox_InitAdress->minimum();//!< Server address
         int _lastAddress = ui->spinBox_InitAdress->maximum();
-        int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//!< Position at container
-        quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        QMotor motor(0);
+        quint16 *buff = (quint16 *)&motor.m_initSetttings;
 
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
@@ -1026,7 +1134,7 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
 
 
         //![3] Pack data to a QModbusDataUnit
-        buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        buff = (quint16 *)&motor.m_initSetttings;
         const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
 
         //! 0:15 register address , 16:31 motor address
@@ -1076,14 +1184,14 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
 void FanMotorUi::on_pushButton_InitSetA_clicked()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         //![1] Init data
         QAbstractItemModel *__model = ui->table_settings->model();
         int _address = 0;//!< Broadcast address
-        int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//Position at container
-        quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        QMotor motor(0);
+        quint16 *buff = (quint16 *)&motor.m_initSetttings;
 
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
@@ -1099,7 +1207,7 @@ void FanMotorUi::on_pushButton_InitSetA_clicked()
         *buff = (_fanType << 12) + (_fanPressure << 10) + (_fanreGulation << 8) + (_fanControlMode << 7);
 
         //![3] Pack data to a QModbusDataUnit
-        buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        buff = (quint16 *)&motor.m_initSetttings;
         const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
         int startAddress = g_mSettingsRegisterAddress;
         int numberOfEntries = g_mSettingsRegisterCount;
@@ -1111,13 +1219,13 @@ void FanMotorUi::on_pushButton_InitSetA_clicked()
         qDebug() <<writeUnit.valueCount();
 
         //![4] Send write request to node(adress:0) : Broadcast
-        if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+        if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, _address)) {
             if (!reply->isFinished()) {
             } else {//!< Broadcast replies return immediately
                 reply->deleteLater();
             }
         } else {
-            ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+            ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
         }
     }
 
@@ -1128,8 +1236,8 @@ void FanMotorUi::on_pushButton_InitSetA_clicked()
         //![1] Init data
         QAbstractItemModel *__model = ui->table_settings->model();
         int _address = 0;//!< Broadcast address
-        int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();//Position at container
-        quint16 *buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        QMotor motor(0);
+        quint16 *buff = (quint16 *)&motor.m_initSetttings;
 
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
@@ -1145,7 +1253,7 @@ void FanMotorUi::on_pushButton_InitSetA_clicked()
         *buff = (_fanType << 12) + (_fanPressure << 10) + (_fanreGulation << 8) + (_fanControlMode << 7);
 
         //![3] Pack data to a QModbusDataUnit
-        buff = (quint16 *)&m_motors->at(_pos)->m_initSetttings;
+        buff = (quint16 *)&motor.m_initSetttings;
         const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
 
         //! 0:15 register address , 16:31 motor address
@@ -1188,7 +1296,7 @@ void FanMotorUi::on_pushButton_InitSetA_clicked()
 void FanMotorUi::on_pushButton_InitRead_clicked()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         int startAddress = g_mSettingsRegisterAddress; //register address
@@ -1196,14 +1304,14 @@ void FanMotorUi::on_pushButton_InitRead_clicked()
         qDebug() <<"Read number Of entries:"<<numberOfEntries;
         QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
 
-        if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, ui->spinBox_InitAdress->value())) {
+        if (auto *reply = modbusRtuDevice->sendReadRequest(_modbusDataUnit, ui->spinBox_InitAdress->value())) {
             if (!reply->isFinished()){
                 connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitReady);
             }
             else
                 delete reply; // broadcast replies return immediately
         } else {
-            ui->textBrowser->append(tr("Read error: ") + modbusDevice->errorString());
+            ui->textBrowser->append(tr("Read error: ") + modbusRtuDevice->errorString());
         }
     }
 
@@ -1213,24 +1321,12 @@ void FanMotorUi::on_pushButton_InitRead_clicked()
 
         int _address = ui->spinBox_InitAdress->value();//!< Motor address
 
+        FCommandRegister fcr;
+        fcr.m_command = FmotorCommand::m_readMotorRegister;
         //! 0:15 register address , 16:31 motor address
-        int startAddress = (g_mSettingsRegisterAddress & 0x00ff) | ((_address << 8) & 0xff00);
-
-        int numberOfEntries = g_mSettingsRegisterCount; //16bit register number
-        qDebug() <<"Read number Of entries:"<<numberOfEntries;
-        QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
-
-        //! Send read request to tcp server (adress:)
-        int tcpServerAddress = 1;
-        if (auto *reply = modbusTcpDevice->sendReadRequest(_modbusDataUnit, tcpServerAddress)) {
-            if (!reply->isFinished()){
-                connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitReady);
-            }
-            else
-                delete reply; // broadcast replies return immediately
-        } else {
-            ui->textBrowser->append(tr("Read error: ") + modbusTcpDevice->errorString());
-        }
+        fcr.m_registerAdd = (g_mSettingsRegisterAddress & 0x00ff) | ((_address << 8) & 0xff00);
+        fcr.m_count = g_mSettingsRegisterCount;
+        sendCommand(fcr);
     }
 }
 
@@ -1243,32 +1339,32 @@ void FanMotorUi::readInitReady()
     if (!reply)
         return;
 
-    int __pos = ui->spinBox_InitAdress->value() - ui->spinBox_InitAdress->minimum();//Current motor pos of container
+    int __pos = ui->spinBox_InitAdress->value() - ui->spinBox_InitAdress->minimum();//!< Current motor pos of container
 
-    //Reply no error
+    //! Reply no error
     if (reply->error() == QModbusDevice::NoError) {
 
-        const QModbusDataUnit unit = reply->result();//Get reply data unit
+        const QModbusDataUnit unit = reply->result();//!< Get reply data unit
 
         quint16 *buff;
-        if((unit.startAddress() & 0x00ff)== g_mSettingsRegisterAddress){//Make sure is Init data
-            buff = (quint16 *)&m_motors->at(__pos)->m_initSetttings;//Get current motor's initSetttings pointer
+        if((unit.startAddress() & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
+            buff = (quint16 *)&m_motors->at(__pos)->m_initSetttings;//!< Get current motor's initSetttings pointer
         }
 
-        //Put data to current motor's initSetttings
+        //! Put data to current motor's initSetttings
         for (uint i = 0; i < unit.valueCount(); i++) {
 
             *buff++ = unit.value(i);
 
             const QString entry = tr("Address: %1, Value: %2").arg(QString::number(unit.startAddress()+i, 16))
                     .arg(QString::number(unit.value(i), 16));
-            ui->textBrowser->append(entry);//Show out the data
+            ui->textBrowser->append(entry);//!< Show out the data
         }
 
         m_motors->at(__pos)->m_communicationState =FanCommunicationState::m_connect;//Update communication state
 
     }
-    //Reply protocol error
+    //! Reply protocol error
     else if (reply->error() == QModbusDevice::ProtocolError) {
         ui->textBrowser->append(tr("Read response error: %1 (Mobus exception: 0x%2)").
                                 arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16));
@@ -1278,12 +1374,12 @@ void FanMotorUi::readInitReady()
     else {
         ui->textBrowser->append(tr("Read response error: %1 (code: 0x%2)").
                                 arg(reply->errorString()).arg(reply->error(), -1, 16));
-        m_motors->at(__pos)->m_communicationState =FanCommunicationState::m_disconnect;//Update communication state
+        m_motors->at(__pos)->m_communicationState =FanCommunicationState::m_disconnect;//!< Update communication state
     }
 
-    m_motors->at(__pos)->update();//Update motor data to ui
+    m_motors->at(__pos)->update();//!< Update motor data to ui
 
-    //Update data to settings table
+    //! Update data to settings table
     QAbstractItemModel *__model = ui->table_settings->model();
     quint16 *__buffPtr = (quint16 *)&m_motors->at(__pos)->m_initSetttings;
     for(unsigned char i = 0; i<3; i++){
@@ -1302,25 +1398,25 @@ void FanMotorUi::readInitReady()
     int _fanControlMode = (*__buffPtr >> 7) & 0x0001;
     ui->comboBox_fanControlMode->setCurrentIndex(_fanControlMode);
 
-    //For update sigle motor ui
+    //! For update sigle motor ui
     if(m_motors->at(__pos)->m_address == ui->spinBox_InitAdress->value()){
         if(!SigleMotorDialog::getS_Instance()->isHidden())
             emit updateSigleMotor(0);
     }
 
+    if(m_communication == CommunicationMode::Modbus){
+        emit writeMotorRegister(m_motors->at(__pos)->m_address, g_mSettingsRegisterAddress, g_mSettingsRegisterCount);
+    }
+
     reply->deleteLater();
 }
 
-//! Init parameter set and read fuction part end *********************************
+/* Init parameter set and read fuction part end ***********************************/
 
 
 
-//! Group and all motor monitor fuction part start *********************************
+/* Group and all motor monitor fuction part start *********************************/
 
-/*!
- * \brief FanMotorUi::on_groupmonitorButton_clicked  slot fuction
- *        Show monitor current group ui
- */
 void FanMotorUi::on_groupmonitorButton_clicked()
 {
     if(!m_currentGroup->m_monitorDialog)
@@ -1330,65 +1426,27 @@ void FanMotorUi::on_groupmonitorButton_clicked()
 }
 
 /*!
- * \brief Open or close monitor group fan  slot fuction
- * \param arg1
- */
-void FanMotorUi::on_checkBox_monitorGSW_stateChanged(int arg1)
-{
-    m_currentGroup->isMonitor = arg1;
-    int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();
-    QMotor *_currentMotor = m_motors->at(_pos);
-
-    foreach(QMotor *_motor, m_currentGroup->m_motors){
-        if(_motor != _currentMotor)
-            _motor->isMonitor = arg1;
-
-    }
-    if(isSigleMotorMonitor)
-        _currentMotor->isMonitor = true;
-    else
-        _currentMotor->isMonitor = arg1;
-
-    if(arg1){//Open
-
-        if(!m_monitorState)//If not start monitor and arg1 > 0 , then start
-            monitor_stateChanged(1);
-
-    }
-    else{//Close
-        if(!ui->checkBox_monitorGSW->isChecked())//ALL close
-            monitor_stateChanged(0);//close
-    }
-}
-
-/*!
  * \brief Open or close monitor all fan  slot fuction
  * \param arg1
  */
 void FanMotorUi::on_checkBox_monitorASW_stateChanged(int arg1)
 {
+    //![1] Get all motor pointer
     if(!m_groups)
         m_groups = homewindow::getInstance()->groups();
 
-    int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();
-    QMotor *_currentMotor = m_motors->at(_pos);
+    //![2] For for each motor change the monitor state
+//    foreach(FanGroupInfo *group, *m_groups){
+//        foreach(QMotor *_motor, group->m_motors){
+//                _motor->isMonitor = arg1;
+//        }
+//    }
 
-    foreach(FanGroupInfo *group, *m_groups){
-        group->isMonitor = arg1;
-        foreach(QMotor *_motor, group->m_motors){
-            if(_motor != _currentMotor)
-                _motor->isMonitor = arg1;
-        }
-    }
-    if(isSigleMotorMonitor)
-        _currentMotor->isMonitor = true;
-    else
-        _currentMotor->isMonitor = arg1;
-
+    //![3.1] For modbus rtu mode, turn to fuction "monitor_stateChanged"
     if(m_communication == CommunicationMode::Modbus){
         monitor_stateChanged(arg1);
-        ui->checkBox_monitorGSW->setChecked(arg1);
     }
+    //![3.2] For canopen mode
     else if(m_communication == CommunicationMode::CANbus){
         if(!m_CANopenStart){
 
@@ -1467,7 +1525,8 @@ void FanMotorUi::on_checkBox_monitorASW_stateChanged(int arg1)
 
         }
     }
-    else{//tcp
+    //![3.3] For modbus tcp mode
+    else{
 
     }
 }
@@ -1478,21 +1537,23 @@ void FanMotorUi::on_checkBox_monitorASW_stateChanged(int arg1)
  */
 void FanMotorUi::monitor_stateChanged(int state)
 {
+    //![1] If state not change, do nothing
     if(m_monitorState == (bool)state)
         return;
 
+    //![2] Update state to variable "m_monitorState"
     m_monitorState = state;//Update monitor state
 
-    //Start  monitor
+    //![3.1] If state > 0 , start  monitor, open timer
     if(state){
-        modbusDevice->setTimeout(g_responseTimeout);//Set response timeout 100ms
-        modbusDevice->setNumberOfRetries(g_numberOfTry);//Set retry number 1
+        modbusRtuDevice->setTimeout(g_responseTimeout);//!< Set response timeout
+        modbusRtuDevice->setNumberOfRetries(g_numberOfTry);//!< Set retry number
         QTimer::singleShot(0, [this]() { monitorTimer_update(); });
     }
-    //Stop monitor
+    //![3.2] Else, stop monitor , restore the modbus settings
     else{
-        modbusDevice->setTimeout(100);//Set response timeout 300ms
-        modbusDevice->setNumberOfRetries(2);//Set retry number 2
+        modbusRtuDevice->setTimeout(100);//!< Set response timeout
+        modbusRtuDevice->setNumberOfRetries(2);//!< Set retry number
     }
 }
 
@@ -1502,22 +1563,28 @@ void FanMotorUi::monitor_stateChanged(int state)
  */
 void FanMotorUi::monitorSigleStateChange(int state)
 {
-    int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();
-    QMotor *_currentMotor = m_motors->at(_pos);
-    _currentMotor->isMonitor = state;
-    isSigleMotorMonitor = state;
-    qDebug()<<"isSigleMotorMonitor"<<isSigleMotorMonitor;
+    int motorAddress = ui->spinBox_InitAdress->value();
 
-    if(state){
-        if(m_monitorState == 1){//Already start
+    qDebug()<< motorAddress <<"isSigleMotorMonitor:"<<state;
+
+    if(state){//!< Open state
+
+        //! Load "m_specialMotorAdd" with current motor address
+        m_specialMotorAdd = motorAddress;
+
+        //! If already start , do nothing
+        if(m_monitorState == 1){
 
         }
-        else{//Now Start
-            modbusDevice->setTimeout(100);//Set response timeout 100ms
-            modbusDevice->setNumberOfRetries(2);//Set retry number 1
+        //! If not start yet, now start
+        else{
+            modbusRtuDevice->setTimeout(g_responseTimeout);//! Set response timeout
+            modbusRtuDevice->setNumberOfRetries(g_numberOfTry);//! Set retry number
             QTimer::singleShot(0, [this]() { monitorTimer_update(); });
         }
     }
+    else//!< Close state
+        m_specialMotorAdd = 0;//!< Load "m_specialMotorAdd" with 0, because no motor have address 0
 
 }
 
@@ -1528,6 +1595,7 @@ void FanMotorUi::monitorTimer_update()
 {
     //![1] Wait until no timerout response
     if(m_monitorTimeroutCount > 0){
+
         //! Delay some time , in case one cycle not complete yet
         QTimer::singleShot(m_monitorTimeroutCount*g_responseTimeout*g_numberOfTry + 50, [this]() { monitorTimer_update(); });
         m_monitorTimeroutCount = 0;
@@ -1538,89 +1606,73 @@ void FanMotorUi::monitorTimer_update()
     if(!m_groups)
         m_groups = homewindow::getInstance()->groups();
 
-    int _pos = ui->spinBox_InitAdress->value()-ui->spinBox_InitAdress->minimum();
-    QMotor *_currentMotor = m_motors->at(_pos);
-
-    //![3] For ench motor , check state and send request
-    m_monitorTimerPeriod = 0;
-    m_monitorTimeroutCount = 0;
-    int startAddress = g_mRealTimeRegisterAddress; //!< register address
+    //![3] Init variable
+    m_monitorTimerPeriod = 0; //!< For count next monitor period time
+    m_monitorTimeroutCount = 0; //!< For add next monitor period time when timeout happen
+    int startAddress = g_mRealTimeRegisterAddress; //!< Register start address
     int numberOfEntries = g_mRealTimeRegisterCount; //!< 16bit register number
+    //![3.1] Pack data unit
+    QModbusDataUnit modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
+
+    //![4] For each motor, check state and send request
     foreach(FanGroupInfo *_group, *m_groups){
-        if(_group->isMonitor || (m_currentGroup == _group && isSigleMotorMonitor)){
-            foreach(QMotor *_motor, _group->m_motors){
+        foreach(QMotor *_motor, _group->m_motors){
 
-                if(_motor->isMonitor){
-                    if (!modbusDevice)
-                        return;
+            //![4.1] If is the special motor, we need more information, change the number of entries
+            if(_motor->m_address == m_specialMotorAdd){
 
-                    //![3.1] Pack data unit
-                    QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
-
-                    if(!isSigleMotorMonitor && m_monitorState){
-                        if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, _motor->m_address)) {
-                            if (!reply->isFinished()){
-                                connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
-                            }
-                            else
-                                delete reply; //!< Broadcast replies return immediately
-                        } else {
-                            ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusDevice->errorString());
-                        }
-
-                        m_monitorTimerPeriod += g_responseTimeout;//!< One motor request ,then period value add
+                modbusDataUnit.setValueCount(g_mRealTimeRegisterMoreCount);//!< Change the number of entries
+                //! Send reqeust to special motor
+                if (auto *reply = modbusRtuDevice->sendReadRequest(modbusDataUnit, m_specialMotorAdd)) {
+                    if (!reply->isFinished()){
+                        connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
                     }
-                    else{
-                        //![3.2] Current watch motor we need more information, change the number of entries
-                        if(_motor->m_address == _currentMotor->m_address){
-                            _modbusDataUnit.setValueCount(g_mRealTimeRegisterMoreCount);
-                        }
-                        else
-                            _modbusDataUnit.setValueCount(g_mRealTimeRegisterStateCount);
+                    else
+                        delete reply; //!< Broadcast replies return immediately
+                } else {
+                    ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusRtuDevice->errorString());
+                }
+                m_monitorTimerPeriod += g_responseTimeout;//!< One motor request ,then period value add
+            }
+            //![4.2] If not the special motor and monitoring has begun, check motor monitor state
+            else if(m_monitorState && _motor->isMonitor){
 
-                        //![3.3] Send read request to one motor
-                        if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, _motor->m_address)) {
-                            if (!reply->isFinished()){
-                                connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
-                            }
-                            else
-                                delete reply; //!< Broadcast replies return immediately
-                        } else {
-                            ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusDevice->errorString());
-                        }
-
-                        m_monitorTimerPeriod += g_responseTimeout;//One motor request ,then period value add
-
-                        //![3.4] If not current watch motor, we send a request to current watch motor
-                        if(_motor->m_address != _currentMotor->m_address){
-
-                            //! Change the number of entries
-                            _modbusDataUnit.setValueCount(g_mRealTimeRegisterMoreCount);
-
-                            //! Send read request to one motor
-                            if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, _currentMotor->m_address)) {
-                                if (!reply->isFinished()){
-                                    connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
-                                }
-                                else
-                                    delete reply; //!< Broadcast replies return immediately
-                            } else {
-                                ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusDevice->errorString());
-                            }
-
-                            m_monitorTimerPeriod += g_responseTimeout;//!< One motor request ,then period value add
-                        }
-
+                modbusDataUnit.setValueCount(g_mRealTimeRegisterCount);//!< Change the number of entries
+                //! Send reqeust to the not special motor
+                if (auto *reply = modbusRtuDevice->sendReadRequest(modbusDataUnit, _motor->m_address)) {
+                    if (!reply->isFinished()){
+                        connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
                     }
-
+                    else
+                        delete reply; //!< Broadcast replies return immediately
+                } else {
+                    ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusRtuDevice->errorString());
                 }
 
+                m_monitorTimerPeriod += g_responseTimeout;//!< One motor request ,then period value add
+
+                //! For special motor , we need real time data, so we send reqeust after each other motor reqeust
+                if(m_specialMotorAdd > 0){
+
+                    modbusDataUnit.setValueCount(g_mRealTimeRegisterMoreCount);//!< Change the number of entries
+                    //! Send reqeust to special motor
+                    if (auto *reply = modbusRtuDevice->sendReadRequest(modbusDataUnit, m_specialMotorAdd)) {
+                        if (!reply->isFinished()){
+                            connect(reply, &QModbusReply::finished, this, &FanMotorUi::monitorReadReady);
+                        }
+                        else
+                            delete reply; //!< Broadcast replies return immediately
+                    } else {
+                        ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusRtuDevice->errorString());
+                    }
+                    m_monitorTimerPeriod += g_responseTimeout;//!< One motor request ,then period value add
+                }
             }
         }
     }
 
-    //![4] IF not interrupted ,go on next period
-    if(m_monitorState || isSigleMotorMonitor){
+    //![5] IF not interrupted ,go on next period
+    if(m_monitorState || (m_specialMotorAdd != 0)){
         QTimer::singleShot(m_monitorTimerPeriod*g_numberOfTry, [this]() { monitorTimer_update(); });
     }
 
@@ -1657,10 +1709,9 @@ void FanMotorUi::monitorReadReady()
     if(!motor)
         return;
 
+    const QModbusDataUnit unit = reply->result();
 
     if (reply->error() == QModbusDevice::NoError) {
-
-        const QModbusDataUnit unit = reply->result();
 
         quint16 *buff = Q_NULLPTR;
         if(unit.startAddress() == g_mRealTimeRegisterAddress){
@@ -1698,19 +1749,22 @@ void FanMotorUi::monitorReadReady()
     motor->update();//!< Update motor ui
 
     //! For update sigle motor ui
-    if(motor->m_address == ui->spinBox_InitAdress->value()){
-        if(isSigleMotorMonitor)
+    if(motor->m_address == m_specialMotorAdd){
             emit updateSigleMotor(1);
+    }
+
+    if(m_communication == CommunicationMode::Modbus){
+        emit writeMotorRegister(_motorAddress, unit.startAddress(), unit.valueCount());
     }
 
     reply->deleteLater();
 
 }
 
-//! Group and all motor monitor fuction part end *********************************
+/* Group and all motor monitor fuction part end ************************************/
 
 
-//!Initialize fan / group / all motor fuction part start *********************************
+/* Initialize fan / group / all motor fuction part start ******************************/
 
 /*!
  * \brief FanMotorUi::on_clearButton_clicked  slot fuction
@@ -1726,7 +1780,7 @@ void FanMotorUi::on_clearButton_clicked()
 void FanMotorUi::on_initializeButton_clicked()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         int startAddress = g_mControllerRegisterAddress; //!< register address
@@ -1734,14 +1788,14 @@ void FanMotorUi::on_initializeButton_clicked()
         qDebug() <<"Read number Of entries:"<<numberOfEntries;
         QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
 
-        if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, ui->spinBox_InitAdress->value())) {
+        if (auto *reply = modbusRtuDevice->sendReadRequest(_modbusDataUnit, ui->spinBox_InitAdress->value())) {
             if (!reply->isFinished()){
                 connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitFGAReady);
             }
             else
                 delete reply; //!< Broadcast replies return immediately
         } else {
-            ui->textBrowser->append(tr("Read error: ") + modbusDevice->errorString());
+            ui->textBrowser->append(tr("Read error: ") + modbusRtuDevice->errorString());
         }
     }
 
@@ -1758,7 +1812,7 @@ void FanMotorUi::on_initializeButton_clicked()
 void FanMotorUi::on_initializeGButton_clicked()
 {
     foreach(QMotor *_motor, m_currentGroup->m_motors){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         //! Pack data unit
@@ -1767,14 +1821,14 @@ void FanMotorUi::on_initializeGButton_clicked()
         QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
 
         //! Send read request to one motor
-        if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, _motor->m_address)) {
+        if (auto *reply = modbusRtuDevice->sendReadRequest(_modbusDataUnit, _motor->m_address)) {
             if (!reply->isFinished()){
                 connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitFGAReady);
             }
             else
                 delete reply; //!< Broadcast replies return immediately
         } else {
-            ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusDevice->errorString());
+            ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusRtuDevice->errorString());
         }
     }
 
@@ -1795,29 +1849,29 @@ void FanMotorUi::on_initializeAButton_clicked()
         m_groups = homewindow::getInstance()->groups();
 
     foreach(FanGroupInfo *_group, *m_groups){
-        if(_group->isMonitor){
-            foreach(QMotor *_motor, _group->m_motors){
-                if (!modbusDevice)
-                    return;
 
-                //Pack data unit
-                int startAddress = g_mControllerRegisterAddress; //register address
-                int numberOfEntries = g_mRatedRegisterCount; //16bit register number
-                QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
+        foreach(QMotor *_motor, _group->m_motors){
+            if (!modbusRtuDevice)
+                return;
 
-                //Send read request to one motor
-                if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, _motor->m_address)) {
-                    if (!reply->isFinished()){
-                        connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitFGAReady);
-                    }
-                    else
-                        delete reply; // Broadcast replies return immediately
-                } else {
-                    ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusDevice->errorString());
+            //Pack data unit
+            int startAddress = g_mControllerRegisterAddress; //register address
+            int numberOfEntries = g_mRatedRegisterCount; //16bit register number
+            QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
+
+            //Send read request to one motor
+            if (auto *reply = modbusRtuDevice->sendReadRequest(_modbusDataUnit, _motor->m_address)) {
+                if (!reply->isFinished()){
+                    connect(reply, &QModbusReply::finished, this, &FanMotorUi::readInitFGAReady);
                 }
+                else
+                    delete reply; // Broadcast replies return immediately
+            } else {
+                ui->textBrowser->append(tr("motor%1: Read error: ").arg(_motor->m_address) + modbusRtuDevice->errorString());
             }
-
         }
+
+
     }
 
     if(!m_currentGroup->m_monitorDialog){
@@ -1859,9 +1913,9 @@ void FanMotorUi::readInitFGAReady()
     if(!motor)
         return;
 
-    if (reply->error() == QModbusDevice::NoError) {
+    const QModbusDataUnit unit = reply->result();
 
-        const QModbusDataUnit unit = reply->result();
+    if (reply->error() == QModbusDevice::NoError) {
 
         quint16 *buff = Q_NULLPTR;
         if(unit.startAddress() == g_mControllerRegisterAddress){
@@ -1902,10 +1956,13 @@ void FanMotorUi::readInitFGAReady()
             emit updateSigleMotor(2);
     }
 
+    if(m_communication == CommunicationMode::Modbus){
+        emit writeMotorRegister(_motorAddress, unit.startAddress(), unit.valueCount());
+    }
     reply->deleteLater();
 }
 
-//!Initialize fan / group / all motor fuction part end *********************************
+/* Initialize fan / group / all motor fuction part end *********************************/
 
 /*!
  * \brief Run or stop fan / group / all
@@ -1916,7 +1973,7 @@ void FanMotorUi::onRunStateButtonClicked()
     if(btn == ui->pushButton_startMotor || btn == ui->pushButton_stopMotor){
 
         if(m_communication == CommunicationMode::Modbus){
-            if (!modbusDevice)
+            if (!modbusRtuDevice)
                 return;
 
             //![1] Init data
@@ -1941,7 +1998,7 @@ void FanMotorUi::onRunStateButtonClicked()
             qDebug() <<writeUnit.valueCount();
 
             //![3] Send write request to node(adress:)
-            if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+            if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, _address)) {
                 if (!reply->isFinished()) {
                     connect(reply, &QModbusReply::finished, this, [this, reply]() {
                         if (reply->error() == QModbusDevice::ProtocolError) {
@@ -1958,7 +2015,7 @@ void FanMotorUi::onRunStateButtonClicked()
                     reply->deleteLater();
                 }
             } else {
-                ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+                ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
             }
         }
 
@@ -1966,7 +2023,7 @@ void FanMotorUi::onRunStateButtonClicked()
     else if(btn == ui->pushButton_startMotor_G || btn == ui->pushButton_stopMotor_G){
 
         if(m_communication == CommunicationMode::Modbus){
-            if (!modbusDevice)
+            if (!modbusRtuDevice)
                 return;
 
             //![1] Init data
@@ -1994,7 +2051,7 @@ void FanMotorUi::onRunStateButtonClicked()
             //![3] Send write request to node(adress:i) at current group
             for(int i = _startAddress; i <= _lastAddress; i++){
 
-                if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, i)) {
+                if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, i)) {
                     if (!reply->isFinished()) {
                         connect(reply, &QModbusReply::finished, this, [this, reply]() {
                             if (reply->error() == QModbusDevice::ProtocolError) {
@@ -2011,7 +2068,7 @@ void FanMotorUi::onRunStateButtonClicked()
                         reply->deleteLater();
                     }
                 } else {
-                    ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+                    ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
                 }
             }
         }
@@ -2019,7 +2076,7 @@ void FanMotorUi::onRunStateButtonClicked()
     }
     else if(btn == ui->pushButton_startMotor_A || btn == ui->pushButton_stopMotor_A){
         if(m_communication == CommunicationMode::Modbus){
-            if (!modbusDevice)
+            if (!modbusRtuDevice)
                 return;
 
             //![1] Init data
@@ -2044,13 +2101,13 @@ void FanMotorUi::onRunStateButtonClicked()
             qDebug() <<writeUnit.valueCount();
 
             //![3] Send write request to node(adress:0) : Broadcast
-            if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+            if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, _address)) {
                 if (!reply->isFinished()) {
                 } else {//!< Broadcast replies return immediately
                     reply->deleteLater();
                 }
             } else {
-                ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+                ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
             }
         }
 
@@ -2093,10 +2150,10 @@ void FanMotorUi::onFanButtonclicked()
             SigleMotorDialog::getS_Instance()->show(m_motors->at(i));
 
             if(m_communication == CommunicationMode::Modbus ){
-                if(!modbusDevice)
+                if(!modbusRtuDevice)
                     emit updateSigleMotorState(0);
                 else{
-                    bool connected = (modbusDevice->state() != QModbusDevice::UnconnectedState);
+                    bool connected = (modbusRtuDevice->state() != QModbusDevice::UnconnectedState);
                     emit updateSigleMotorState(connected);
                 }
             }
@@ -2140,7 +2197,7 @@ void FanMotorUi::onSigleMotorInitSetClicked(QTableWidget *table, quint16 data)
 void FanMotorUi::onSetPI()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         //![1] Init data
@@ -2161,7 +2218,7 @@ void FanMotorUi::onSetPI()
         qDebug() <<writeUnit.valueCount();
 
         //![3] Send write request to node(adress:)
-        if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, _address)) {
+        if (auto *reply = modbusRtuDevice->sendWriteRequest(writeUnit, _address)) {
             if (!reply->isFinished()) {
                 connect(reply, &QModbusReply::finished, this, [this, reply]() {
                     if (reply->error() == QModbusDevice::ProtocolError) {
@@ -2178,7 +2235,7 @@ void FanMotorUi::onSetPI()
                 reply->deleteLater();
             }
         } else {
-            ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
+            ui->textBrowser->append(tr("Write error: ") + modbusRtuDevice->errorString());
         }
     }
 }
@@ -2189,7 +2246,7 @@ void FanMotorUi::onSetPI()
 void FanMotorUi::onReadPI()
 {
     if(m_communication == CommunicationMode::Modbus){
-        if (!modbusDevice)
+        if (!modbusRtuDevice)
             return;
 
         int startAddress = g_mPIParaRegisterAddress; //!< register address
@@ -2197,14 +2254,14 @@ void FanMotorUi::onReadPI()
         qDebug() <<"Read number Of entries:"<<numberOfEntries;
         QModbusDataUnit _modbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
 
-        if (auto *reply = modbusDevice->sendReadRequest(_modbusDataUnit, ui->spinBox_InitAdress->value())) {
+        if (auto *reply = modbusRtuDevice->sendReadRequest(_modbusDataUnit, ui->spinBox_InitAdress->value())) {
             if (!reply->isFinished()){
                 connect(reply, &QModbusReply::finished, this, &FanMotorUi::readPIReady);
             }
             else
                 delete reply; //!< Broadcast replies return immediately
         } else {
-            ui->textBrowser->append(tr("Read error: ") + modbusDevice->errorString());
+            ui->textBrowser->append(tr("Read error: ") + modbusRtuDevice->errorString());
         }
     }
 }
@@ -2221,10 +2278,10 @@ void FanMotorUi::readPIReady()
 
     int __pos = ui->spinBox_InitAdress->value() - ui->spinBox_InitAdress->minimum();//!< Current motor pos of container
 
+    const QModbusDataUnit unit = reply->result();//!< Get reply data unit
+
     //! Reply no error
     if (reply->error() == QModbusDevice::NoError) {
-
-        const QModbusDataUnit unit = reply->result();//!< Get reply data unit
 
         quint16 *buff;
         if(unit.startAddress() == g_mPIParaRegisterAddress){//!< Make sure is Init data
@@ -2263,6 +2320,10 @@ void FanMotorUi::readPIReady()
     if(m_motors->at(__pos)->m_address == ui->spinBox_InitAdress->value()){
         if(!SigleMotorDialog::getS_Instance()->isHidden())
             emit updateSigleMotor(3);
+    }
+
+    if(m_communication == CommunicationMode::Modbus){
+        emit writeMotorRegister(m_motors->at(__pos)->m_address, unit.startAddress(), unit.valueCount());
     }
 
     reply->deleteLater();
@@ -2444,6 +2505,7 @@ QModbusResponse FanMotorUi::processWriteSingleRegisterRequest(const QModbusReque
 QModbusResponse FanMotorUi::writeSingle(const QModbusPdu &request,
                                                   QModbusDataUnit::RegisterType unitType)
 {
+    Q_UNUSED(unitType)
     CHECK_SIZE_EQUALS(request);
     quint16 address, value;
     request.decodeData(&address, &value);
@@ -2503,10 +2565,51 @@ QModbusResponse FanMotorUi::processRequest(const QModbusPdu &request)
 
 HModbusTcpServer::HModbusTcpServer(QObject *parent)
 {
+    Q_UNUSED(parent)
 
 }
 
 QModbusResponse HModbusTcpServer::processRequest(const QModbusPdu &request)
 {
     return FanMotorUi::getS_Instance()->processRequest(request);
+}
+
+
+void FanMotorUi::sendCommand(FCommandRegister fcr)
+{
+    if(!modbusTcpDevice && modbusTcpDevice->state() != QModbusDevice::ConnectedState)
+        return;
+
+    int startAddress = g_motorCommandAddress; //!< Register start address
+    int numberOfEntries = g_readCommandAddress; //!< 16bit register number
+    //! Pack data unit
+    QModbusDataUnit writeUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
+
+    quint16 *buff = (quint16 *) &fcr;
+    for (uint i = 0; i < writeUnit.valueCount(); i++) {
+
+        writeUnit.setValue(i, *buff++);
+    }
+
+    quint16 address = 1;
+    //! Send write request to node(adress:)
+    if (auto *reply = modbusTcpDevice->sendWriteRequest(writeUnit, address)) {
+        if (!reply->isFinished()) {
+            connect(reply, &QModbusReply::finished, this, [this, reply]() {
+                if (reply->error() == QModbusDevice::ProtocolError) {
+                    ui->textBrowser->append(tr("Write response error: %1 (Mobus exception: 0x%2)")
+                                            .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16)
+                                            );
+                } else if (reply->error() != QModbusDevice::NoError) {
+                    ui->textBrowser->append(tr("Write response error: %1 (code: 0x%2)").
+                                            arg(reply->errorString()).arg(reply->error(), -1, 16));
+                }
+                reply->deleteLater();
+            });
+        } else {//!< Broadcast replies return immediately
+            reply->deleteLater();
+        }
+    } else {
+        ui->textBrowser->append(tr("Write error: ") + modbusTcpDevice->errorString());
+    }
 }

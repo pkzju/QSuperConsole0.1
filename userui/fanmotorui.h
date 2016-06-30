@@ -6,7 +6,7 @@
 #include <QCanBusFrame>
 #include <QModbusTcpServer>
 
-#include "fanmotor/fanmotor.h"
+#include "fanmotor/qmotor.h"
 #include "canopen/canfestival.h"
 #include "thread/canthread.h"
 #include "fanmotor/fpublic.h"
@@ -79,7 +79,6 @@ private slots:
     void on_pushButton_InitRead_clicked();
     void readInitReady();
     void on_groupmonitorButton_clicked();
-    void on_checkBox_monitorGSW_stateChanged(int arg1);
     void on_checkBox_monitorASW_stateChanged(int arg1);
     void monitor_stateChanged(int state);
     void monitorSigleStateChange(int state);
@@ -103,10 +102,18 @@ private slots:
     void readPIReady();
 
     void onTcpServerStateChanged(int state);
+
+    //! Let modbus master send read request to slave
+    void readFromMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
+    //! Let modbus master send write request to slave
+    void writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
 signals:
     void updatePlotUi(FanMotorController motorctr);
     void updateSigleMotor(int arg1);
     void updateSigleMotorState(bool state);
+
+    //! Let local modbus tcp client send write request to remote modbus tcp server
+    void writeMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
 
 private:
     QModbusResponse processReadHoldingRegistersRequest(const QModbusRequest &rqst);
@@ -115,12 +122,14 @@ private:
     QModbusResponse processWriteSingleRegisterRequest(const QModbusRequest &rqst);
     QModbusResponse writeSingle(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
 
+    void sendCommand(FCommandRegister fcr);
+
 private:
     static FanMotorUi *s_Instance;
 
     Ui::FanMotorUi *ui;
     QVector<FanGroupInfo *> *m_groups;
-    QModbusClient *modbusDevice;//!< Modbus RTU device
+    QModbusClient *modbusRtuDevice;//!< Modbus RTU device
     QVector<QMotor *> *m_motors;
     QTimer *m_pollingTimer;
     s_BOARD *m_masterBoard;
@@ -141,7 +150,7 @@ private:
     int m_monitorTimerPeriod = 0;
     int m_monitorTimeroutCount = 0;
     QVector<QPushButton*> m_motorButtons;
-    bool isSigleMotorMonitor = false;
+    quint16 m_specialMotorAdd = 0;
 };
 
 #endif // FANMOTORUI_H

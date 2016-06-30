@@ -44,9 +44,11 @@ SigleMotorFrame::SigleMotorFrame(QWidget *parent) :
     connect(this, SIGNAL(setPI()), fanmotorui, SLOT(onSetPI()));
     connect(this, SIGNAL(readPI()), fanmotorui, SLOT(onReadPI()));
 
+//    connect(this, SIGNAL(closeAndHide(int)), fanmotorui, SLOT(monitorSigleStateChange(int)));
 
 
 }
+
 
 SigleMotorFrame::~SigleMotorFrame()
 {
@@ -78,7 +80,19 @@ void SigleMotorFrame::changeMotor(QMotor *motor)
     updateMotorUi(2);
 
     ui->lcdNumber_fanID->display(motor->m_address);
-//    ui->checkBox->setChecked(motor->isMonitor);
+    ui->checkBox->setChecked(true);
+}
+
+void SigleMotorFrame::hideEvent(QHideEvent *event)
+{
+    ui->checkBox->setChecked(false);
+    event->accept();
+}
+
+void SigleMotorFrame::closeEvent(QCloseEvent *event)
+{
+    ui->checkBox->setChecked(false);
+    QFrame::closeEvent(event);
 }
 
 void SigleMotorFrame::updateMotorUi(int arg1)
@@ -138,6 +152,23 @@ void SigleMotorFrame::updateMotorUi(int arg1)
         ui->runLamp->setLampState(QcwIndicatorLamp::lamp_red);
     else if(m_motor->m_motorController.m_runState == FanMotorState::m_error){
         ui->runLamp->setLampState(QcwIndicatorLamp::lamp_yellow);
+        if(m_motor->m_motorController.m_runError == FanMotorError::m_overCur){
+            ui->lineEdit_runState->setText(QObject::tr("over current"));
+        }
+        else if(m_motor->m_motorController.m_runError == FanMotorError::m_overSpd){
+            ui->lineEdit_runState->setText(QObject::tr("over speed"));
+        }
+        else if(m_motor->m_motorController.m_runError == FanMotorError::m_stall){
+            ui->lineEdit_runState->setText(QObject::tr("stall"));
+        }
+        else if(m_motor->m_motorController.m_runError == FanMotorError::m_lowVolt){
+            ui->lineEdit_runState->setText(QObject::tr("low voltage "));
+        }
+        else if(m_motor->m_motorController.m_runError == FanMotorError::m_highVolt){
+            ui->lineEdit_runState->setText(QObject::tr("high voltage "));
+        }
+        else
+            ui->lineEdit_runState->setText(QObject::tr("no error"));
     }
     else{
         ui->runLamp->setLampState(QcwIndicatorLamp::lamp_grey);
@@ -203,6 +234,8 @@ void SigleMotorFrame::on_readPIBtn_clicked()
 
     emit readPI();
 }
+
+
 
 void SigleMotorFrame::setupRealtimeDataDemo(QCustomPlot *customPlot)
 {

@@ -11,7 +11,8 @@ FORMS += \
     $$PWD/tcpclientframe.ui \
     $$PWD/tcpserverframe.ui \
     $$PWD/tcpportsettings.ui \
-    $$PWD/siglemotorframe.ui
+    $$PWD/siglemotorframe.ui \
+    $$PWD/allgroupframe.ui
 
 
 HEADERS += \
@@ -28,7 +29,8 @@ HEADERS += \
     $$PWD/siglemotorframe.h \
     $$PWD/tcpclientframe.h \
     $$PWD/tcpserverframe.h \
-    $$PWD/tcpportsettings.h
+    $$PWD/tcpportsettings.h \
+    $$PWD/allgroupframe.h
 
 
 SOURCES += \
@@ -45,7 +47,8 @@ SOURCES += \
     $$PWD/siglemotorframe.cpp \
     $$PWD/tcpclientframe.cpp \
     $$PWD/tcpserverframe.cpp \
-    $$PWD/tcpportsettings.cpp
+    $$PWD/tcpportsettings.cpp \
+    $$PWD/allgroupframe.cpp
 
 DISTFILES +=
 

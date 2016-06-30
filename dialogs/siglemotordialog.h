@@ -1,4 +1,4 @@
-#ifndef SIGLEMOTORDIALOG_H
+﻿#ifndef SIGLEMOTORDIALOG_H
 #define SIGLEMOTORDIALOG_H
 
 #include "QFramer/fsubwindown.h"
@@ -17,8 +17,10 @@ public:
     static void deleteInstance();
 signals:
 
+
 public slots:
     void show(QMotor *motor);
+
 
 private:
     static SigleMotorDialog *s_Instance;

@@ -1,4 +1,4 @@
-#ifndef SIGLEMOTORFRAME_H
+﻿#ifndef SIGLEMOTORFRAME_H
 #define SIGLEMOTORFRAME_H
 
 #include <QFrame>
@@ -32,6 +32,10 @@ private slots:
     void on_pushButton_InitSetF_clicked();
     void on_setPIBtn_clicked();
     void on_readPIBtn_clicked();
+
+protected:
+    void hideEvent(QHideEvent *event);
+    void closeEvent(QCloseEvent * event);
 
 signals:
     void SigleMotorInitSet(QTableWidget *table, quint16 data);

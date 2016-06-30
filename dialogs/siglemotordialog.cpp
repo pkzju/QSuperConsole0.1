@@ -1,8 +1,9 @@
-#include "siglemotordialog.h"
+﻿#include "siglemotordialog.h"
 
 
 #include <QVBoxLayout>
 #include "userui/siglemotorframe.h"
+
 
 SigleMotorDialog *SigleMotorDialog::s_Instance = nullptr;
 
@@ -58,4 +59,8 @@ void SigleMotorDialog::show(QMotor *motor)
     SigleMotorFrame::getInstance()->changeMotor(motor);
 
 }
+
+
+
+
 
