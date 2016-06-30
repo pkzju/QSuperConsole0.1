@@ -219,25 +219,27 @@ void homewindow::clientToConnect()
         statusBar()->showMessage(tr("Could not create Modbus client."), 3000);
         return;
     }
-
+qDebug()<<"creat client";
     statusBar()->clearMessage();//!< Clear status bar first, we will use it
 
     //![3] Set port parameter and connect device
     if (modbusTcpClient->state() != QModbusDevice::ConnectedState) {
 
         const QUrl url = QUrl::fromUserInput(ui->portEdit->text());
-        modbusTcpClient->setConnectionParameter(QModbusDevice::NetworkPortParameter, (url.port() + 1));
-        modbusTcpClient->setConnectionParameter(QModbusDevice::NetworkAddressParameter, url.host());
+        modbusTcpClient->setConnectionParameter(QModbusDevice::NetworkPortParameter, 6475);
+        modbusTcpClient->setConnectionParameter(QModbusDevice::NetworkAddressParameter, "172.27.35.1");
 
         modbusTcpClient->setTimeout(100);//!< Set response timeout 100ms
         modbusTcpClient->setNumberOfRetries(2);//!< Set retry number 2
-
+qDebug()<<" client try to connect";
         //! Now try connect modbus device
         if (!modbusTcpClient->connectDevice()) {//!< Connect failed
+qDebug()<<" client connect fail";
             statusBar()->showMessage(tr("Modbus connect failed: ") + modbusTcpClient->errorString(), 3000);
         } else {//!< Connect  successfully
-            connect(FanMotorUi::getS_Instance(), &FanMotorUi::writeMotorRegister, this, &homewindow::writeToMotor);
+
         }
+        qDebug()<<modbusTcpClient->state();
     }
 }
 
@@ -283,7 +285,7 @@ void homewindow::writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 cou
 
         writeUnit.setValue(i, *buff++);
     }
-
+qDebug()<<"Send write request to tcp server";
     //![3] Send write request to tcp server (adress:)
     int tcpServerAddress = 1;
     if (auto *reply = modbusTcpClient->sendWriteRequest(writeUnit, tcpServerAddress)) {
@@ -430,7 +432,7 @@ QModbusResponse homewindow::processWriteMultipleRegistersRequest(
         }
 
         if(fcr.m_command == m_connectToServer){
-
+qDebug() <<"connect to tcp server";
             clientToConnect();
         }
         else if(fcr.m_command == m_readMotorRegister){
@@ -438,6 +440,7 @@ QModbusResponse homewindow::processWriteMultipleRegistersRequest(
             quint16 _motorAdd = (_address >> 8) & 0x00ff ;
             quint16 _registerAdd = (_address) & 0x00ff ;
             //! Let modbus master send read request to slave
+            qDebug() <<"Read   entries";
             emit readMotorRegister(_motorAdd, _registerAdd, fcr.m_count);
         }
 

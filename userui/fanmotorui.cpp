@@ -307,6 +307,11 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
 
     ui->textBrowser->document ()->setMaximumBlockCount (50);//!< Set textBrowser max block count
 
+    homewindow * _homewindow = homewindow::getInstance();
+    connect(_homewindow, &homewindow::readMotorRegister, this, &FanMotorUi::readFromMotor);
+    connect(_homewindow, &homewindow::writeMotorRegister, this, &FanMotorUi::writeToMotor);
+
+    connect(this, &FanMotorUi::writeMotorRegister, _homewindow, &homewindow::writeToMotor);
 
 
 }
@@ -364,9 +369,7 @@ void FanMotorUi::on_connectButton_clicked()
             if (!modbusTcpDevice->connectDevice()) {//!< Connect failed
                 statusBar()->showMessage(tr("Modbus connect failed: ") + modbusTcpDevice->errorString(), 3000);
             } else {//!< Connect  successfully
-                homewindow * _homewindow = homewindow::getInstance();
-                connect(_homewindow, &homewindow::readMotorRegister, this, &FanMotorUi::readFromMotor);
-                connect(_homewindow, &homewindow::writeMotorRegister, this, &FanMotorUi::writeToMotor);
+
             }
         }
     }
@@ -680,9 +683,12 @@ void FanMotorUi::onTcpServerStateChanged(int state)
  */
 void FanMotorUi::readFromMotor(quint16 motorAdd, quint16 registerAdd, quint16 count)
 {
+    qDebug() <<"Read   entries";
     if(m_communication == CommunicationMode::Modbus){
+        qDebug() <<"Read   entries1";
         if (!modbusRtuDevice)
             return;
+        qDebug() <<"Read   entries3";
 
         int startAddress = registerAdd; //!< register address
         int numberOfEntries = count; //!< 16bit register number
