@@ -372,6 +372,7 @@ void FanMotorUi::on_connectButton_clicked()
             } else {//!< Connect  successfully
 
             }
+            qDebug()<<modbusTcpDevice->state();
         }
     }
 
@@ -633,6 +634,7 @@ void FanMotorUi::onStateChanged(int state)
                     ui->textBrowser->append(tr("Modbus connect failed: ") + modbusTcpServer->errorString());
                 } else {//!< Connect  successfully
                 }
+                qDebug()<<modbusTcpServer->state();
             }
 
             statusBar()->showMessage(tr("Modbus Tcp connected !"), 5000);
@@ -684,6 +686,7 @@ void FanMotorUi::onTcpServerStateChanged(int state)
     if(state == QModbusDevice::ConnectedState){
         ui->textBrowser->append(tr("Modbus Tcp server connected !"));
 
+        qDebug()<<modbusTcpServer->state();
         FCommandRegister fcr{FmotorCommand::m_connectToServer , 0, 0};
         sendCommand(fcr, 1);
     }
@@ -1234,7 +1237,7 @@ void FanMotorUi::on_checkBox_monitorASW_stateChanged(int arg1)
 //                _motor->isMonitor = arg1;
 //        }
 //    }
-
+qDebug()<<"m_communication:"<<m_communication;
     //![3.1] For modbus rtu mode, turn to fuction "monitor_stateChanged"
     if(m_communication == CommunicationMode::Modbus){
         monitor_stateChanged(arg1);
@@ -1333,6 +1336,10 @@ void FanMotorUi::monitor_stateChanged(int state)
     //![1] If state not change, do nothing
     if(m_monitorState == (bool)state)
         return;
+
+    if(m_communication != CommunicationMode::Modbus){
+        return;
+    }
 
     //![2] Update state to variable "m_monitorState"
     m_monitorState = state;//!< Update monitor state
@@ -1932,6 +1939,11 @@ QModbusResponse FanMotorUi::readBytes(const QModbusPdu &request,
     return QModbusResponse(request.functionCode(), quint8(count * 2), unit.values());
 }
 
+/*!
+ * \brief Modbus tcp server handle write request
+ * \param request
+ * \return
+ */
 QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
     const QModbusRequest &request)
 {
@@ -1963,10 +1975,23 @@ QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
         }
 
         quint16 * buff;
-        if(registerAdd == g_mRealTimeRegisterAddress)
+
+        if((registerAdd & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
+            buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
+        }
+        else if((registerAdd & 0x00ff) == g_mRealTimeRegisterAddress){
             buff = (quint16 *)&motor->m_motorController;
-        if(registerAdd == g_mSettingsRegisterAddress)
-            buff = (quint16 *)&motor->m_initSetttings;
+            buff += 2;
+        }
+        else if((registerAdd & 0x00ff) == g_mControllerRegisterAddress){
+            buff = (quint16 *)&motor->m_motorController;
+        }
+        else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
+            buff = (quint16 *)&motor->m_PIPara;
+        }
+        else if((registerAdd & 0x00ff) == g_mComStateAddress){
+            buff = (quint16 *)&motor->m_communicationState;
+        }
         else{
             return QModbusExceptionResponse(request.functionCode(),
                                             QModbusExceptionResponse::IllegalDataValue);
@@ -1977,14 +2002,18 @@ QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
         for (int i = 0; i < numberOfRegisters; i++) {
             stream >> tmp;
             *buff++ = tmp;
+            const QString entry = tr("Address: %1, Value: %2").arg(QString::number(registerAdd+i, 16))
+                    .arg(QString::number(tmp, 16));
+            ui->textBrowser->append(entry);//!< Show out the data
         }
+
 
         //! Update ui
         motor->update();
 
         //! Update table
-        if(registerAdd == g_mSettingsRegisterAddress){
-            //Update data to settings table
+        if(motorAdd == ui->spinBox_InitAdress->value() && registerAdd == g_mSettingsRegisterAddress){
+            //! Update data to settings table
             QAbstractItemModel *__model = ui->table_settings->model();
             quint16 *__buffPtr = (quint16 *)&motor->m_initSetttings;
             for(unsigned char i = 0; i<3; i++){
@@ -2138,7 +2167,7 @@ QMotor *FanMotorUi::findMotor(quint16 address)
 
 bool FanMotorUi::sendModbusWriteRequest(QModbusClient *modbusDevice, QModbusDataUnit unit, quint16 serverAddress)
 {
-    if(!modbusDevice && modbusDevice->state() != QModbusDevice::ConnectedState)
+    if(!modbusDevice)
         return false;
 
     //! Send write request to server (adress: )
@@ -2166,9 +2195,15 @@ bool FanMotorUi::sendModbusWriteRequest(QModbusClient *modbusDevice, QModbusData
         ui->textBrowser->append(tr("Write error: ") + modbusDevice->errorString());
         return false;
     }
+
     return true;
 }
 
+/*!
+ * \brief FanMotorUi::readReplyHandle For Modbus Rtu mode reply handle
+ * \param reply QModbusReply
+ * \return
+ */
 bool FanMotorUi::readReplyHandle(QModbusReply *reply)
 {
     QMotor *motor = findMotor(reply->serverAddress());
@@ -2279,7 +2314,8 @@ bool FanMotorUi::readReplyHandle(QModbusReply *reply)
 
     //![3] Send communication state to remote server
     if(m_communication == CommunicationMode::Modbus){
-        emit writeMotorRegister(motor->m_address, g_mRealTimeRegisterAddress, g_mRealTimeRegisterStateCount);
+
+        emit writeMotorRegister(motor->m_address, g_mComStateAddress, g_mComStateRegisterCount);
     }
 
     if(reply->error() == QModbusDevice::NoError){

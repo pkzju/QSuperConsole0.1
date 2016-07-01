@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 pkzju
 **
@@ -38,7 +38,7 @@ enum FanMotorState:char{
 
 };
 
-enum FanCommunicationState:char{
+enum FanCommunicationState:unsigned short{
     m_unknownCS = 0,
     m_disconnect,
     m_connect,
@@ -60,6 +60,9 @@ const quint16 g_mRealTimeRegisterMoreCount = 9;
 
 const quint16 g_mPIParaRegisterAddress = 0x0080;
 const quint16 g_mPIParaRegisterMoreCount = 6;
+
+const quint16 g_mComStateAddress = 0x0090;
+const quint16 g_mComStateRegisterCount = 1;
 /********************
  *
  *******************/
@@ -153,7 +156,7 @@ struct FanMotor{
     struct FanMotorSettings m_initSetttings;     //0x0040
     struct FanMotorController m_motorController; //0x0060
     struct FanPIParameters m_PIPara;             //0x0080
-    enum FanCommunicationState m_communicationState;
+    enum FanCommunicationState m_communicationState; //0x0090
 };
 #pragma pack(pop)
 
