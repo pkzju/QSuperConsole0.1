@@ -627,6 +627,7 @@ void FanMotorUi::onStateChanged(int state)
                 modbusTcpServer->setConnectionParameter(QModbusDevice::NetworkPortParameter, 6475);
                 modbusTcpServer->setConnectionParameter(QModbusDevice::NetworkAddressParameter,  "172.27.35.1");
 
+                modbusTcpServer->setServerAddress(1);
                 //! Now try connect modbus server device
                 if (!modbusTcpServer->connectDevice()) {//!< Connect failed
                     ui->textBrowser->append(tr("Modbus connect failed: ") + modbusTcpServer->errorString());
@@ -916,6 +917,8 @@ void FanMotorUi::changeGroup(FanGroupInfo *group)
         return;
 
     //! Get group parameter
+    if(!m_groups)
+        m_groups = homewindow::getInstance()->groups();
     m_currentGroup = group; //!< Get group pointer
     m_motors = &m_currentGroup->m_motors; //!< Get motor container pointer
     int _startAddress = m_currentGroup->m_startAddress; //!< Get current group start address
@@ -2441,7 +2444,7 @@ QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
     quint8 byteCount;
     request.decodeData(&address, &numberOfRegisters, &byteCount);
 
-    // byte count does not match number of data bytes following or register count
+    //! byte count does not match number of data bytes following or register count
     if ((byteCount != (request.dataSize() - 5 )) || (byteCount != (numberOfRegisters * 2))) {
         return QModbusExceptionResponse(request.functionCode(),
                                         QModbusExceptionResponse::IllegalDataValue);
@@ -2471,6 +2474,7 @@ QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
                 }
             }
         }
+
         if(!motor){
             return QModbusExceptionResponse(request.functionCode(),
                                             QModbusExceptionResponse::IllegalDataValue);
@@ -2485,13 +2489,37 @@ QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
             return QModbusExceptionResponse(request.functionCode(),
                                             QModbusExceptionResponse::IllegalDataValue);
         }
-
         const QByteArray pduData = request.data().remove(0,5);
         QDataStream stream(pduData);
         quint16 tmp;
         for (int i = 0; i < numberOfRegisters; i++) {
             stream >> tmp;
             *buff++ = tmp;
+        }
+
+        //! Update ui
+        motor->update();
+
+        //! Update table
+        if(registerAdd == g_mSettingsRegisterAddress){
+            //Update data to settings table
+            QAbstractItemModel *__model = ui->table_settings->model();
+            quint16 *__buffPtr = (quint16 *)&motor->m_initSetttings;
+            for(unsigned char i = 0; i<3; i++){
+                for(unsigned char j = 1; j<5; j++){
+                    __model->setData(__model->index(i,j), (double)(*__buffPtr) * 0.01);
+                    __buffPtr++;
+                }
+            }
+
+            int _fanType = (*__buffPtr >> 12) & 0x000f;
+            ui->comboBox_fanType->setCurrentIndex(_fanType);
+            int _fanPressure = (*__buffPtr >> 10) & 0x0003;
+            ui->comboBox_fanPressure->setCurrentIndex(_fanPressure);
+            int _fanreGulation = (*__buffPtr >> 8) & 0x0003;
+            ui->comboBox_fanreGulation->setCurrentIndex(_fanreGulation);
+            int _fanControlMode = (*__buffPtr >> 7) & 0x0001;
+            ui->comboBox_fanControlMode->setCurrentIndex(_fanControlMode);
         }
     }
     else{

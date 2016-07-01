@@ -35,21 +35,21 @@ homewindow::homewindow(QWidget *parent) :
     ui->portEdit->setText(_hostAddressAndport);
 
     {//Use a container to manage groups
-        mGroup.append(ui->pushButton_group1);
-        mGroup.append(ui->pushButton_group2);
-        mGroup.append(ui->pushButton_group3);
-        mGroup.append(ui->pushButton_group4);
-        mGroup.append(ui->pushButton_group5);
-        mGroup.append(ui->pushButton_group6);
-        mGroup.append(ui->pushButton_group7);
-        mGroup.append(ui->pushButton_group8);
-        mGroup.append(ui->pushButton_group9);
+        m_groupBtn.append(ui->pushButton_group1);
+        m_groupBtn.append(ui->pushButton_group2);
+        m_groupBtn.append(ui->pushButton_group3);
+        m_groupBtn.append(ui->pushButton_group4);
+        m_groupBtn.append(ui->pushButton_group5);
+        m_groupBtn.append(ui->pushButton_group6);
+        m_groupBtn.append(ui->pushButton_group7);
+        m_groupBtn.append(ui->pushButton_group8);
+        m_groupBtn.append(ui->pushButton_group9);
 
         on_spinBox_groupNum_valueChanged(ui->spinBox_groupNum->value());//Init group number
     }
 
     for(int i = 0; i < gGroupnum; i++){//All group buttons use one slot fuction
-        connect(mGroup.at(i), SIGNAL(clicked(bool)), this, SLOT(button_group_clicked()));
+        connect(m_groupBtn.at(i), SIGNAL(clicked(bool)), this, SLOT(button_group_clicked()));
     }
 
     connect(modbusDevice, &QModbusServer::stateChanged,
@@ -84,26 +84,26 @@ homewindow::~homewindow()
 
 void homewindow::on_spinBox_groupNum_valueChanged(int arg1)//Add or reduce group
 {
-    while(mGroups.count() < arg1){
-        int _groupID = mGroups.count()+1;
+    while(m_groups.count() < arg1){
+        int _groupID = m_groups.count()+1;
         int _fanMaxNumber = gMotorMaxnum;
         int _startAdd = (_groupID-1)*_fanMaxNumber + 1;
         FanGroupInfo *group = new FanGroupInfo{_groupID, _startAdd, _fanMaxNumber};
         group->m_monitorDialog = Q_NULLPTR;
-        mGroups.push_back(group);
+        m_groups.push_back(group);
     }
-    while(mGroups.count() > arg1){
-        mGroups.pop_back();
+    while(m_groups.count() > arg1){
+        m_groups.pop_back();
     }
 
 
     for(int i = arg1; i < gGroupnum; i++)//!< For reduce group
     {
-        mGroup.at(i)->setEnabled(false);
+        m_groupBtn.at(i)->setEnabled(false);
     }
     for(int i = 0; i < arg1; i++)        //!< For add group
     {
-        mGroup.at(i)->setEnabled(true);
+        m_groupBtn.at(i)->setEnabled(true);
     }
 }
 
@@ -111,8 +111,8 @@ void homewindow::button_group_clicked()//All group buttons clicked (use one slot
 {
     QPushButton* btn = qobject_cast<QPushButton*>(sender());
     for(int i = 0; i < gGroupnum; i++){
-        if(btn == mGroup.at(i)){
-            mCurrentGroupInfo = mGroups.at(i);
+        if(btn == m_groupBtn.at(i)){
+            mCurrentGroupInfo = m_groups.at(i);
             sigleGroupDialog::getS_Instance()->show(mCurrentGroupInfo);
             break;
         }
@@ -129,7 +129,7 @@ QStatusBar* homewindow::statusBar()//Get mainwindow's status bar
 
 QVector<FanGroupInfo *> *homewindow::groups()
 {
-    return &mGroups;
+    return &m_groups;
 }
 
 homewindow *homewindow::getInstance()
@@ -256,7 +256,7 @@ void homewindow::writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 cou
 
     //![1] Find motor
     QMotor *motor;
-    foreach(FanGroupInfo *_group, mGroups){//!< Get corresponding motor
+    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
         //! Judge belong to which group
         if(motorAdd >= _group->m_startAddress && \
                 motorAdd < _group->m_startAddress + _group->m_motors.count())
@@ -356,7 +356,7 @@ QModbusResponse homewindow::readBytes(const QModbusPdu &request,
     quint16 registerAdd = (address) & 0x00ff ;
 
     QMotor *motor;
-    foreach(FanGroupInfo *_group, mGroups){//!< Get corresponding motor
+    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
         //! Judge belong to which group
         if(motorAdd >= _group->m_startAddress && \
                 motorAdd < _group->m_startAddress + _group->m_motors.count())
@@ -451,7 +451,7 @@ qDebug() <<"connect to tcp server";
     if(motorAdd != 0){//! To one motor
 
         QMotor *motor;
-        foreach(FanGroupInfo *_group, mGroups){//!< Get corresponding motor
+        foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
             //! Judge belong to which group
             if(motorAdd >= _group->m_startAddress && \
                     motorAdd < _group->m_startAddress + _group->m_motors.count())
@@ -495,7 +495,7 @@ qDebug() <<"connect to tcp server";
 
         quint16 * buff;
         const QByteArray pduData = request.data().remove(0,5);
-        foreach(FanGroupInfo *group, mGroups){
+        foreach(FanGroupInfo *group, m_groups){
             foreach(QMotor *motor, group->m_motors){
 
 
@@ -540,7 +540,7 @@ QModbusResponse homewindow::writeSingle(const QModbusPdu &request,
     quint16 registerAdd = (address) & 0x00ff ;
 
     QMotor *motor;
-    foreach(FanGroupInfo *_group, mGroups){//!< Get corresponding motor
+    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
         //! Judge belong to which group
         if(motorAdd >= _group->m_startAddress && \
                 motorAdd < _group->m_startAddress + _group->m_motors.count())

@@ -72,8 +72,8 @@ signals:
 
 private:
     Ui::homewindow *ui;
-    QVector<QPushButton*> mGroup;
-    QVector<FanGroupInfo*> mGroups;
+    QVector<QPushButton*> m_groupBtn;
+    QVector<FanGroupInfo*> m_groups;
     FanGroupInfo *mCurrentGroupInfo;
     FModbusTcpServer *modbusDevice;
     QModbusClient* modbusTcpClient;
