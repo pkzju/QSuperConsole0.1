@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2014 dragondjf
 **
@@ -95,7 +95,7 @@ void FMainWindow::readSettings()
    int w = desktopWidget->availableGeometry().width();
    int h = desktopWidget->availableGeometry().height();
    qDebug() << w << h;
-   setMinimumSize(QSize(w * 0.7, h * 0.9));
+   setMinimumSize(QSize(w * 0.5, h * 0.6));
    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
    settings.beginGroup("FMainWindow");
    resize(settings.value("size", QSize(w * 0.7, h * 0.9)).toSize());

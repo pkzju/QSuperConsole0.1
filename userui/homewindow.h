@@ -49,6 +49,8 @@ private:
     QModbusResponse processWriteMultipleRegistersRequest(const QModbusRequest &request);
     QModbusResponse processWriteSingleRegisterRequest(const QModbusRequest &rqst);
     QModbusResponse writeSingle(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
+
+    QMotor *findMotor(quint16 address);
 private slots:
 
     void on_spinBox_groupNum_valueChanged(int arg1);
@@ -67,7 +69,7 @@ signals:
     //! Let modbus master send read request to slave
     void readMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
     //! Let modbus master send write request to slave
-    void writeMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
+    void writeMotorRegister(quint16 motorAdd, QModbusDataUnit unit);
 
 
 private:

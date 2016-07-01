@@ -255,32 +255,35 @@ void homewindow::writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 cou
         return;
 
     //![1] Find motor
-    QMotor *motor;
-    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
-        //! Judge belong to which group
-        if(motorAdd >= _group->m_startAddress && \
-                motorAdd < _group->m_startAddress + _group->m_motors.count())
-        {
-            foreach(QMotor *_motor, _group->m_motors){
-                if(_motor->m_address == motorAdd){
-                    motor = _motor;
-                    break;
-                }
-            }
-        }
-    }
+    QMotor *motor = findMotor(motorAdd);
     if(!motor){
         return;
     }
-    quint16 *buff = (quint16 *)&motor->m_initSetttings;
 
+    quint16 *buff = Q_NULLPTR;
+
+    if((registerAdd & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
+        buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
+    }
+    else if((registerAdd & 0x00ff) == g_mRealTimeRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+        buff += 2;
+    }
+    else if((registerAdd & 0x00ff) == g_mControllerRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+    }
+    else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
+        buff = (quint16 *)&motor->m_PIPara;
+    }
+    else{
+        return;
+    }
 
     //![2] Pack data to a QModbusDataUnit
-    const QModbusDataUnit::RegisterType table = QModbusDataUnit::HoldingRegisters;
     //! 0:15 register address , 16:31 motor address
     int startAddress = (registerAdd & 0x00ff) | ((motorAdd << 8) & 0xff00);
     int numberOfEntries = count;
-    QModbusDataUnit writeUnit = QModbusDataUnit(table, startAddress, numberOfEntries);
+    QModbusDataUnit writeUnit = QModbusDataUnit(QModbusDataUnit::HoldingRegisters, startAddress, numberOfEntries);
     for (uint i = 0; i < writeUnit.valueCount(); i++) {
 
         writeUnit.setValue(i, *buff++);
@@ -355,20 +358,7 @@ QModbusResponse homewindow::readBytes(const QModbusPdu &request,
     quint16 motorAdd = (address >> 8) & 0x00ff ;
     quint16 registerAdd = (address) & 0x00ff ;
 
-    QMotor *motor;
-    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
-        //! Judge belong to which group
-        if(motorAdd >= _group->m_startAddress && \
-                motorAdd < _group->m_startAddress + _group->m_motors.count())
-        {
-            foreach(QMotor *_motor, _group->m_motors){
-                if(_motor->m_address == motorAdd){
-                    motor = _motor;
-                    break;
-                }
-            }
-        }
-    }
+    QMotor *motor = findMotor(motorAdd);
     if(!motor){
         return QModbusExceptionResponse(request.functionCode(),
             QModbusExceptionResponse::IllegalDataValue);
@@ -448,77 +438,24 @@ qDebug() <<"connect to tcp server";
     }
 
     //! Write motor register
-    if(motorAdd != 0){//! To one motor
 
-        QMotor *motor;
-        foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
-            //! Judge belong to which group
-            if(motorAdd >= _group->m_startAddress && \
-                    motorAdd < _group->m_startAddress + _group->m_motors.count())
-            {
-                foreach(QMotor *_motor, _group->m_motors){
-                    if(_motor->m_address == motorAdd){
-                        motor = _motor;
-                        break;
-                    }
-                }
-            }
-        }
-        if(!motor){
-            return QModbusExceptionResponse(request.functionCode(),
-                                            QModbusExceptionResponse::IllegalDataValue);
-        }
-
-        quint16 * buff;
-        //! Write motor register
-        if(registerAdd == g_mRealTimeRegisterAddress)
-            buff = (quint16 *)&motor->m_motorController;
-        //! Write motor register
-        else if(registerAdd == g_mSettingsRegisterAddress)
-            buff = (quint16 *)&motor->m_initSetttings;
-        //! Write error
-        else{
-            return QModbusExceptionResponse(request.functionCode(),
-                                            QModbusExceptionResponse::IllegalDataValue);
-        }
-        const QByteArray pduData = request.data().remove(0,5);
-        QDataStream stream(pduData);
-        quint16 tmp;
-        for (int i = 0; i < numberOfRegisters; i++) {
-            stream >> tmp;
-            *buff++ = tmp;
-        }
-        //! Let modbus master send write request to slave
-        emit writeMotorRegister(motorAdd, registerAdd, numberOfRegisters);
+    QMotor *motor = findMotor(motorAdd);
+    if(!motor){
+        return QModbusExceptionResponse(request.functionCode(),
+                                        QModbusExceptionResponse::IllegalDataValue);
     }
-    else{//! Broadcast
 
-        quint16 * buff;
-        const QByteArray pduData = request.data().remove(0,5);
-        foreach(FanGroupInfo *group, m_groups){
-            foreach(QMotor *motor, group->m_motors){
+    QModbusDataUnit writeUnit(QModbusDataUnit::HoldingRegisters, address, numberOfRegisters);
 
-
-                if(registerAdd == g_mRealTimeRegisterAddress)
-                    buff = (quint16 *)&motor->m_motorController;
-                else if(registerAdd == g_mSettingsRegisterAddress)
-                    buff = (quint16 *)&motor->m_initSetttings;
-                else{
-                    return QModbusExceptionResponse(request.functionCode(),
-                                                    QModbusExceptionResponse::IllegalDataValue);
-                }
-
-                QDataStream stream(pduData);
-                quint16 tmp;
-                for (int i = 0; i < numberOfRegisters; i++) {
-                    stream >> tmp;
-                    *buff++ = tmp;
-                } 
-            }
-        }
-        //! Let modbus master send write request to slave
-        emit writeMotorRegister(motorAdd, registerAdd, numberOfRegisters);
+    const QByteArray pduData = request.data().remove(0,5);
+    QDataStream stream(pduData);
+    quint16 tmp;
+    for (quint16 i = 0; i < writeUnit.valueCount(); i++) {
+        stream >> tmp;
+        writeUnit.setValue(i, tmp);
     }
+    //! Let modbus master send write request to slave
+    emit writeMotorRegister(motorAdd, writeUnit);
 
     return QModbusResponse(request.functionCode(), address, numberOfRegisters);
 }
@@ -539,20 +476,7 @@ QModbusResponse homewindow::writeSingle(const QModbusPdu &request,
     quint16 motorAdd = (address >> 8) & 0x00ff ;
     quint16 registerAdd = (address) & 0x00ff ;
 
-    QMotor *motor;
-    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
-        //! Judge belong to which group
-        if(motorAdd >= _group->m_startAddress && \
-                motorAdd < _group->m_startAddress + _group->m_motors.count())
-        {
-            foreach(QMotor *_motor, _group->m_motors){
-                if(_motor->m_address == motorAdd){
-                    motor = _motor;
-                    break;
-                }
-            }
-        }
-    }
+    QMotor *motor = findMotor(motorAdd);
     if(!motor){
         return QModbusExceptionResponse(request.functionCode(),
             QModbusExceptionResponse::IllegalDataValue);
@@ -599,4 +523,25 @@ QModbusResponse FModbusTcpServer::processRequest(const QModbusPdu &request)
 {
     return homewindow::getInstance()->processRequest(request);
 
+}
+
+QMotor *homewindow::findMotor(quint16 address)
+{
+    QMotor *motor = Q_NULLPTR;
+
+    foreach(FanGroupInfo *_group, m_groups){//!< Get corresponding motor
+        //! Judge belong to which group
+        if(address >= _group->m_startAddress && \
+                address < _group->m_startAddress + _group->m_motors.count())
+        {
+            foreach(QMotor *_motor, _group->m_motors){
+                if(_motor->m_address == address){
+                    motor = _motor;
+                    return motor;
+                }
+            }
+        }
+    }
+
+    return Q_NULLPTR;
 }

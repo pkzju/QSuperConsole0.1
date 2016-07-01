@@ -39,7 +39,7 @@ class QMotor
 {
 
 public:
-    explicit QMotor(int address);
+    explicit QMotor(int address = 0);
     ~QMotor();
 
     void update();

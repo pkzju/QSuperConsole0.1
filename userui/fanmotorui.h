@@ -106,7 +106,7 @@ private slots:
     //! Let modbus master send read request to slave
     void readFromMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
     //! Let modbus master send write request to slave
-    void writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
+    void writeToMotor(quint16 motorAdd, QModbusDataUnit unit);
 signals:
     void updatePlotUi(FanMotorController motorctr);
     void updateSigleMotor(int arg1);
@@ -120,10 +120,12 @@ private:
     QModbusResponse readBytes(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
     QModbusResponse processWriteMultipleRegistersRequest(const QModbusRequest &request);
     QModbusResponse processWriteSingleRegisterRequest(const QModbusRequest &rqst);
-    QModbusResponse writeSingle(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
 
-    void sendCommand(FCommandRegister fcr);
+    void sendCommand(const FCommandRegister &fcr, quint16 serverAddress);
+    QMotor *findMotor(quint16 address);
+    bool sendModbusWriteRequest(QModbusClient *modbusDevice, QModbusDataUnit unit, quint16 serverAddress);
 
+    bool readReplyHandle(QModbusReply *reply);
 private:
     static FanMotorUi *s_Instance;
 
@@ -135,7 +137,7 @@ private:
     s_BOARD *m_masterBoard;
     CanThread *m_canThread;
     FanGroupInfo *m_currentGroup;
-    QModbusClient* modbusTcpDevice;//!< Modbus tcp client device
+    QModbusClient *modbusTcpDevice;//!< Modbus tcp client device
     HModbusTcpServer *modbusTcpServer;//!< Modbus tcp server device
 
 
