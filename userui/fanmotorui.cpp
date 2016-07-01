@@ -2076,10 +2076,31 @@ QModbusResponse FanMotorUi::processWriteSingleRegisterRequest(const QModbusReque
     }
 
     quint16 * buff;
-    if(registerAdd == g_mRealTimeRegisterAddress)
+    if((registerAdd & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
+        buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
+    }
+    else if((registerAdd & 0x00ff) == g_mRealTimeRegisterAddress){
         buff = (quint16 *)&motor->m_motorController;
+        buff += 2;
+    }
+    else if((registerAdd & 0x00ff) == g_mControllerRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+    }
+    else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
+        buff = (quint16 *)&motor->m_PIPara;
+    }
+    else if((registerAdd & 0x00ff) == g_mComStateAddress){
+        buff = (quint16 *)&motor->m_communicationState;
+    }
+    else{
+        return QModbusExceptionResponse(rqst.functionCode(),
+                                        QModbusExceptionResponse::IllegalDataValue);
+    }
 
     *buff = value;
+
+    //! Update ui
+    motor->update();
 
     return QModbusResponse(rqst.functionCode(), address, value);
 

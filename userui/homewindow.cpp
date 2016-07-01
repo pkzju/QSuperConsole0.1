@@ -275,6 +275,9 @@ void homewindow::writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 cou
     else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
         buff = (quint16 *)&motor->m_PIPara;
     }
+    else if((registerAdd & 0x00ff) == g_mComStateAddress){
+        buff = (quint16 *)&motor->m_communicationState;
+    }
     else{
         return;
     }
@@ -365,11 +368,27 @@ QModbusResponse homewindow::readBytes(const QModbusPdu &request,
     }
 
     quint16 * buff;
-    if(registerAdd == g_mRealTimeRegisterAddress && count <= g_mRealTimeRegisterMoreCount)
-        buff = (quint16 *)&motor->m_motorController;
 
-    if(registerAdd == g_mSettingsRegisterAddress)
-        buff = (quint16 *)&motor->m_initSetttings;
+    if((registerAdd & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
+        buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
+    }
+    else if((registerAdd & 0x00ff) == g_mRealTimeRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+        buff += 2;
+    }
+    else if((registerAdd & 0x00ff) == g_mControllerRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+    }
+    else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
+        buff = (quint16 *)&motor->m_PIPara;
+    }
+    else if((registerAdd & 0x00ff) == g_mComStateAddress){
+        buff = (quint16 *)&motor->m_communicationState;
+    }
+    else{
+        return QModbusExceptionResponse(rqst.functionCode(),
+                                        QModbusExceptionResponse::IllegalDataValue);
+    }
 
     for (uint i = 0; i < unit.valueCount(); i++) {
 

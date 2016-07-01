@@ -63,6 +63,7 @@ private slots:
 
     void clientToConnect();
 public slots:
+    //! Local tcp client send data to remote tcp server
     void writeToMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
 
 signals:
