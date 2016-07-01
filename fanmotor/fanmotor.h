@@ -59,7 +59,7 @@ const quint16 g_mRealTimeRegisterCount = 5;
 const quint16 g_mRealTimeRegisterMoreCount = 9;
 
 const quint16 g_mPIParaRegisterAddress = 0x0080;
-const quint16 g_mPIParaRegisterMoreCount = 6;
+const quint16 g_mPIParaRegisterCount = 6;
 
 const quint16 g_mComStateAddress = 0x0090;
 const quint16 g_mComStateRegisterCount = 1;

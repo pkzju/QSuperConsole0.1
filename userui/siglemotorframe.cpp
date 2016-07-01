@@ -2,13 +2,19 @@
 #include "ui_siglemotorframe.h"
 #include "fanmotorui.h"
 #include <QTableWidget>
-#include "qcustomplot/qcustomplot.h"
+
 
 SigleMotorFrame *SigleMotorFrame::s_Instance = Q_NULLPTR;
 
 SigleMotorFrame::SigleMotorFrame(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::SigleMotorFrame)
+  , m_speedRefData(new QCPDataMap)
+  , m_speedFbkData(new QCPDataMap)
+  , m_idRefData(new QCPDataMap)
+  , m_idFbkData(new QCPDataMap)
+  , m_iqRefData(new QCPDataMap)
+  , m_iqFbkData(new QCPDataMap)
 {
     ui->setupUi(this);
 
@@ -41,11 +47,8 @@ SigleMotorFrame::SigleMotorFrame(QWidget *parent) :
     connect(fanmotorui, SIGNAL(updateSigleMotor(int)), this, SLOT(updateMotorUi(int)));
     connect(fanmotorui, SIGNAL(updateSigleMotorState(bool)), this, SLOT(onStateChange(bool)));
     connect(ui->checkBox, SIGNAL(stateChanged(int)), fanmotorui, SLOT(monitorSigleStateChange(int)));
-    connect(this, SIGNAL(setPI()), fanmotorui, SLOT(onSetPI()));
+    connect(this, SIGNAL(setPI(FanPIParameters &)), fanmotorui, SLOT(onSetPI(FanPIParameters &)));
     connect(this, SIGNAL(readPI()), fanmotorui, SLOT(onReadPI()));
-
-//    connect(this, SIGNAL(closeAndHide(int)), fanmotorui, SLOT(monitorSigleStateChange(int)));
-
 
 }
 
@@ -53,7 +56,16 @@ SigleMotorFrame::SigleMotorFrame(QWidget *parent) :
 SigleMotorFrame::~SigleMotorFrame()
 {
     s_Instance = Q_NULLPTR;
+
+    delete m_speedRefData;
+    delete m_speedFbkData;
+    delete m_idRefData;
+    delete m_idFbkData;
+    delete m_iqRefData;
+    delete m_iqFbkData;
+
     delete ui;
+
 }
 
 SigleMotorFrame *SigleMotorFrame::getInstance()
@@ -134,6 +146,25 @@ void SigleMotorFrame::updateMotorUi(int arg1)
 
         ui->lcdNumber_targetIq->display(m_motor->m_motorController.m_iqRef);
         ui->lcdNumber_realTimeIq->display(m_motor->m_motorController.m_iqFbk);
+
+
+        double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
+        m_speedRefData->insertMulti(key, QCPData(key, m_motor->m_motorController.m_speedRef));
+        m_speedFbkData->insertMulti(key, QCPData(key, m_motor->m_motorController.m_speedFbk));
+        m_idRefData->insertMulti(key, QCPData(key, m_motor->m_motorController.m_idRef));
+        m_idFbkData->insertMulti(key, QCPData(key, m_motor->m_motorController.m_idFbk));
+        m_iqRefData->insertMulti(key, QCPData(key, m_motor->m_motorController.m_iqRef));
+        m_iqFbkData->insertMulti(key, QCPData(key, m_motor->m_motorController.m_iqFbk));
+
+        //! remove data of lines that's outside visible range:
+        if(m_speedRefData->count() > 100){
+            m_speedRefData->remove(m_speedRefData->firstKey());
+            m_speedFbkData->remove(m_speedFbkData->firstKey());
+            m_idRefData->remove(m_idRefData->firstKey());
+            m_idFbkData->remove(m_idFbkData->firstKey());
+            m_iqRefData->remove(m_iqRefData->firstKey());
+            m_iqFbkData->remove(m_iqFbkData->firstKey());
+        }
 
         if(ui->checkBox->isChecked())
             realtimeDataSlot();
@@ -220,13 +251,14 @@ void SigleMotorFrame::on_pushButton_InitSetF_clicked()
 
 void SigleMotorFrame::on_setPIBtn_clicked()
 {
-    m_motor->m_PIPara.m_speedKp = (quint16)(ui->SpinBox_speedPRW->value() * 1000);
-    m_motor->m_PIPara.m_speedKi = (quint16)(ui->SpinBox_speedIRW->value() * 1000);
-    m_motor->m_PIPara.m_idKp = (quint16)(ui->SpinBox_idPRW->value() * 1000);
-    m_motor->m_PIPara.m_idKi = (quint16)(ui->SpinBox_idIRW->value() * 1000);
-    m_motor->m_PIPara.m_iqKp = (quint16)(ui->SpinBox_iqPRW->value() * 1000);
-    m_motor->m_PIPara.m_iqKi = (quint16)(ui->SpinBox_iqIRW->value() * 1000);
-    emit setPI();
+    FanPIParameters _PIPara;
+    _PIPara.m_speedKp = (quint16)(ui->SpinBox_speedPRW->value() * 1000);
+    _PIPara.m_speedKi = (quint16)(ui->SpinBox_speedIRW->value() * 1000);
+    _PIPara.m_idKp = (quint16)(ui->SpinBox_idPRW->value() * 1000);
+    _PIPara.m_idKi = (quint16)(ui->SpinBox_idIRW->value() * 1000);
+    _PIPara.m_iqKp = (quint16)(ui->SpinBox_iqPRW->value() * 1000);
+    _PIPara.m_iqKi = (quint16)(ui->SpinBox_iqIRW->value() * 1000);
+    emit setPI(_PIPara);
 }
 
 void SigleMotorFrame::on_readPIBtn_clicked()
@@ -239,10 +271,6 @@ void SigleMotorFrame::on_readPIBtn_clicked()
 
 void SigleMotorFrame::setupRealtimeDataDemo(QCustomPlot *customPlot)
 {
-#if QT_VERSION < QT_VERSION_CHECK(4, 7, 0)
-    QMessageBox::critical(this, "", "You're using Qt < 4.7, the realtime data demo needs functions that are available with Qt 4.7 to work properly");
-#endif
-
     // include this section to fully disable antialiasing for higher performance:
     customPlot->setNotAntialiasedElements(QCP::aeAll);
     QFont font;
@@ -270,10 +298,7 @@ void SigleMotorFrame::setupRealtimeDataDemo(QCustomPlot *customPlot)
     customPlot->graph(3)->setPen(QPen(Qt::red));
     customPlot->graph(3)->setLineStyle(QCPGraph::lsNone);
     customPlot->graph(3)->setScatterStyle(QCPScatterStyle::ssDisc);
-//    customPlot->addGraph(); // green dot
-//    customPlot->graph(5)->setPen(QPen(Qt::green));
-//    customPlot->graph(5)->setLineStyle(QCPGraph::lsNone);
-//    customPlot->graph(5)->setScatterStyle(QCPScatterStyle::ssDisc);
+
 
     customPlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
     customPlot->xAxis->setDateTimeFormat("ss");
@@ -292,7 +317,6 @@ void SigleMotorFrame::setupRealtimeDataDemo(QCustomPlot *customPlot)
     customPlot->legend->setTextColor(Qt::white);
     customPlot->legend->removeItem(customPlot->legend->itemCount()-1);
     customPlot->legend->removeItem(customPlot->legend->itemCount()-1);
-//    customPlot->legend->removeItem(customPlot->legend->itemCount()-1);
 
     // set some pens, brushes and backgrounds:
     customPlot->xAxis->setBasePen(QPen(Qt::white, 1));
@@ -328,9 +352,19 @@ void SigleMotorFrame::setupRealtimeDataDemo(QCustomPlot *customPlot)
 
     for(int i=0; i <100; i++){
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
-        ui->customPlot->graph(0)->addData(key,0);
-        ui->customPlot->graph(1)->addData(key,0);
+
+        m_speedRefData->insertMulti(key, QCPData(key, 0));
+        m_speedFbkData->insertMulti(key, QCPData(key, 0));
+        m_idRefData->insertMulti(key, QCPData(key, 0));
+        m_idFbkData->insertMulti(key, QCPData(key, 0));
+        m_iqRefData->insertMulti(key, QCPData(key, 0));
+        m_iqFbkData->insertMulti(key, QCPData(key, 0));
+
     }
+
+    ui->customPlot->graph(0)->setData(m_speedRefData, true);
+    ui->customPlot->graph(1)->setData(m_speedFbkData, true);
+
     ui->customPlot->xAxis->setRange(ui->customPlot->graph(0)->data()->firstKey(), ui->customPlot->graph(0)->data()->lastKey()+0.1);
     // make left and bottom axes transfer their ranges to right and top axes:
     connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->xAxis2, SLOT(setRange(QCPRange)));
@@ -343,32 +377,40 @@ void SigleMotorFrame::realtimeDataSlot()
 
     double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-    // add data to lines:
-    ui->customPlot->graph(0)->addData(key, m_motor->m_motorController.m_speedRef);
-    ui->customPlot->graph(1)->addData(key, m_motor->m_motorController.m_speedFbk);
-//    ui->customPlot->graph(2)->addData(key, 0);
-    // set data of dots:
-    ui->customPlot->graph(2)->clearData();
-    ui->customPlot->graph(2)->addData(key, m_motor->m_motorController.m_speedRef);
-    ui->customPlot->graph(3)->clearData();
-    ui->customPlot->graph(3)->addData(key, m_motor->m_motorController.m_speedFbk);
-//    ui->customPlot->graph(5)->clearData();
-//    ui->customPlot->graph(5)->addData(key, 0);
 
-    // remove data of lines that's outside visible range:
-    if(ui->customPlot->graph(0)->data()->count()>100)
-        ui->customPlot->graph(0)->removeData(ui->customPlot->graph(0)->data()->firstKey());
-    if(ui->customPlot->graph(1)->data()->count()>100)
-        ui->customPlot->graph(1)->removeData(ui->customPlot->graph(1)->data()->firstKey());
-//    if(ui->customPlot->graph(2)->data()->count()>100)
-//        ui->customPlot->graph(2)->removeData(ui->customPlot->graph(2)->data()->begin().key());
-    // rescale value (vertical) axis to fit the current data:
+    //! set data :
+    ui->customPlot->graph(2)->clearData();
+    ui->customPlot->graph(3)->clearData();
+
+    if(ui->radioButton_speed->isChecked()){
+        ui->customPlot->graph(0)->setData(m_speedRefData, true);
+        ui->customPlot->graph(1)->setData(m_speedFbkData, true);
+        ui->customPlot->graph(2)->addData(key, m_motor->m_motorController.m_speedRef);
+        ui->customPlot->graph(3)->addData(key, m_motor->m_motorController.m_speedFbk);
+    }
+    else if(ui->radioButton_id->isChecked()){
+        ui->customPlot->graph(0)->setData(m_idRefData, true);
+        ui->customPlot->graph(1)->setData(m_idFbkData, true);
+        ui->customPlot->graph(2)->addData(key, m_motor->m_motorController.m_idRef);
+        ui->customPlot->graph(3)->addData(key, m_motor->m_motorController.m_idFbk);
+    }
+    else if(ui->radioButton_iq->isChecked()){
+        ui->customPlot->graph(0)->setData(m_iqRefData, true);
+        ui->customPlot->graph(1)->setData(m_iqFbkData, true);
+        ui->customPlot->graph(2)->addData(key, m_motor->m_motorController.m_iqRef);
+        ui->customPlot->graph(3)->addData(key, m_motor->m_motorController.m_iqFbk);
+    }
+
+    //! rescale value (vertical) axis to fit the current data:
     ui->customPlot->graph(0)->rescaleValueAxis(false);
     ui->customPlot->graph(1)->rescaleValueAxis(true);
-//    ui->customPlot->graph(2)->rescaleValueAxis(true);
 
-    ui->customPlot->xAxis->setRange(ui->customPlot->graph(0)->data()->firstKey(), ui->customPlot->graph(0)->data()->lastKey()+0.1);
+    ui->customPlot->xAxis->setRange(ui->customPlot->graph(0)->data()->firstKey(), \
+                                    ui->customPlot->graph(0)->data()->lastKey()+0.1);
 
     ui->customPlot->replot();
 
 }
+
+
+

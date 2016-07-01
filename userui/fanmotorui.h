@@ -48,30 +48,40 @@ public:
 public:
     static FanMotorUi *getS_Instance();
     static void deleteInstance();
+
+    //! For CANOpen
     void heartbeatError(CO_Data *d, unsigned char heartbeatID);
     void post_sync(CO_Data *d);
     void post_SlaveStateChange(CO_Data *d, unsigned char nodeId, e_nodeState newNodeState);
 
-    QStatusBar *statusBar();
-    void changeGroup(FanGroupInfo *group);
+    QStatusBar *statusBar();//!< Get main windows status bar
 
-    QModbusResponse processRequest(const QModbusPdu &request);
+    void changeGroup(FanGroupInfo *group);//!< Change group to show
+
+    QModbusResponse processRequest(const QModbusPdu &request);//!< For modbus tcp server to process request
 
 private slots:
 
+    //! CAN frame show and handle
     void messageShow(const QString &s);
     void messageHandle(const QCanBusFrame &frame);
 
+    //! Some operate view response part
     void on_connectButton_clicked();
     void on_disconnectButton_clicked();
     void onStateChanged(int state);
     void on_spinBox_motorNum_valueChanged(int arg1);
     void on_settingsButton_clicked();
+    void on_clearButton_clicked();
+
+    //! Init set part
     void on_pushButton_InitSetF_clicked();
     void on_pushButton_InitSetG_clicked();
     void on_pushButton_InitSetA_clicked();
     void on_pushButton_InitRead_clicked();
-    void readInitReady();
+    void readInitReady();//!< For modbus rtu mode
+
+    //! Monitor part
     void on_groupmonitorButton_clicked();
     void on_checkBox_monitorASW_stateChanged(int arg1);
     void monitor_stateChanged(int state);
@@ -79,31 +89,35 @@ private slots:
     void monitorTimer_update();
     void monitorReadReady();
 
-    void on_clearButton_clicked();
-
+    //! Read rated data part
     void on_initializeButton_clicked();
     void on_initializeGButton_clicked();
     void on_initializeAButton_clicked();
-    void readInitFGAReady();
+    void readInitFGAReady();//!< For modbus rtu mode
 
-    void onRunStateButtonClicked();
-    void onMotorStartButtonClicked();//!< For sigle motor ui
-    void onMotorStopButtonClicked();//!< For sigle motor ui
-    void onFanButtonclicked();
-    void onSigleMotorInitSetClicked(QTableWidget *table, quint16 data);
-    void onSetPI();
+    //! Change motor state part
+    void onRunStateButtonClicked();//!< Change motor state buttons slot
+
+    //! For sigle motor ui part
+    void onMotorStartButtonClicked();//!< Start motor
+    void onMotorStopButtonClicked(); //!< Stop motor
+    void onFanButtonclicked();       //!< Show sigle motor ui
+    void onSigleMotorInitSetClicked(QTableWidget *table, quint16 data);//!< Init set
+    void onSetPI(FanPIParameters &fpi);
     void onReadPI();
-    void readPIReady();
+    void readPIReady();//!< For modbus rtu mode
 
+    //! Tcp server state change slot
     void onTcpServerStateChanged(int state);
 
-    //! Let local modbus rtu master send read request to slave
+    //! Let local modbus rtu master send read / write request to slave
     void readFromMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
-
-    //! Let local modbus rtu master send write request to slave
     void writeToMotor(quint16 motorAdd, QModbusDataUnit unit);
+
 signals:
     void updatePlotUi(FanMotorController motorctr);
+
+    //! For sigle motor ui
     void updateSigleMotor(int arg1);
     void updateSigleMotorState(bool state);
 
@@ -111,17 +125,20 @@ signals:
     void writeMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
 
 private:
+    //! Tcp server process request part
     QModbusResponse processReadHoldingRegistersRequest(const QModbusRequest &rqst);
     QModbusResponse readBytes(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
     QModbusResponse processWriteMultipleRegistersRequest(const QModbusRequest &request);
     QModbusResponse processWriteSingleRegisterRequest(const QModbusRequest &rqst);
 
+    //! Frequently used fuction part
     void sendCommand(const FCommandRegister &fcr, quint16 serverAddress);
+    void sendMobusReadRequest(quint16 motorAdd, quint16 registerAdd, quint16 count);
     QMotor *findMotor(quint16 address);
     quint16 *findRegister(QMotor *motor, quint16 registerAddress);
     bool sendModbusWriteRequest(QModbusClient *modbusDevice, QModbusDataUnit unit, quint16 serverAddress);
-
     bool readReplyHandle(QModbusReply *reply);
+
 private:
     static FanMotorUi *s_Instance;
 
