@@ -1924,12 +1924,11 @@ QModbusResponse FanMotorUi::readBytes(const QModbusPdu &request,
             QModbusExceptionResponse::IllegalDataValue);
     }
 
-    quint16 * buff;
-    if(registerAdd == g_mRealTimeRegisterAddress && count <= g_mRealTimeRegisterMoreCount)
-        buff = (quint16 *)&motor->m_motorController;
-
-    if(registerAdd == g_mSettingsRegisterAddress)
-        buff = (quint16 *)&motor->m_initSetttings;
+    quint16 * buff = findRegister(motor, (registerAdd & 0x00ff));
+    if(!buff){
+        return QModbusExceptionResponse(request.functionCode(),
+                                        QModbusExceptionResponse::IllegalDataValue);
+    }
 
     for (uint i = 0; i < unit.valueCount(); i++) {
 
@@ -1974,25 +1973,8 @@ QModbusResponse FanMotorUi::processWriteMultipleRegistersRequest(
                                             QModbusExceptionResponse::IllegalDataValue);
         }
 
-        quint16 * buff;
-
-        if((registerAdd & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
-            buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
-        }
-        else if((registerAdd & 0x00ff) == g_mRealTimeRegisterAddress){
-            buff = (quint16 *)&motor->m_motorController;
-            buff += 2;
-        }
-        else if((registerAdd & 0x00ff) == g_mControllerRegisterAddress){
-            buff = (quint16 *)&motor->m_motorController;
-        }
-        else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
-            buff = (quint16 *)&motor->m_PIPara;
-        }
-        else if((registerAdd & 0x00ff) == g_mComStateAddress){
-            buff = (quint16 *)&motor->m_communicationState;
-        }
-        else{
+        quint16 * buff = findRegister(motor, (registerAdd & 0x00ff));
+        if(!buff){
             return QModbusExceptionResponse(request.functionCode(),
                                             QModbusExceptionResponse::IllegalDataValue);
         }
@@ -2075,24 +2057,8 @@ QModbusResponse FanMotorUi::processWriteSingleRegisterRequest(const QModbusReque
             QModbusExceptionResponse::IllegalDataValue);
     }
 
-    quint16 * buff;
-    if((registerAdd & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
-        buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
-    }
-    else if((registerAdd & 0x00ff) == g_mRealTimeRegisterAddress){
-        buff = (quint16 *)&motor->m_motorController;
-        buff += 2;
-    }
-    else if((registerAdd & 0x00ff) == g_mControllerRegisterAddress){
-        buff = (quint16 *)&motor->m_motorController;
-    }
-    else if((registerAdd & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
-        buff = (quint16 *)&motor->m_PIPara;
-    }
-    else if((registerAdd & 0x00ff) == g_mComStateAddress){
-        buff = (quint16 *)&motor->m_communicationState;
-    }
-    else{
+    quint16 * buff = findRegister(motor, (registerAdd & 0x00ff));
+    if(!buff){
         return QModbusExceptionResponse(rqst.functionCode(),
                                         QModbusExceptionResponse::IllegalDataValue);
     }
@@ -2186,6 +2152,33 @@ QMotor *FanMotorUi::findMotor(quint16 address)
     return Q_NULLPTR;
 }
 
+quint16 *FanMotorUi::findRegister(QMotor *motor, quint16 registerAddress)
+{
+    quint16 *buff = Q_NULLPTR;
+
+    if((registerAddress & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
+        buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
+    }
+    else if((registerAddress & 0x00ff) == g_mRealTimeRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+        buff += 2;
+    }
+    else if((registerAddress & 0x00ff) == g_mControllerRegisterAddress){
+        buff = (quint16 *)&motor->m_motorController;
+    }
+    else if((registerAddress & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
+        buff = (quint16 *)&motor->m_PIPara;
+    }
+    else if((registerAddress & 0x00ff) == g_mComStateAddress){
+        buff = (quint16 *)&motor->m_communicationState;
+    }
+    else{
+        buff = Q_NULLPTR;
+    }
+
+    return buff;
+}
+
 bool FanMotorUi::sendModbusWriteRequest(QModbusClient *modbusDevice, QModbusDataUnit unit, quint16 serverAddress)
 {
     if(!modbusDevice)
@@ -2240,23 +2233,9 @@ bool FanMotorUi::readReplyHandle(QModbusReply *reply)
     //![1.1] Reply no error
     if (reply->error() == QModbusDevice::NoError) {
 
-        quint16 *buff = Q_NULLPTR;
-
         //![][1] Check which registers
-        if((startAddress & 0x00ff)== g_mSettingsRegisterAddress){//!< Make sure is Init data
-            buff = (quint16 *)&motor->m_initSetttings;//!< Get current motor's initSetttings pointer
-        }
-        else if((startAddress & 0x00ff) == g_mRealTimeRegisterAddress){
-            buff = (quint16 *)&motor->m_motorController;
-            buff += 2;
-        }
-        else if((startAddress & 0x00ff) == g_mControllerRegisterAddress){
-            buff = (quint16 *)&motor->m_motorController;
-        }
-        else if((startAddress & 0x00ff) == g_mPIParaRegisterAddress){//!< Make sure is PI data
-            buff = (quint16 *)&motor->m_PIPara;
-        }
-        else{
+        quint16 * buff = findRegister(motor, (startAddress & 0x00ff));
+        if(!buff){
             reply->deleteLater();
             return false;
         }

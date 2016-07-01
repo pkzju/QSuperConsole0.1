@@ -51,6 +51,7 @@ private:
     QModbusResponse writeSingle(const QModbusPdu &request, QModbusDataUnit::RegisterType unitType);
 
     QMotor *findMotor(quint16 address);
+    quint16 *findRegister(QMotor *motor, quint16 registerAddress);
 private slots:
 
     void on_spinBox_groupNum_valueChanged(int arg1);
@@ -86,6 +87,7 @@ private:
 
 
     static homewindow* s_Instance;
+
 
 
 

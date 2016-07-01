@@ -46,13 +46,6 @@ public:
     ~FanMotorUi();
 
 public:
-
-    enum PollingState:char{
-        Stop,
-        SingleMotor,
-        MultiMotor,
-        Searching,
-    };
     static FanMotorUi *getS_Instance();
     static void deleteInstance();
     void heartbeatError(CO_Data *d, unsigned char heartbeatID);
@@ -61,6 +54,7 @@ public:
 
     QStatusBar *statusBar();
     void changeGroup(FanGroupInfo *group);
+
     QModbusResponse processRequest(const QModbusPdu &request);
 
 private slots:
@@ -103,16 +97,17 @@ private slots:
 
     void onTcpServerStateChanged(int state);
 
-    //! Let modbus master send read request to slave
+    //! Let local modbus rtu master send read request to slave
     void readFromMotor(quint16 motorAdd, quint16 registerAdd, quint16 count);
-    //! Let modbus master send write request to slave
+
+    //! Let local modbus rtu master send write request to slave
     void writeToMotor(quint16 motorAdd, QModbusDataUnit unit);
 signals:
     void updatePlotUi(FanMotorController motorctr);
     void updateSigleMotor(int arg1);
     void updateSigleMotorState(bool state);
 
-    //! Let local modbus tcp client send write request to remote modbus tcp server
+    //! Emit this signal let local modbus tcp client send write request to remote modbus tcp server
     void writeMotorRegister(quint16 motorAdd, quint16 registerAdd, quint16 count);
 
 private:
@@ -123,6 +118,7 @@ private:
 
     void sendCommand(const FCommandRegister &fcr, quint16 serverAddress);
     QMotor *findMotor(quint16 address);
+    quint16 *findRegister(QMotor *motor, quint16 registerAddress);
     bool sendModbusWriteRequest(QModbusClient *modbusDevice, QModbusDataUnit unit, quint16 serverAddress);
 
     bool readReplyHandle(QModbusReply *reply);
@@ -153,6 +149,7 @@ private:
     int m_monitorTimeroutCount = 0;
     QVector<QPushButton*> m_motorButtons;
     quint16 m_specialMotorAdd = 0;
+
 };
 
 #endif // FANMOTORUI_H
