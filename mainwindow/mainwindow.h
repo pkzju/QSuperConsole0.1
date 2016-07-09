@@ -54,6 +54,7 @@ private:
     QToolButton *OpenOfStatusBar;
     QToolButton *CloseOfStatusBar;
 
+
 signals:
     void connectButtonsClicked();
     void disconnectButtonsClicked();

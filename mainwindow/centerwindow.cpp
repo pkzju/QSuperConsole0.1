@@ -62,7 +62,7 @@ void CenterWindow::initUI()
 //    ModbusUi *m_modbusui{ModbusUi::getInstance()};
     homewindow *m_home{homewindow::getInstance()};
 
-//    SerialPortUi *serialport{new SerialPortUi};
+//    SerialPortUi *serialport{new SerialPortUi(this)};
 //    TcpClientFrame *_TcpClientFrame = new TcpClientFrame(this);
 //    TcpServerFrame *_TcpServerFrame = new TcpServerFrame(this);
 

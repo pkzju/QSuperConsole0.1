@@ -16,6 +16,7 @@
 #include "lamp/qcw_indicatorlamp.h"
 
 #include "dialogs/siglegroupdialog.h"
+//#include<QDebug>
 
 MainWindow* MainWindow::instance = Q_NULLPTR;
 

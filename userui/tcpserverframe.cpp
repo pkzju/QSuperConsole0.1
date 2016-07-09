@@ -78,25 +78,25 @@ void TcpServerFrame::onNewConnection()
  */
 void TcpServerFrame::readSocked()
 {
-    QTcpSocket *_tcpSocked = qobject_cast<QTcpSocket*>(sender());
+//    QTcpSocket *_tcpSocked = qobject_cast<QTcpSocket*>(sender());
 
-    //! Constructs a data stream that has m_tcpClientSocked I/O device
-    QDataStream in(_tcpSocked);
+//    //! Constructs a data stream that has m_tcpClientSocked I/O device
+//    QDataStream in(_tcpSocked);
 
-    //! Sets the version number of the data serialization format
-    in.setVersion(QDataStream::Qt_5_7);
+//    //! Sets the version number of the data serialization format
+//    in.setVersion(QDataStream::Qt_5_6);
 
-    //! Starts a new read transaction on the stream
-    in.startTransaction();
+//    //! Starts a new read transaction on the stream
+//    in.startTransaction();
 
-    quint16 length;
-    QString str;
-    in >> length >> str;
+//    quint16 length;
+//    QString str;
+//    in >> length >> str;
 
-    if (!in.commitTransaction())
-        return;     //!< wait for more data
+//    if (!in.commitTransaction())
+//        return;     //!< wait for more data
 
-    ui->textBrowser->append(str);
+//    ui->textBrowser->append(str);
 }
 
 /*!
@@ -109,7 +109,7 @@ void TcpServerFrame::on_pushButton_send_clicked()
 
     QByteArray block;
     QDataStream out(&block,QIODevice::ReadWrite);
-    out.setVersion(QDataStream::Qt_5_7);
+    out.setVersion(QDataStream::Qt_5_6);
 
     //! Setting the initial value of the transmission length is 0
     out << (quint16) 0 << ui->textEdit->toPlainText();//!< Value of the transmission
