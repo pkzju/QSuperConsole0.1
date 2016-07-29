@@ -11,9 +11,6 @@
 
 extern CO_Data master_Data;
 
-const int gGroupnum = 9; //Number of all groups
-const int gMotorMaxnum = 15;
-
 
 homewindow *homewindow::s_Instance = Q_NULLPTR;
 
@@ -86,10 +83,10 @@ void homewindow::on_spinBox_groupNum_valueChanged(int arg1)//Add or reduce group
 {
     while(m_groups.count() < arg1){
         int _groupID = m_groups.count()+1;
-        int _fanMaxNumber = gMotorMaxnum;
-        int _startAdd = (_groupID-1)*_fanMaxNumber + 1;
-        FanGroupInfo *group = new FanGroupInfo{_groupID, _startAdd, _fanMaxNumber};
-        group->m_monitorDialog = Q_NULLPTR;
+//        int _fanMaxNumber = gMotorMaxnum;
+//        int _startAdd = (_groupID-1)*_fanMaxNumber + 1;
+        FanGroupInfo *group = new FanGroupInfo(_groupID);
+//        group->m_monitorDialog = Q_NULLPTR;
         m_groups.push_back(group);
     }
     while(m_groups.count() > arg1){

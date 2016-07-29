@@ -447,7 +447,7 @@ void FanMotorUi::on_connectButton_clicked()
         //![3] Create modbus RTU client device and monitor error,state
         modbusRtuDevice = new QModbusRtuSerialMaster(this);
         connect(modbusRtuDevice, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
-            statusBar()->showMessage(modbusRtuDevice->errorString(), 3000);
+            statusBar()->showMessage(modbusRtuDevice->errorString(), 5000);
         });
         if (!modbusRtuDevice) {
             statusBar()->showMessage(tr("Could not create Modbus client."), 3000);
@@ -682,7 +682,10 @@ void FanMotorUi::onStateChanged(int state)
 
     emit updateSigleMotorState(connected);
 }
-
+/*!
+ * \brief FanMotorUi::onTcpServerStateChanged
+ * \param state
+ */
 void FanMotorUi::onTcpServerStateChanged(int state)
 {
     if(state == QModbusDevice::ConnectedState){
@@ -919,7 +922,10 @@ void FanMotorUi::on_pushButton_InitSetF_clicked()
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
             for(unsigned char j = 1; j<5; j++){
-                *buff = (quint16)(__model->data(__model->index(i, j)).toDouble() * 100);
+                if(j%2 == 0)
+                    *buff = (quint16)(__model->data(__model->index(i, j)).toInt());
+                else
+                    *buff = (quint16)(__model->data(__model->index(i, j)).toDouble() * 100);
                 buff++;
             }
         }
@@ -1004,7 +1010,10 @@ void FanMotorUi::on_pushButton_InitSetG_clicked()
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
             for(unsigned char j = 1; j<5; j++){
-                *buff = (quint16)(__model->data(__model->index(i, j)).toDouble() * 100);
+                if(j%2 == 0)
+                    *buff = (quint16)(__model->data(__model->index(i, j)).toInt());
+                else
+                    *buff = (quint16)(__model->data(__model->index(i, j)).toDouble() * 100);
                 buff++;
             }
         }
@@ -1092,7 +1101,10 @@ void FanMotorUi::on_pushButton_InitSetA_clicked()
         //![2] Get data from tableview
         for(unsigned char i = 0; i<3; i++){
             for(unsigned char j = 1; j<5; j++){
-                *buff = (quint16)(__model->data(__model->index(i, j)).toDouble() * 100);
+                if(j%2 == 0)
+                    *buff = (quint16)(__model->data(__model->index(i, j)).toInt());
+                else
+                    *buff = (quint16)(__model->data(__model->index(i, j)).toDouble() * 100);
                 buff++;
             }
         }
@@ -1878,7 +1890,10 @@ void FanMotorUi::onSigleMotorInitSetClicked(QTableWidget *table, quint16 data)
     double _data;
     for(unsigned char i = 0; i<3; i++){
         for(unsigned char j = 1; j<5; j++){
-            _data = __srcmodel->data(__model->index(i, j)).toDouble();
+            if(j%2 == 0)
+                _data = __srcmodel->data(__model->index(i, j)).toInt();
+            else
+                _data = __srcmodel->data(__model->index(i, j)).toDouble();
             __model->setData(__model->index(i,j), _data);
         }
     }
@@ -2381,7 +2396,10 @@ bool FanMotorUi::readReplyHandle(QModbusReply *reply)
             quint16 *__buffPtr = (quint16 *)&motor->m_initSetttings;
             for(unsigned char i = 0; i<3; i++){
                 for(unsigned char j = 1; j<5; j++){
-                    __model->setData(__model->index(i,j), (double)(*__buffPtr)  * 0.01);
+                    if(j%2 == 0)
+                        __model->setData(__model->index(i,j), (int)(*__buffPtr));
+                    else
+                        __model->setData(__model->index(i,j), (double)(*__buffPtr)  * 0.01);
                     __buffPtr++;
                 }
             }

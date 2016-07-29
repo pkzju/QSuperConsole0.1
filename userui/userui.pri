@@ -12,7 +12,9 @@ FORMS += \
     $$PWD/tcpserverframe.ui \
     $$PWD/tcpportsettings.ui \
     $$PWD/siglemotorframe.ui \
-    $$PWD/allgroupframe.ui
+    $$PWD/allgroupframe.ui \
+    $$PWD/groupframe.ui \
+    $$PWD/fanhomeframe.ui
 
 
 HEADERS += \
@@ -30,7 +32,9 @@ HEADERS += \
     $$PWD/tcpclientframe.h \
     $$PWD/tcpserverframe.h \
     $$PWD/tcpportsettings.h \
-    $$PWD/allgroupframe.h
+    $$PWD/allgroupframe.h \
+    $$PWD/groupframe.h \
+    $$PWD/fanhomeframe.h
 
 
 SOURCES += \
@@ -48,7 +52,9 @@ SOURCES += \
     $$PWD/tcpclientframe.cpp \
     $$PWD/tcpserverframe.cpp \
     $$PWD/tcpportsettings.cpp \
-    $$PWD/allgroupframe.cpp
+    $$PWD/allgroupframe.cpp \
+    $$PWD/groupframe.cpp \
+    $$PWD/fanhomeframe.cpp
 
 DISTFILES +=
 

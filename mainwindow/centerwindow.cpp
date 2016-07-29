@@ -34,11 +34,15 @@
 #include "userui/tcpclientframe.h"
 #include "userui/tcpserverframe.h"
 
+#include "userui/fanhomeframe.h"
+
 
 CenterWindow::CenterWindow(QWidget *parent) :
     FCenterWindow(parent)
 {
     qDebug("CenterWindow init");
+
+    initData();
     initUI();
     initConnect();
 }
@@ -51,6 +55,18 @@ CenterWindow::~CenterWindow()
     homewindow::deleteInstance();
 
     qDebug("CenterWindow exit");
+}
+
+void CenterWindow::initData()
+{
+    while(motorGroups.count() < gGroupnum){
+        int _groupID = motorGroups.count()+1;
+//        int _fanMaxNumber = gMotorMaxnum;
+//        int _startAdd = (_groupID-1)*_fanMaxNumber + 1;
+        FanGroupInfo *group = new FanGroupInfo(_groupID);
+//        group->m_monitorDialog = Q_NULLPTR;
+        motorGroups.push_back(group);
+    }
 }
 
 void CenterWindow::initUI()
@@ -68,12 +84,24 @@ void CenterWindow::initUI()
 
 //    addWidget(tr("TcpClient"),"serialportBtn", _TcpClientFrame);
 //    addWidget(tr("TcpServer"),"serialportBtn", _TcpServerFrame);
-    addWidget(tr("Home"), "Home", m_home);
+//    addWidget(tr("Home"), "Home", m_home);
 //    addWidget(tr("Scope"), "MathPlot", m_plotUi);
 //    addWidget(tr("Canbus"),"Communication", m_canUi);
 //    addWidget(tr("Modbus"),"Communication", m_modbusui);
 //    addWidget(tr("COMPort"),"serialportBtn", serialport);
+    FanHomeFrame *fanHome1 = new FanHomeFrame;
+    fanHome1->setGroup(motorGroups.at(0), motorGroups.at(1));
+    addWidget(tr("Home1"), "Home", fanHome1);
 
+    FanHomeFrame *fanHome2 = new FanHomeFrame;
+    fanHome2->setGroup(motorGroups.at(2), motorGroups.at(3));
+    addWidget(tr("Home2"), "Home", fanHome2);
+    FanHomeFrame *fanHome3 = new FanHomeFrame;
+    fanHome3->setGroup(motorGroups.at(4), motorGroups.at(5));
+    addWidget(tr("Home3"), "Home", fanHome3);
+    FanHomeFrame *fanHome4 = new FanHomeFrame;
+    fanHome4->setGroup(motorGroups.at(6), motorGroups.at(7));
+    addWidget(tr("Home4"), "Home", fanHome4);
     setAlignment(TopCenter);
 }
 

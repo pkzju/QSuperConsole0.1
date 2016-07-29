@@ -248,6 +248,9 @@ QRadioButton{
              <height>25</height>
             </size>
            </property>
+           <property name="decimals">
+            <number>4</number>
+           </property>
            <property name="maximum">
             <double>99999.990000000005239</double>
            </property>
@@ -273,6 +276,9 @@ QRadioButton{
              <width>16777215</width>
              <height>25</height>
             </size>
+           </property>
+           <property name="decimals">
+            <number>4</number>
            </property>
            <property name="maximum">
             <double>99999.990000000005239</double>
@@ -319,6 +325,9 @@ QRadioButton{
              <height>25</height>
             </size>
            </property>
+           <property name="decimals">
+            <number>4</number>
+           </property>
            <property name="maximum">
             <double>99999.990000000005239</double>
            </property>
@@ -344,6 +353,9 @@ QRadioButton{
              <width>16777215</width>
              <height>25</height>
             </size>
+           </property>
+           <property name="decimals">
+            <number>4</number>
            </property>
            <property name="maximum">
             <double>99999.990000000005239</double>
@@ -390,6 +402,9 @@ QRadioButton{
              <height>25</height>
             </size>
            </property>
+           <property name="decimals">
+            <number>4</number>
+           </property>
            <property name="maximum">
             <double>99999.990000000005239</double>
            </property>
@@ -415,6 +430,9 @@ QRadioButton{
              <width>16777215</width>
              <height>25</height>
             </size>
+           </property>
+           <property name="decimals">
+            <number>4</number>
            </property>
            <property name="maximum">
             <double>99999.990000000005239</double>

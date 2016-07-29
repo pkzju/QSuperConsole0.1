@@ -50,7 +50,10 @@ void SigleMotorDialog::show(QMotor *motor)
 {
     getTitleBar()->getTitleLabel()->setText(tr("Fan%1").arg(motor->m_address));
 
-    if(FSubWindown::isHidden())
+    if(FSubWindown::isMinimized()){
+        FSubWindown::showNormal();
+    }
+    else if(FSubWindown::isHidden())
         FSubWindown::show();
     else{
         FSubWindown::hide();

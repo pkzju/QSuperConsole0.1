@@ -11,7 +11,7 @@ QMotor::QMotor(int address) :
     m_speedFbkLCD{new QLCDNumber},
     m_runLamp{new QcwIndicatorLamp},
     m_commLamp{new QcwIndicatorLamp},
-    m_message{new QLabel(QString("unknown"))}
+    m_message{new QLabel(QString("stop"))}
 {
     m_address = address;
     m_initSetttings = {0};
@@ -35,9 +35,9 @@ QMotor::~QMotor()
 }
 void QMotor::update()
 {
-    m_ratedPowerLCD->display(m_motorController.m_ratedPower);
-    m_targetPowerLCD->display(m_motorController.m_targetpower);
-    m_nowPowerLCD->display(m_motorController.m_nowpower);
+    m_ratedPowerLCD->display(m_motorController.m_ratedPower*0.01);
+    m_targetPowerLCD->display(m_motorController.m_targetpower*0.01);
+    m_nowPowerLCD->display(m_motorController.m_nowpower*0.01);
 
     m_ratedSpeedLCD->display(m_motorController.m_ratedSpeed);
     m_speedRefLCD->display(m_motorController.m_speedRef);
@@ -46,30 +46,36 @@ void QMotor::update()
     if(m_motorController.m_runState == FanMotorState::m_run)
         m_runLamp->setLampState(QcwIndicatorLamp::lamp_green);
     else if(m_motorController.m_runState == FanMotorState::m_stop)
-        m_runLamp->setLampState(QcwIndicatorLamp::lamp_red);
-    else if(m_motorController.m_runState == FanMotorState::m_error){
         m_runLamp->setLampState(QcwIndicatorLamp::lamp_yellow);
+    else{
+        m_runLamp->setLampState(QcwIndicatorLamp::lamp_red);
 
-        if(m_motorController.m_runError == FanMotorError::m_overCur){
-            m_message->setText(QObject::tr("over current"));
-        }
-        else if(m_motorController.m_runError == FanMotorError::m_overSpd){
-            m_message->setText(QObject::tr("over speed"));
-        }
-        else if(m_motorController.m_runError == FanMotorError::m_stall){
+        if(m_motorController.m_runState == FanMotorState::m_stall){
             m_message->setText(QObject::tr("stall"));
         }
-        else if(m_motorController.m_runError == FanMotorError::m_lowVolt){
-            m_message->setText(QObject::tr("low voltage "));
+        else if(m_motorController.m_runState == FanMotorState::m_overSpd){
+            m_message->setText(QObject::tr("over speed"));
         }
-        else if(m_motorController.m_runError == FanMotorError::m_highVolt){
-            m_message->setText(QObject::tr("high voltage "));
+        else if(m_motorController.m_runState == FanMotorState::m_error){
+
+            if(m_motorController.m_runError == FanMotorError::m_overCur){
+                m_message->setText(QObject::tr("over current"));
+            }
+            else if(m_motorController.m_runError == FanMotorError::m_overSpd_){
+                m_message->setText(QObject::tr("over speed"));
+            }
+            else if(m_motorController.m_runError == FanMotorError::m_stall_){
+                m_message->setText(QObject::tr("stall"));
+            }
+            else if(m_motorController.m_runError == FanMotorError::m_lowVolt){
+                m_message->setText(QObject::tr("low voltage "));
+            }
+            else if(m_motorController.m_runError == FanMotorError::m_highVolt){
+                m_message->setText(QObject::tr("high voltage "));
+            }
+            else
+                m_message->setText(QObject::tr("no error"));
         }
-        else
-            m_message->setText(QObject::tr("no error"));
-    }
-    else{
-        m_runLamp->setLampState(QcwIndicatorLamp::lamp_grey);
     }
 
     if(m_communicationState == FanCommunicationState::m_connect){

@@ -49,7 +49,6 @@ SigleMotorFrame::SigleMotorFrame(QWidget *parent) :
     connect(ui->checkBox, SIGNAL(stateChanged(int)), fanmotorui, SLOT(monitorSigleStateChange(int)));
     connect(this, SIGNAL(setPI(FanPIParameters &)), fanmotorui, SLOT(onSetPI(FanPIParameters &)));
     connect(this, SIGNAL(readPI()), fanmotorui, SLOT(onReadPI()));
-
 }
 
 
@@ -111,14 +110,17 @@ void SigleMotorFrame::updateMotorUi(int arg1)
 {
     if(this->isHidden())
         return;
-    //Init parameter update
+    //! Init parameter update
     if(arg1 == 0){
         //Update data to settings table
         QAbstractItemModel *__model = ui->table_settings->model();
         quint16 *__buffPtr = (quint16 *)&m_motor->m_initSetttings;
         for(unsigned char i = 0; i<3; i++){
             for(unsigned char j = 1; j<5; j++){
-                __model->setData(__model->index(i,j), (double)(*__buffPtr) * 0.01);
+                if(j%2 == 0)
+                    __model->setData(__model->index(i,j), (int)(*__buffPtr));
+                else
+                    __model->setData(__model->index(i,j), (double)(*__buffPtr)  * 0.01);
                 __buffPtr++;
             }
         }
@@ -133,10 +135,10 @@ void SigleMotorFrame::updateMotorUi(int arg1)
         ui->comboBox_fanControlMode->setCurrentIndex(_fanControlMode);
     }
 
-    //Monitor data update
+    //! Monitor data update
     if(arg1 == 1){
-        ui->lcdNumber_targetPower->display(m_motor->m_motorController.m_targetpower);
-        ui->lcdNumber_realTimePower->display(m_motor->m_motorController.m_nowpower);
+        ui->lcdNumber_targetPower->display(m_motor->m_motorController.m_targetpower*0.01);
+        ui->lcdNumber_realTimePower->display(m_motor->m_motorController.m_nowpower*0.01);
 
         ui->lcdNumber_targetSpeed->display(m_motor->m_motorController.m_speedRef);
         ui->lcdNumber_realTimeSpeed->display(m_motor->m_motorController.m_speedFbk);
@@ -171,7 +173,7 @@ void SigleMotorFrame::updateMotorUi(int arg1)
 
     }
 
-    //Initialize data update
+    //! Initialize data update
     if(arg1 == 2){
         ui->lcdNumber_ratedPower->display(m_motor->m_motorController.m_ratedPower);
         ui->lcdNumber_ratedSpeed->display(m_motor->m_motorController.m_ratedSpeed);
@@ -180,30 +182,38 @@ void SigleMotorFrame::updateMotorUi(int arg1)
     if(m_motor->m_motorController.m_runState == FanMotorState::m_run)
         ui->runLamp->setLampState(QcwIndicatorLamp::lamp_green);
     else if(m_motor->m_motorController.m_runState == FanMotorState::m_stop)
-        ui->runLamp->setLampState(QcwIndicatorLamp::lamp_red);
-    else if(m_motor->m_motorController.m_runState == FanMotorState::m_error){
         ui->runLamp->setLampState(QcwIndicatorLamp::lamp_yellow);
-        if(m_motor->m_motorController.m_runError == FanMotorError::m_overCur){
-            ui->lineEdit_runState->setText(QObject::tr("over current"));
-        }
-        else if(m_motor->m_motorController.m_runError == FanMotorError::m_overSpd){
-            ui->lineEdit_runState->setText(QObject::tr("over speed"));
-        }
-        else if(m_motor->m_motorController.m_runError == FanMotorError::m_stall){
+    else{
+
+        ui->runLamp->setLampState(QcwIndicatorLamp::lamp_red);
+
+        if(m_motor->m_motorController.m_runState == FanMotorState::m_stall){
             ui->lineEdit_runState->setText(QObject::tr("stall"));
         }
-        else if(m_motor->m_motorController.m_runError == FanMotorError::m_lowVolt){
-            ui->lineEdit_runState->setText(QObject::tr("low voltage "));
+        else if(m_motor->m_motorController.m_runState == FanMotorState::m_overSpd){
+            ui->lineEdit_runState->setText(QObject::tr("over speed"));
         }
-        else if(m_motor->m_motorController.m_runError == FanMotorError::m_highVolt){
-            ui->lineEdit_runState->setText(QObject::tr("high voltage "));
+        else if(m_motor->m_motorController.m_runState == FanMotorState::m_error){
+            if(m_motor->m_motorController.m_runError == FanMotorError::m_overCur){
+                ui->lineEdit_runState->setText(QObject::tr("over current"));
+            }
+            else if(m_motor->m_motorController.m_runError == FanMotorError::m_overSpd_){
+                ui->lineEdit_runState->setText(QObject::tr("over speed"));
+            }
+            else if(m_motor->m_motorController.m_runError == FanMotorError::m_stall_){
+                ui->lineEdit_runState->setText(QObject::tr("stall"));
+            }
+            else if(m_motor->m_motorController.m_runError == FanMotorError::m_lowVolt){
+                ui->lineEdit_runState->setText(QObject::tr("low voltage "));
+            }
+            else if(m_motor->m_motorController.m_runError == FanMotorError::m_highVolt){
+                ui->lineEdit_runState->setText(QObject::tr("high voltage "));
+            }
+            else
+                ui->lineEdit_runState->setText(QObject::tr("no error"));
         }
-        else
-            ui->lineEdit_runState->setText(QObject::tr("no error"));
     }
-    else{
-        ui->runLamp->setLampState(QcwIndicatorLamp::lamp_grey);
-    }
+
 
     if(m_motor->m_communicationState == FanCommunicationState::m_connect)
         ui->comLamp->setLampState(QcwIndicatorLamp::lamp_green);
@@ -215,12 +225,12 @@ void SigleMotorFrame::updateMotorUi(int arg1)
         ui->comLamp->setLampState(QcwIndicatorLamp::lamp_grey);
 
     if(arg1 == 3){//Read PI ready
-        ui->SpinBox_speedPRW->setValue((double) m_motor->m_PIPara.m_speedKp * 0.001);
-        ui->SpinBox_speedIRW->setValue((double) m_motor->m_PIPara.m_speedKi * 0.001);
-        ui->SpinBox_idPRW->setValue((double) m_motor->m_PIPara.m_idKp * 0.001);
-        ui->SpinBox_idIRW->setValue((double) m_motor->m_PIPara.m_idKi * 0.001);
-        ui->SpinBox_iqPRW->setValue((double) m_motor->m_PIPara.m_iqKp * 0.001);
-        ui->SpinBox_iqIRW->setValue((double) m_motor->m_PIPara.m_iqKi * 0.001);
+        ui->SpinBox_speedPRW->setValue((double) m_motor->m_PIPara.m_speedKp * 0.0001);
+        ui->SpinBox_speedIRW->setValue((double) m_motor->m_PIPara.m_speedKi * 0.0001);
+        ui->SpinBox_idPRW->setValue((double) m_motor->m_PIPara.m_idKp * 0.0001);
+        ui->SpinBox_idIRW->setValue((double) m_motor->m_PIPara.m_idKi * 0.0001);
+        ui->SpinBox_iqPRW->setValue((double) m_motor->m_PIPara.m_iqKp * 0.0001);
+        ui->SpinBox_iqIRW->setValue((double) m_motor->m_PIPara.m_iqKi * 0.0001);
     }
 
 }
@@ -252,12 +262,12 @@ void SigleMotorFrame::on_pushButton_InitSetF_clicked()
 void SigleMotorFrame::on_setPIBtn_clicked()
 {
     FanPIParameters _PIPara;
-    _PIPara.m_speedKp = (quint16)(ui->SpinBox_speedPRW->value() * 1000);
-    _PIPara.m_speedKi = (quint16)(ui->SpinBox_speedIRW->value() * 1000);
-    _PIPara.m_idKp = (quint16)(ui->SpinBox_idPRW->value() * 1000);
-    _PIPara.m_idKi = (quint16)(ui->SpinBox_idIRW->value() * 1000);
-    _PIPara.m_iqKp = (quint16)(ui->SpinBox_iqPRW->value() * 1000);
-    _PIPara.m_iqKi = (quint16)(ui->SpinBox_iqIRW->value() * 1000);
+    _PIPara.m_speedKp = (quint16)(ui->SpinBox_speedPRW->value() * 10000);
+    _PIPara.m_speedKi = (quint16)(ui->SpinBox_speedIRW->value() * 10000);
+    _PIPara.m_idKp = (quint16)(ui->SpinBox_idPRW->value() * 10000);
+    _PIPara.m_idKi = (quint16)(ui->SpinBox_idIRW->value() * 10000);
+    _PIPara.m_iqKp = (quint16)(ui->SpinBox_iqPRW->value() * 10000);
+    _PIPara.m_iqKi = (quint16)(ui->SpinBox_iqIRW->value() * 10000);
     emit setPI(_PIPara);
 }
 

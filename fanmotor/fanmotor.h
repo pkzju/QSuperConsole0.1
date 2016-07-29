@@ -24,17 +24,18 @@ typedef unsigned int quint32;      // 32 bit unsigned
 enum FanMotorError:char {
     m_noError = 0,
     m_overCur,
-    m_overSpd,
-    m_stall,
+    m_overSpd_,
+    m_stall_,
     m_lowVolt,
     m_highVolt
 };
 
-enum FanMotorState:char{
-    m_init = 0,
-    m_stop ,
+enum FanMotorState:char{  
+    m_stop = 0,
     m_error,
-    m_run
+    m_run,
+    m_stall,
+    m_overSpd
 
 };
 
@@ -98,12 +99,12 @@ struct FanMotorSettings{
 #pragma pack(push)
 #pragma pack(1)
 struct FanPIParameters{
-    quint16  m_speedKp;    // * 1000  true value : *0.001
-    quint16  m_speedKi;    // * 1000
-    quint16  m_idKp;       // * 1000
-    quint16  m_idKi;       // * 1000
-    quint16  m_iqKp;       // * 1000
-    quint16  m_iqKi;       // * 1000
+    quint16  m_speedKp;    // * 10000  true value : *0.001
+    quint16  m_speedKi;    // * 10000
+    quint16  m_idKp;       // * 10000
+    quint16  m_idKi;       // * 10000
+    quint16  m_iqKp;       // * 10000
+    quint16  m_iqKi;       // * 10000
 };
 #pragma pack(pop)
 
