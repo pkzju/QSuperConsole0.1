@@ -16,7 +16,11 @@
 #include "lamp/qcw_indicatorlamp.h"
 
 #include "dialogs/siglegroupdialog.h"
-//#include<QDebug>
+#include"userui/serialportsettingsdialog.h"
+
+#include <QtCore>
+#include <QModbusRtuSerialMaster>
+
 
 MainWindow* MainWindow::instance = Q_NULLPTR;
 
@@ -36,8 +40,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     //! Delete static sigleGroupDialog (include static fanmotorui)
-    sigleGroupDialog::deleteInstance();
+//    sigleGroupDialog::deleteInstance();
 
+    if(modbusRtuDevice && modbusRtuDevice->state() == QModbusDevice::ConnectedState){
+        modbusRtuDevice->disconnectDevice();
+        modbusRtuDevice->deleteLater();
+    }
     instance = Q_NULLPTR;
     qDebug("mainwindow exit");
 }
@@ -79,10 +87,115 @@ void MainWindow::initUI()
     getStatusBar()->addPermanentWidget(CloseOfStatusBar);
     getStatusBar()->addPermanentWidget(LampOfStatusBar);
 
-    connect(OpenOfStatusBar, SIGNAL(clicked()), this, SIGNAL(connectButtonsClicked()));
-    connect(CloseOfStatusBar, SIGNAL(clicked()), this, SIGNAL(disconnectButtonsClicked()));
+    connect(OpenOfStatusBar, SIGNAL(clicked()), this, SLOT(onConnectButtonClicked()));
+    connect(CloseOfStatusBar, SIGNAL(clicked()), this, SLOT(onDisconnectButtonClicked()));
 
 }
+
+void MainWindow::onConnectButtonClicked()
+{
+    //! Modbus RTU connect
+
+    SerialPortSettings::Settings mSerialPortSettings;
+    //![1] Read serialport settings in "/SuperConsole.ini" (update in "SerialPortSettingsDialog" class)
+    QSettings settings(QDir::currentPath() + "/SuperConsole.ini", QSettings::IniFormat);
+    settings.beginGroup("SerialPortSettingsDialog");
+    mSerialPortSettings.name = settings.value("SerialPortname", "").toString();
+    mSerialPortSettings.baudRate = static_cast<QSerialPort::BaudRate>(settings.value("SerialPortBaudRate", "9600").toInt());
+    mSerialPortSettings.dataBits = static_cast<QSerialPort::DataBits>(settings.value("SerialPortDataBits", "8").toInt());
+    mSerialPortSettings.parity = static_cast<QSerialPort::Parity>(settings.value("SerialPortParity", "0").toInt());
+    mSerialPortSettings.stopBits = static_cast<QSerialPort::StopBits>(settings.value("SerialPortStopBits", "1").toInt());
+    mSerialPortSettings.flowControl = static_cast<QSerialPort::FlowControl>(settings.value("SerialPortFlowControl", "0").toInt());
+    settings.endGroup();
+
+    //![2] Make sure modbus device was not created yet
+    if (modbusRtuDevice) {
+        modbusRtuDevice->disconnectDevice();
+        modbusRtuDevice->deleteLater();
+        modbusRtuDevice = Q_NULLPTR;
+    }
+
+    //![3] Create modbus RTU client device and monitor error,state
+    modbusRtuDevice = new QModbusRtuSerialMaster(this);
+    connect(modbusRtuDevice, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
+        statusBar()->showMessage(modbusRtuDevice->errorString(), 5000);
+    });
+    if (!modbusRtuDevice) {
+        statusBar()->showMessage(tr("Could not create Modbus client."), 5000);
+        return;
+    } else {
+        connect(modbusRtuDevice, &QModbusClient::stateChanged,
+                this, &MainWindow::onStateChanged);//!< Monitor modbus device state
+    }
+
+    statusBar()->clearMessage();//!< Clear status bar
+
+    //![4] Set serialport parameter and connect device
+    if (modbusRtuDevice->state() != QModbusDevice::ConnectedState) {
+
+        modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialPortNameParameter,
+                                                mSerialPortSettings.name);
+        modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialBaudRateParameter,
+                                                mSerialPortSettings.baudRate);
+        modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialDataBitsParameter,
+                                                mSerialPortSettings.dataBits);
+        modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialParityParameter,
+                                                mSerialPortSettings.parity);
+        modbusRtuDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter,
+                                                mSerialPortSettings.stopBits);
+
+        modbusRtuDevice->setTimeout(100);//!< Set response timeout 100ms
+        modbusRtuDevice->setNumberOfRetries(2);//!< Set retry number 2
+
+        //! Now try connect modbus device
+        if (!modbusRtuDevice->connectDevice()) {//!< Connect failed
+            statusBar()->showMessage(tr("Modbus connect failed: ") + modbusRtuDevice->errorString(), 5000);
+        } else {//!< Connect  successfully
+        }
+    }
+
+
+}
+
+/*!
+ * \brief Disconnect current connected device
+ */
+void MainWindow::onDisconnectButtonClicked()//! close
+{
+    //! Modbus RTU disconnect
+
+    if(!modbusRtuDevice)
+        return;
+    if(modbusRtuDevice->state() == QModbusDevice::ConnectedState){
+        modbusRtuDevice->disconnectDevice();
+    }
+}
+
+/*!
+ * \brief Current device state changed  slot fuction
+ * \param state
+ */
+void MainWindow::onStateChanged(int state)
+{
+    bool connected = (state != 0);
+
+    //! Modbus RTU state change
+
+    connected = (state == QModbusDevice::ConnectedState);
+    if(connected){
+        statusBar()->showMessage(tr("Modbus RTU connected !"), 5000);
+    }
+    else{
+        statusBar()->showMessage(tr("Modbus RTU disonnected !"), 5000);
+    }
+
+    OpenOfStatusBar->setEnabled(!connected);
+    CloseOfStatusBar->setEnabled(connected);
+    setStatusBarLamp(connected);
+
+}
+
+
 void MainWindow::setStatusBarLamp(bool isOpen)
 {
     if(isOpen)
@@ -102,6 +215,56 @@ QToolButton *MainWindow::getCloseButton()
     return CloseOfStatusBar;
 }
 
+QModbusClient *MainWindow::getRtuDevice()
+{
+    return modbusRtuDevice;
+}
+
+QModbusReply *MainWindow::sendRtuReadRequest(const QModbusDataUnit &read, int serverAddress)
+{
+    if(!modbusRtuDevice || modbusRtuDevice->state() != QModbusDevice::ConnectedState)
+        return false;
+    if (auto *reply = modbusRtuDevice->sendReadRequest(read, serverAddress)) {
+        return reply;
+    } else {
+        statusBar()->showMessage(tr("Read error: ") + modbusRtuDevice->errorString());
+        return Q_NULLPTR;
+    }
+
+}
+bool MainWindow::sendRtuWriteRequest(QModbusDataUnit unit, quint16 serverAddress)
+{
+    if(!modbusRtuDevice || modbusRtuDevice->state() != QModbusDevice::ConnectedState)
+        return false;
+
+    //! Send write request to server (adress: )
+    if (auto *reply = modbusRtuDevice->sendWriteRequest(unit, serverAddress)) {
+        if (!reply->isFinished()) {
+
+            connect(reply, &QModbusReply::finished, this, [this, reply]() {
+
+                if(reply->serverAddress() != 0){//! Not broadcast
+                    if (reply->error() == QModbusDevice::ProtocolError) {
+                         statusBar()->showMessage(tr("Write response error: %1 (Mobus exception: 0x%2)")
+                                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16)
+                                                );
+                    } else if (reply->error() != QModbusDevice::NoError) {
+                         statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
+                                                arg(reply->errorString()).arg(reply->error(), -1, 16));
+                    }
+                }
+                reply->deleteLater();
+            });
+        } else {//!< Broadcast replies return immediately
+            reply->deleteLater();
+        }
+    } else {
+         statusBar()->showMessage(tr("Write error: ") + modbusRtuDevice->errorString());
+        return false;
+    }
+
+    return true;
+}
 
 void MainWindow::initThread()
 {

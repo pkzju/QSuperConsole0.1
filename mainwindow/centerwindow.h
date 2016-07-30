@@ -28,8 +28,7 @@ public:
     void initData();
     void initUI();
     void initConnect();
-
-
+    QVector<FanGroupInfo*> &getGroups();
 
 signals:
 

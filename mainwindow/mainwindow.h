@@ -20,10 +20,13 @@ class ThemeMenu;
 class RightFloatWindow;
 class QcwIndicatorLamp;
 
+class QModbusClient;
+
 #include <QResizeEvent>
 #include <QMouseEvent>
 #include <QHideEvent>
-
+#include <QModbusClient>
+#include <QModbusDataUnit>
 
 
 
@@ -45,14 +48,15 @@ protected:
 
 private:
     static MainWindow* instance;
-    CenterWindow* centerWindow;
-    SettingMenu* settingMenu;
-    ThemeMenu* themeMenu;
-    RightFloatWindow* rightfloatWindow;
-    QcwIndicatorLamp *LampOfStatusBar;
+    CenterWindow* centerWindow = Q_NULLPTR;
+    SettingMenu* settingMenu = Q_NULLPTR;
+    ThemeMenu* themeMenu = Q_NULLPTR;
+    RightFloatWindow* rightfloatWindow = Q_NULLPTR;
+    QcwIndicatorLamp *LampOfStatusBar = Q_NULLPTR;
 
-    QToolButton *OpenOfStatusBar;
-    QToolButton *CloseOfStatusBar;
+    QToolButton *OpenOfStatusBar = Q_NULLPTR;
+    QToolButton *CloseOfStatusBar = Q_NULLPTR;
+    QModbusClient *modbusRtuDevice = Q_NULLPTR;//!< Modbus RTU device
 
 
 signals:
@@ -71,12 +75,16 @@ public:
     void setTxNumber(qint64 num);
     QToolButton *getOpenButton();
     QToolButton *getCloseButton();
+    QModbusClient *getRtuDevice();
+    bool sendRtuWriteRequest(QModbusDataUnit unit, quint16 serverAddress);
+    QModbusReply *sendRtuReadRequest(const QModbusDataUnit &read, int serverAddress);
 signals:
 
 public slots:
 
-
-
+    void onConnectButtonClicked();
+    void onDisconnectButtonClicked();
+    void onStateChanged(int state);
 };
 
 #endif // MAINWINDOW_H

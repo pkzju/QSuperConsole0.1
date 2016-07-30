@@ -41,6 +41,8 @@
         <file>skin/images/radiob-unchecked.png</file>
         <file>skin/images/csm_seminars.png</file>
         <file>skin/images/theSmartAir.jpg</file>
+        <file>skin/icons/go-next.png</file>
+        <file>skin/icons/go-previous.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>skin/qss/BB.qss</file>

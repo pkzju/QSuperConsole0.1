@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>952</width>
-    <height>707</height>
+    <width>1138</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,79 +19,3993 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QGroupBox" name="groupBox1">
-     <property name="title">
-      <string>GroupBox</string>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="GroupFrame" name="frame1">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox2">
-     <property name="title">
-      <string>GroupBox</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="GroupFrame" name="frame2">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QWidget" name="page1">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox1">
+         <property name="title">
+          <string>GroupBox</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="GroupFrame" name="frame1">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox2">
+         <property name="title">
+          <string>GroupBox</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="GroupFrame" name="frame2">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page2">
+      <layout class="QGridLayout" name="gridLayout_8">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="styleSheet">
+            <string notr="true"> QLabel{ 
+
+    text-align: center;
+	font-size:14px;
+	font-weight: bold;
+}</string>
+           </property>
+           <property name="text">
+            <string>Previous</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="previous1">
+           <property name="styleSheet">
+            <string notr="true">QToolButton{
+    background-color: transparent;
+    border: none; 
+}
+
+
+QToolButton:hover{
+    background-color: rgb(200, 200, 200);
+ 
+}
+
+QToolButton:disabled{
+    background-color: gray;
+}</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../QSuperConsole.qrc">
+             <normaloff>:/images/skin/icons/go-previous.png</normaloff>:/images/skin/icons/go-previous.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="next1">
+           <property name="styleSheet">
+            <string notr="true">QToolButton{
+    background-color: transparent;
+    border: none; 
+}
+
+
+QToolButton:hover{
+    background-color: rgb(200, 200, 200);
+ 
+}
+
+QToolButton:disabled{
+    background-color: gray;
+}</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../QSuperConsole.qrc">
+             <normaloff>:/images/skin/icons/go-next.png</normaloff>:/images/skin/icons/go-next.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="styleSheet">
+            <string notr="true"> QLabel{ 
+
+    text-align: center;
+	font-size:14px;
+	font-weight: bold;
+}</string>
+           </property>
+           <property name="text">
+            <string>Next</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1" colspan="2">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>821</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" rowspan="2" colspan="2">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Group</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
+              <number>9</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_22">
+               <property name="text">
+                <string>当前机组</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLCDNumber" name="lcdNumber_groupNum">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_21">
+               <property name="text">
+                <string>风机数量</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBox_motorNum">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>32</number>
+               </property>
+               <property name="value">
+                <number>15</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="groupBox_2">
+            <layout class="QGridLayout" name="gridLayout_4">
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
+              <number>9</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="pushButton_fan1">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="pushButton_fan2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="pushButton_fan3">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan3</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QPushButton" name="pushButton_fan4">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan4</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QPushButton" name="pushButton_fan5">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan5</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="pushButton_fan6">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan6</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="pushButton_fan7">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan7</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QPushButton" name="pushButton_fan8">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan8</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QPushButton" name="pushButton_fan9">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan9</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <widget class="QPushButton" name="pushButton_fan10">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan10</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="pushButton_fan11">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan11</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="pushButton_fan12">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan12</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QPushButton" name="pushButton_fan13">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan13</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QPushButton" name="pushButton_fan14">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan14</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="4">
+              <widget class="QPushButton" name="pushButton_fan15">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>61</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+
+
+QPushButton{
+    background-image: url(:/skin/icons/dark/appbar.radioactive.png);
+ 
+    background-repeat:no-repeat;
+    background-position: center bottom;
+    background-color: transparent;
+	border-style: none !important;
+	border: none !important;
+	border-radius: 5px;
+    color: white;
+    text-align: center bottom;
+    padding-bottom: 2px;
+	font-size:16px;
+	font-weight: bold;
+
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+}
+
+QPushButton:hover{
+    background-color:rgb(57, 159, 251);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:checked{
+    background-color: rgb(0, 125, 213);
+    color: white;
+    border: 0px solid rgba(14, 142, 231, 255);
+}
+
+QPushButton:flat{
+    border: none;
+}
+QPushButton:pressed{
+    background-color: rgb(0, 125, 213);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}
+
+/*
+QPushButton{
+    background-color: rgb(14, 142, 231);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+QPushButton:hover{
+    background-color: rgb(57, 159, 251);
+}
+
+
+
+*/
+</string>
+               </property>
+               <property name="text">
+                <string>Fan15</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QGroupBox" name="groupBox_comState">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Comm. Mode</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="radioButton_can">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>CAN   </string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" colspan="2">
+              <widget class="QRadioButton" name="radioButton_modbus">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ModBus RTU</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QRadioButton" name="radioButton_tcp">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>TCP</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="3">
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>132</width>
+                 <height>27</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="2" column="3">
+              <widget class="QPushButton" name="settingsButton">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string> Settings </string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_monitorASW">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Monitor</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="2" rowspan="2">
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="minimumSize">
+          <size>
+           <width>531</width>
+           <height>242</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>531</width>
+           <height>8888</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Fan</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox_5">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>104</height>
+             </size>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QLabel" name="label_19">
+                 <property name="text">
+                  <string> Address</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinBox_InitAdress">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                 <property name="value">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QWidget" name="widget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>380</width>
+              <height>0</height>
+             </size>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_11">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="initializeButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>88888</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+               </property>
+               <property name="text">
+                <string>Read fan</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="initializeGButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>88888</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+               </property>
+               <property name="text">
+                <string>Read group</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="initializeAButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>88888</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+               </property>
+               <property name="text">
+                <string>Read all</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="pushButton_startMotor">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>  Start fan </string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="pushButton_startMotor_G">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>  Start group  </string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="pushButton_stopMotor">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>  Stop fan </string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="pushButton_stopMotor_G">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>  Stop group  </string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QPushButton" name="pushButton_startMotor_A">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>  Start all  </string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QPushButton" name="pushButton_stopMotor_A">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>  Stop all  </string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QTableWidget" name="table_settings">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>511</width>
+              <height>121</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>511</width>
+              <height>121</height>
+             </size>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
+            </property>
+            <property name="gridStyle">
+             <enum>Qt::SolidLine</enum>
+            </property>
+            <property name="rowCount">
+             <number>3</number>
+            </property>
+            <property name="columnCount">
+             <number>5</number>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderCascadingSectionResizes">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>100</number>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>50</number>
+            </attribute>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <row/>
+            <row/>
+            <row/>
+            <column>
+             <property name="text">
+              <string>Gear</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Dry Power(w)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Dry Speed(rpm)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Wet Power(w)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Wet Speed(rpm)</string>
+             </property>
+            </column>
+            <item row="0" column="0">
+             <property name="text">
+              <string>High</string>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="1">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="2">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="3">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="4">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="0">
+             <property name="text">
+              <string>Middle</string>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="1">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="2">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="3">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="4">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="0">
+             <property name="text">
+              <string>Low</string>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="1">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="2">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="3">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="4">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QGroupBox" name="groupBox_18">
+            <layout class="QGridLayout" name="gridLayout_20">
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
+              <number>9</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string> Type </string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QComboBox" name="comboBox_fanreGulation">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_35">
+               <property name="text">
+                <string> Presure </string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboBox_fanType">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QComboBox" name="comboBox_fanPressure">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_36">
+               <property name="text">
+                <string> Regulation</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_37">
+               <property name="text">
+                <string> Control Mode</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QComboBox" name="comboBox_fanControlMode">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>4</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QPushButton" name="pushButton_InitRead">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+              </property>
+              <property name="text">
+               <string>  Read  </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_InitSetF">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>  Set fan </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_InitSetG">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>  Set group  </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_InitSetA">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>  Set all  </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+         <zorder>groupBox_5</zorder>
+         <zorder>verticalSpacer_2</zorder>
+         <zorder>widget</zorder>
+         <zorder>table_settings</zorder>
+         <zorder>groupBox_18</zorder>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>8888</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>信息提醒</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QTextBrowser" name="textBrowser"/>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="clearButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>  Clear  </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page3">
+      <layout class="QGridLayout" name="gridLayout_19">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="styleSheet">
+            <string notr="true"> QLabel{ 
+
+    text-align: center;
+	font-size:14px;
+	font-weight: bold;
+}</string>
+           </property>
+           <property name="text">
+            <string>Previous</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="previous2">
+           <property name="styleSheet">
+            <string notr="true">QToolButton{
+    background-color: transparent;
+    border: none; 
+}
+
+
+QToolButton:hover{
+    background-color: rgb(200, 200, 200);
+ 
+}
+
+QToolButton:disabled{
+    background-color: gray;
+}</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../QSuperConsole.qrc">
+             <normaloff>:/images/skin/icons/go-previous.png</normaloff>:/images/skin/icons/go-previous.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="next2">
+           <property name="styleSheet">
+            <string notr="true">QToolButton{
+    background-color: transparent;
+    border: none; 
+}
+
+
+QToolButton:hover{
+    background-color: rgb(200, 200, 200);
+ 
+}
+
+QToolButton:disabled{
+    background-color: gray;
+}</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../QSuperConsole.qrc">
+             <normaloff>:/images/skin/icons/go-next.png</normaloff>:/images/skin/icons/go-next.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="styleSheet">
+            <string notr="true"> QLabel{ 
+
+    text-align: center;
+	font-size:14px;
+	font-weight: bold;
+}</string>
+           </property>
+           <property name="text">
+            <string>Next</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1" colspan="2">
+        <spacer name="horizontalSpacer_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>846</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="2" rowspan="2">
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="title">
+          <string>PI</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_12">
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox_11">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Speed</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_13">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_14">
+               <property name="text">
+                <string>P</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="SpinBox_speedPRW">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDoubleSpinBox" name="SpinBox_speedIRW">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+            <zorder>label_14</zorder>
+            <zorder>label_15</zorder>
+            <zorder>SpinBox_speedPRW</zorder>
+            <zorder>SpinBox_speedIRW</zorder>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QGroupBox" name="groupBox_12">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Id</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_14">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>P</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="SpinBox_idPRW">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_17">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDoubleSpinBox" name="SpinBox_idIRW">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+            <zorder>label_16</zorder>
+            <zorder>label_17</zorder>
+            <zorder>SpinBox_idPRW</zorder>
+            <zorder>SpinBox_idIRW</zorder>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QGroupBox" name="groupBox_13">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Iq</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_15">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_18">
+               <property name="text">
+                <string>P</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDoubleSpinBox" name="SpinBox_iqPRW">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_20">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDoubleSpinBox" name="SpinBox_iqIRW">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="decimals">
+                <number>4</number>
+               </property>
+               <property name="maximum">
+                <double>99999.990000000005239</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+            <zorder>label_18</zorder>
+            <zorder>label_20</zorder>
+            <zorder>SpinBox_iqPRW</zorder>
+            <zorder>SpinBox_iqIRW</zorder>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="readPIBtn">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+              </property>
+              <property name="text">
+               <string>Read</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="setPIBtn">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Write</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" rowspan="2" colspan="2">
+        <widget class="QGroupBox" name="groupBox_14">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>161</height>
+          </size>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_23">
+            <property name="text">
+             <string>Rated Power</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLCDNumber" name="lcdNumber_ratedPower"/>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_24">
+            <property name="text">
+             <string>Rated Speed</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLCDNumber" name="lcdNumber_ratedSpeed"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_25">
+            <property name="text">
+             <string>Target Power</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLCDNumber" name="lcdNumber_targetPower"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_26">
+            <property name="text">
+             <string>Target Speed</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLCDNumber" name="lcdNumber_targetSpeed"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_27">
+            <property name="text">
+             <string>R-T Power</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLCDNumber" name="lcdNumber_realTimePower"/>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="label_28">
+            <property name="text">
+             <string>R-t Speed</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLCDNumber" name="lcdNumber_realTimeSpeed"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_29">
+            <property name="text">
+             <string>Target Id</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLCDNumber" name="lcdNumber_targetId"/>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="label_30">
+            <property name="text">
+             <string>Target Iq</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLCDNumber" name="lcdNumber_targetIq"/>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_31">
+            <property name="text">
+             <string>R-T Id</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLCDNumber" name="lcdNumber_realTimeId"/>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="label_32">
+            <property name="text">
+             <string>R-T Iq</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QLCDNumber" name="lcdNumber_realTimeIq"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="2" rowspan="2">
+        <widget class="QGroupBox" name="groupBox_15">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>88888</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Plot</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_17">
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>51</height>
+             </size>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <widget class="QRadioButton" name="radioButton_iq">
+             <property name="geometry">
+              <rect>
+               <x>230</x>
+               <y>20</y>
+               <width>89</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Iq</string>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="radioButton_id">
+             <property name="geometry">
+              <rect>
+               <x>110</x>
+               <y>20</y>
+               <width>89</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Id</string>
+             </property>
+            </widget>
+            <widget class="QRadioButton" name="radioButton_speed">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>89</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Speed</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCustomPlot" name="customPlot" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>150</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="plotSaveBtn">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Save</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="minimumSize">
+          <size>
+           <width>531</width>
+           <height>242</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>8888</width>
+           <height>8888</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Fan</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_9">
+          <property name="verticalSpacing">
+           <number>6</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QWidget" name="widget_2" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>380</width>
+              <height>0</height>
+             </size>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <property name="spacing">
+              <number>30</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="initializeButton_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>88888</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+               </property>
+               <property name="text">
+                <string>Read fan</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_startMotor_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>  Start fan </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_stopMotor_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>  Stop fan </string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QTableWidget" name="table_settings_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>511</width>
+              <height>121</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>511</width>
+              <height>121</height>
+             </size>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
+            </property>
+            <property name="gridStyle">
+             <enum>Qt::SolidLine</enum>
+            </property>
+            <property name="rowCount">
+             <number>3</number>
+            </property>
+            <property name="columnCount">
+             <number>5</number>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderCascadingSectionResizes">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>100</number>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>50</number>
+            </attribute>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <row/>
+            <row/>
+            <row/>
+            <column>
+             <property name="text">
+              <string>Gear</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Dry Power(w)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Dry Speed(rpm)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Wet Power(w)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Wet Speed(rpm)</string>
+             </property>
+            </column>
+            <item row="0" column="0">
+             <property name="text">
+              <string>High</string>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="1">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="2">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="3">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="0" column="4">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="0">
+             <property name="text">
+              <string>Middle</string>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="1">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="2">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="3">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="1" column="4">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="0">
+             <property name="text">
+              <string>Low</string>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="1">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="2">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="3">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+            <item row="2" column="4">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignCenter</set>
+             </property>
+             <property name="flags">
+              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>4</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_InitRead_2">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+    background-color: rgb(76, 218, 100);
+	border-style: outset;
+    border-width: 2px;
+	border-radius: 6px;
+    color: white;
+	font-size: 14px;
+}
+
+QPushButton:hover{
+    background-color: rgb(110, 230, 120);
+}
+
+QPushButton:pressed{
+    background-color: rgb(50, 200, 80);
+}
+
+QPushButton:disabled{
+    background-color: gray;
+}</string>
+              </property>
+              <property name="text">
+               <string>  Read  </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_InitSetF_2">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>  Set fan </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="groupBox_8">
+            <layout class="QGridLayout" name="gridLayout_10">
+             <property name="topMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
+              <number>9</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string> Type </string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QComboBox" name="comboBox_fanreGulation_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string> Presure </string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboBox_fanType_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QComboBox" name="comboBox_fanPressure_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string> Regulation</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string> Control Mode</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QComboBox" name="comboBox_fanControlMode_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_17">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_18">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_33">
+              <property name="text">
+               <string> Fan</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLCDNumber" name="lcdNumber_fanID">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>88888</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="text">
+               <string>Monitor</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Comm.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QcwIndicatorLamp" name="comLamp" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>34</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_34">
+              <property name="text">
+               <string>Running</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QcwIndicatorLamp" name="runLamp" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>34</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_runState">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
-  <zorder>groupBox1</zorder>
-  <zorder>frame2</zorder>
-  <zorder>groupBox2</zorder>
  </widget>
  <customwidgets>
   <customwidget>
@@ -100,7 +4014,21 @@
    <header>userui/groupframe.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>QcwIndicatorLamp</class>
+   <extends>QWidget</extends>
+   <header location="global">lamp/qcw_indicatorlamp.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header location="global">qcustomplot/qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../QSuperConsole.qrc"/>
+ </resources>
  <connections/>
 </ui>

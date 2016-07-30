@@ -27,8 +27,8 @@ void sigleGroupDialog::initUI()
     getTitleBar()->getTitleLabel()->setText(tr("Group"));
     QVBoxLayout* mainLayout = (QVBoxLayout*)layout();
 
-    FanMotorUi *fanmotorui = FanMotorUi::getS_Instance();
-    mainLayout->addWidget(fanmotorui);
+//    FanMotorUi *fanmotorui = FanMotorUi::getS_Instance();
+//    mainLayout->addWidget(fanmotorui);
 }
 
 sigleGroupDialog *sigleGroupDialog::getS_Instance()
@@ -48,17 +48,17 @@ void sigleGroupDialog::deleteInstance()
 
 void sigleGroupDialog::show(FanGroupInfo *group)
 {
-    getTitleBar()->getTitleLabel()->setText(tr("Group%1").arg(group->m_groupID));
-    FanMotorUi::getS_Instance()->changeGroup(group);
-    if(FSubWindown::isMinimized()){
-        FSubWindown::showNormal();
-    }
-    else if(FSubWindown::isHidden()){
-        FSubWindown::show();
-    }
-    else{
-        FSubWindown::hide();
-        FSubWindown::show();
-    }
+//    getTitleBar()->getTitleLabel()->setText(tr("Group%1").arg(group->m_groupID));
+//    FanMotorUi::getS_Instance()->changeGroup(group);
+//    if(FSubWindown::isMinimized()){
+//        FSubWindown::showNormal();
+//    }
+//    else if(FSubWindown::isHidden()){
+//        FSubWindown::show();
+//    }
+//    else{
+//        FSubWindown::hide();
+//        FSubWindown::show();
+//    }
 
 }

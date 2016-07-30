@@ -4,8 +4,14 @@
 #include "qmotor.h"
 #include "dialogs/groupmonitordialog.h"
 
-const int gGroupnum = 9; //Number of all groups
-const int gMotorMaxnum = 15;
+const int gGroupnum = 4; //Number of all groups
+const int gMotorMaxnum = 3;
+
+//! \brief g_responseTimeout for modbus device request timeout set
+const int g_responseTimeout = 50;
+
+//! \brief g_numberOfTry for modbus device request number of try
+const int g_numberOfTry = 2;
 
 enum CommunicationMode:char{
     Init,

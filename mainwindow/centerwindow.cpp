@@ -76,7 +76,7 @@ void CenterWindow::initUI()
 //    CANUi *m_canUi{CANUi::getS_Instance()};
 //    MPlotUi *m_plotUi{MPlotUi::getInstance()};
 //    ModbusUi *m_modbusui{ModbusUi::getInstance()};
-    homewindow *m_home{homewindow::getInstance()};
+//    homewindow *m_home{homewindow::getInstance()};
 
 //    SerialPortUi *serialport{new SerialPortUi(this)};
 //    TcpClientFrame *_TcpClientFrame = new TcpClientFrame(this);
@@ -89,24 +89,36 @@ void CenterWindow::initUI()
 //    addWidget(tr("Canbus"),"Communication", m_canUi);
 //    addWidget(tr("Modbus"),"Communication", m_modbusui);
 //    addWidget(tr("COMPort"),"serialportBtn", serialport);
-    FanHomeFrame *fanHome1 = new FanHomeFrame;
-    fanHome1->setGroup(motorGroups.at(0), motorGroups.at(1));
-    addWidget(tr("Home1"), "Home", fanHome1);
 
-    FanHomeFrame *fanHome2 = new FanHomeFrame;
-    fanHome2->setGroup(motorGroups.at(2), motorGroups.at(3));
-    addWidget(tr("Home2"), "Home", fanHome2);
-    FanHomeFrame *fanHome3 = new FanHomeFrame;
-    fanHome3->setGroup(motorGroups.at(4), motorGroups.at(5));
-    addWidget(tr("Home3"), "Home", fanHome3);
-    FanHomeFrame *fanHome4 = new FanHomeFrame;
-    fanHome4->setGroup(motorGroups.at(6), motorGroups.at(7));
-    addWidget(tr("Home4"), "Home", fanHome4);
+for(int i=0; i<gGroupnum; i+=2){
+    FanHomeFrame *fanHome = new FanHomeFrame;
+    fanHome->setGroup(&motorGroups, i, 2);
+    addWidget(tr("Home%1").arg(i/2+1), "Home", fanHome);
+}
+//    FanHomeFrame *fanHome1 = new FanHomeFrame;
+//    fanHome1->setGroup(&motorGroups, 0, 2);
+//    addWidget(tr("Home1"), "Home", fanHome1);
+
+//    FanHomeFrame *fanHome2 = new FanHomeFrame;
+//    fanHome2->setGroup(&motorGroups, 2, 2);
+//    addWidget(tr("Home2"), "Home", fanHome2);
+//    FanHomeFrame *fanHome3 = new FanHomeFrame;
+//    fanHome3->setGroup(&motorGroups, 4, 2);
+//    addWidget(tr("Home3"), "Home", fanHome3);
+//    FanHomeFrame *fanHome4 = new FanHomeFrame;
+//    fanHome4->setGroup(&motorGroups, 6, 2);
+//    addWidget(tr("Home4"), "Home", fanHome4);
     setAlignment(TopCenter);
 }
 
 void CenterWindow::initConnect()
 {
+
+}
+
+QVector<FanGroupInfo *> &CenterWindow::getGroups()
+{
+    return motorGroups;
 
 }
 

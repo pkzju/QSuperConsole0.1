@@ -46,14 +46,6 @@
  *!
  */
 
-
-
-//! \brief g_responseTimeout for modbus device request timeout set
-const int g_responseTimeout = 50;
-
-//! \brief g_numberOfTry for modbus device request number of try
-const int g_numberOfTry = 2;
-
 const quint16 g_tcpServerAddress = 1;
 
 FanMotorUi *FanMotorUi::s_Instance = Q_NULLPTR;
@@ -303,18 +295,18 @@ FanMotorUi::FanMotorUi(QWidget *parent) :
 //    MPlotUi*__mPlotUi = MPlotUi::getInstance();
 //    connect(this, &FanMotorUi::updatePlotUi, __mPlotUi, &MPlotUi::realtimeDataSlot);
 
-    QToolButton *_openButton = MainWindow::getInstance()->getOpenButton();
-    connect(_openButton, SIGNAL(clicked(bool)), ui->connectButton, SLOT(click()));
-    QToolButton *_closeButton = MainWindow::getInstance()->getCloseButton();
-    connect(_closeButton, SIGNAL(clicked(bool)), ui->disconnectButton, SLOT(click()));
+//    QToolButton *_openButton = MainWindow::getInstance()->getOpenButton();
+//    connect(_openButton, SIGNAL(clicked(bool)), ui->connectButton, SLOT(click()));
+//    QToolButton *_closeButton = MainWindow::getInstance()->getCloseButton();
+//    connect(_closeButton, SIGNAL(clicked(bool)), ui->disconnectButton, SLOT(click()));
 
     ui->textBrowser->document ()->setMaximumBlockCount (50);//!< Set textBrowser max block count
 
-    homewindow * _homewindow = homewindow::getInstance();
-    connect(_homewindow, &homewindow::readMotorRegister, this, &FanMotorUi::readFromMotor);
-    connect(_homewindow, &homewindow::writeMotorRegister, this, &FanMotorUi::writeToMotor);
+//    homewindow * _homewindow = homewindow::getInstance();
+//    connect(_homewindow, &homewindow::readMotorRegister, this, &FanMotorUi::readFromMotor);
+//    connect(_homewindow, &homewindow::writeMotorRegister, this, &FanMotorUi::writeToMotor);
 
-    connect(this, &FanMotorUi::writeMotorRegister, _homewindow, &homewindow::writeToMotor);
+//    connect(this, &FanMotorUi::writeMotorRegister, _homewindow, &homewindow::writeToMotor);
 
 
 }
@@ -678,7 +670,7 @@ void FanMotorUi::onStateChanged(int state)
     ui->checkBox_monitorASW->setChecked(connected);
     monitor_stateChanged(connected);
 
-    MainWindow::getInstance()->setStatusBarLamp(connected);
+//    MainWindow::getInstance()->setStatusBarLamp(connected);
 
     emit updateSigleMotorState(connected);
 }
